@@ -2,9 +2,8 @@
 <html lang="zh-CN">
 <head>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <link rel="preload" as="image" href="hero-bg.jpg">
-    <link rel="preload" as="fetch" href="news.json" crossorigin>
-    <link rel="preload" as="fetch" href="articles.json" crossorigin>
+    <link rel="preload" as="image" href="hero-bg.jpg" fetchpriority="high">
+    <!-- JSON由JS按需加载，不preload避免阻塞进度条 -->
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <meta charset="UTF-8">
@@ -12,15 +11,15 @@
     <title>玄同先生 · 国学命理</title>
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <!-- <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png"> -->
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon-192.png">
     <!-- Open Graph / 微信分享 -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="玄同先生 · 国学命理">
     <meta property="og:description" content="你的命盘里藏着惊天秘密 🔮 八字精批·财运破解·奇门运筹·风水布局">
-    <meta property="og:image" content="https://suningsong.github.io/xuantong-landing/og-image.png">
-    <meta property="og:image:width" content="512">
-    <meta property="og:image:height" content="512">
+    <meta property="og:image" content="https://ysgncq.cn/favicon-512.png">
+    <meta property="og:image:width" content="192">
+    <meta property="og:image:height" content="192">
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="玄同先生 · 国学命理">
@@ -1386,7 +1385,7 @@
             </div>
             <div class="contact-item">
                 <span class="contact-label">💬 添加微信·一对一解读</span>
-                <img src="wechat-qr.jpg" alt="微信二维码" class="wechat-qr">
+                <img src="wechat-qr.jpg" alt="微信二维码" class="wechat-qr" loading="lazy">
             </div>
         </div>
     </section>
@@ -1774,7 +1773,7 @@
                         或直接添加微信咨询：
                     </p>
                     <div style="text-align: center; margin-top: 20px;">
-                        <img src="wechat-qr.jpg" alt="微信二维码" style="width: 150px; height: 150px; border: 1px solid var(--border-gold); background: white; padding: 5px;">
+                        <img src="wechat-qr.jpg" alt="微信二维码" loading="lazy" style="width: 150px; height: 150px; border: 1px solid var(--border-gold); background: white; padding: 5px;">
                     </div>
                     <div style="text-align: center; margin-top: 20px;">
                         <button class="back-btn" onclick="resetForm()" style="margin: 0 auto;">返回</button>
