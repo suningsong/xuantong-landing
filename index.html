@@ -74,13 +74,12 @@
             z-index: 0;
         }
 
-        /* 只压暗边缘让文字可读，中间完全透明 */
+        /* 整体压暗保证文字可读，但不盖住背景 */
         .hero::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: 
-                radial-gradient(ellipse at 50% 35%, transparent 30%, rgba(6,6,12,0.55) 100%);
+            background: rgba(6,6,12,0.45);
             z-index: 1;
         }
 
