@@ -628,23 +628,86 @@
 
         .loading {
             text-align: center;
-            padding: 40px;
+            padding: 30px 20px;
             color: var(--text-secondary);
         }
 
-        .loading-spinner {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 2px solid var(--border-gold);
-            border-top-color: var(--gold);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 15px;
+        .loading-animation {
+            width: 160px;
+            height: 200px;
+            margin: 0 auto 20px;
+            position: relative;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .loading-animation svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 签筒摇动动画 */
+        .shake-group {
+            animation: shakeTube 0.8s ease-in-out infinite;
+            transform-origin: 95px 130px;
+        }
+
+        @keyframes shakeTube {
+            0%, 100% { transform: rotate(-8deg); }
+            50% { transform: rotate(8deg); }
+        }
+
+        /* 签子跳动 */
+        .stick {
+            animation: stickBounce 0.4s ease-in-out infinite alternate;
+        }
+        .stick:nth-child(1) { animation-delay: 0s; }
+        .stick:nth-child(2) { animation-delay: 0.1s; }
+        .stick:nth-child(3) { animation-delay: 0.2s; }
+        .stick:nth-child(4) { animation-delay: 0.05s; }
+        .stick:nth-child(5) { animation-delay: 0.15s; }
+
+        @keyframes stickBounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-6px); }
+        }
+
+        /* 老者身体微微摇晃 */
+        .sage-body {
+            animation: sageSway 1.6s ease-in-out infinite;
+            transform-origin: 80px 180px;
+        }
+
+        @keyframes sageSway {
+            0%, 100% { transform: rotate(-1deg); }
+            50% { transform: rotate(1deg); }
+        }
+
+        /* 光晕呼吸 */
+        .glow-circle {
+            animation: glowPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.15; r: 55; }
+            50% { opacity: 0.35; r: 65; }
+        }
+
+        .loading p {
+            font-family: var(--serif);
+            color: var(--gold);
+            font-size: 0.95rem;
+            letter-spacing: 0.15em;
+        }
+
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s steps(4) infinite;
+        }
+
+        @keyframes dots {
+            0% { content: ''; }
+            25% { content: '·'; }
+            50% { content: '··'; }
+            75% { content: '···'; }
         }
 
         /* ========== ARTICLES SECTION ========== */
@@ -1082,8 +1145,81 @@
             document.getElementById('result-section').classList.add('active');
             document.getElementById('result-content').innerHTML = `
                 <div class="loading">
-                    <div class="loading-spinner"></div>
-                    <p>正在为您测算，请稍候...</p>
+                    <div class="loading-animation">
+                        <svg viewBox="0 0 160 200" xmlns="http://www.w3.org/2000/svg">
+                            <!-- 光晕 -->
+                            <circle class="glow-circle" cx="80" cy="110" r="55" fill="url(#glowGrad)" />
+                            <defs>
+                                <radialGradient id="glowGrad">
+                                    <stop offset="0%" stop-color="#C9A96E" stop-opacity="0.4"/>
+                                    <stop offset="100%" stop-color="#C9A96E" stop-opacity="0"/>
+                                </radialGradient>
+                                <linearGradient id="robeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#C9A96E"/>
+                                    <stop offset="100%" stop-color="#8B6914"/>
+                                </linearGradient>
+                                <linearGradient id="tubeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#8B6914"/>
+                                    <stop offset="50%" stop-color="#C9A96E"/>
+                                    <stop offset="100%" stop-color="#8B6914"/>
+                                </linearGradient>
+                            </defs>
+                            <!-- 老者身体 -->
+                            <g class="sage-body">
+                                <!-- 道袍身体 -->
+                                <path d="M55,95 Q50,120 45,170 Q45,180 60,185 L100,185 Q115,180 115,170 Q110,120 105,95 Z" fill="url(#robeGrad)" opacity="0.85"/>
+                                <!-- 袍子褶皱 -->
+                                <path d="M65,120 Q70,150 62,180" stroke="#0A0A0F" stroke-width="0.8" fill="none" opacity="0.3"/>
+                                <path d="M95,120 Q90,150 98,180" stroke="#0A0A0F" stroke-width="0.8" fill="none" opacity="0.3"/>
+                                <!-- 衣领 -->
+                                <path d="M65,95 L80,110 L95,95" stroke="#E8D5A3" stroke-width="1.5" fill="none"/>
+                                <!-- 头部 -->
+                                <ellipse cx="80" cy="72" rx="16" ry="18" fill="#C9A96E" opacity="0.9"/>
+                                <!-- 道冠 -->
+                                <path d="M64,62 Q65,48 80,45 Q95,48 96,62" fill="#8B6914" stroke="#E8D5A3" stroke-width="0.8"/>
+                                <rect x="76" y="42" width="8" height="6" rx="2" fill="#E8D5A3"/>
+                                <!-- 长须 -->
+                                <path d="M72,82 Q70,100 68,115" stroke="#E8D5A3" stroke-width="1.2" fill="none" opacity="0.7"/>
+                                <path d="M76,84 Q75,102 74,118" stroke="#E8D5A3" stroke-width="1" fill="none" opacity="0.6"/>
+                                <path d="M80,85 Q80,103 80,120" stroke="#E8D5A3" stroke-width="1.2" fill="none" opacity="0.7"/>
+                                <path d="M84,84 Q85,102 86,118" stroke="#E8D5A3" stroke-width="1" fill="none" opacity="0.6"/>
+                                <path d="M88,82 Q90,100 92,115" stroke="#E8D5A3" stroke-width="1.2" fill="none" opacity="0.7"/>
+                                <!-- 眼睛 -->
+                                <path d="M72,70 Q75,68 78,70" stroke="#0A0A0F" stroke-width="1.2" fill="none"/>
+                                <path d="M82,70 Q85,68 88,70" stroke="#0A0A0F" stroke-width="1.2" fill="none"/>
+                                <!-- 左手臂（伸向签筒） -->
+                                <path d="M58,105 Q50,115 55,130 Q60,138 70,135" stroke="#C9A96E" stroke-width="4" fill="none" stroke-linecap="round"/>
+                                <!-- 右手臂（托住签筒底部） -->
+                                <path d="M102,105 Q115,118 112,132 Q108,140 100,138" stroke="#C9A96E" stroke-width="4" fill="none" stroke-linecap="round"/>
+                            </g>
+                            <!-- 签筒+签子（摇动组） -->
+                            <g class="shake-group">
+                                <!-- 签子们 -->
+                                <g class="sticks-group">
+                                    <rect class="stick" x="82" y="68" width="2.5" height="55" rx="1" fill="#E8D5A3" opacity="0.9"/>
+                                    <rect class="stick" x="86" y="65" width="2.5" height="58" rx="1" fill="#E8D5A3" opacity="0.85"/>
+                                    <rect class="stick" x="90" y="70" width="2.5" height="53" rx="1" fill="#E8D5A3" opacity="0.9"/>
+                                    <rect class="stick" x="94" y="66" width="2.5" height="57" rx="1" fill="#E8D5A3" opacity="0.85"/>
+                                    <rect class="stick" x="98" y="69" width="2.5" height="54" rx="1" fill="#E8D5A3" opacity="0.9"/>
+                                    <!-- 签子头部标记 -->
+                                    <circle cx="83.25" cy="67" r="2" fill="#C9A96E"/>
+                                    <circle cx="87.25" cy="64" r="2" fill="#C9A96E"/>
+                                    <circle cx="91.25" cy="69" r="2" fill="#C9A96E"/>
+                                    <circle cx="95.25" cy="65" r="2" fill="#C9A96E"/>
+                                    <circle cx="99.25" cy="68" r="2" fill="#C9A96E"/>
+                                </g>
+                                <!-- 签筒 -->
+                                <rect x="78" y="115" width="28" height="40" rx="4" fill="url(#tubeGrad)" stroke="#E8D5A3" stroke-width="1"/>
+                                <!-- 签筒装饰纹 -->
+                                <line x1="82" y1="125" x2="102" y2="125" stroke="#E8D5A3" stroke-width="0.5" opacity="0.5"/>
+                                <line x1="82" y1="145" x2="102" y2="145" stroke="#E8D5A3" stroke-width="0.5" opacity="0.5"/>
+                                <!-- 签筒上的太极 -->
+                                <circle cx="92" cy="135" r="5" fill="none" stroke="#E8D5A3" stroke-width="0.8" opacity="0.6"/>
+                                <path d="M92,130 Q95,132.5 92,135 Q89,137.5 92,140" fill="#E8D5A3" opacity="0.4"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <p>天机推演中<span class="loading-dots"></span></p>
                 </div>
             `;
             
@@ -1377,4 +1513,5 @@
             observer.observe(el);
         });
     </script>
-</bod
+</body>
+</html>
