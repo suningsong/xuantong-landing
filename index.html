@@ -914,6 +914,154 @@
             color: var(--gold);
         }
 
+        /* ========== FLOATING BACK TO TOP ========== */
+        .float-top-btn {
+            position: fixed;
+            right: 20px;
+            bottom: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+            border: none;
+            border-radius: 50%;
+            color: #0A0A0F;
+            font-size: 1.4rem;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(201,169,110,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .float-top-btn.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .float-top-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 30px rgba(201,169,110,0.6);
+        }
+        .float-top-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* ========== ALMANAC SECTION ========== */
+        .almanac-section {
+            padding: 60px 20px;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(201,169,110,0.03) 0%, transparent 100%);
+        }
+        .almanac-card {
+            max-width: 600px;
+            margin: 0 auto;
+            background: linear-gradient(145deg, rgba(15,15,26,0.95), rgba(26,26,46,0.95));
+            border: 1px solid rgba(201,169,110,0.25);
+            border-radius: 20px;
+            padding: 32px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        .almanac-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+        .almanac-date {
+            font-family: var(--serif);
+            color: var(--gold-light);
+            font-size: 1.6rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 4px;
+        }
+        .almanac-lunar {
+            font-family: var(--serif);
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+        .almanac-ganzhi {
+            font-family: var(--serif);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            letter-spacing: 0.05em;
+        }
+        .almanac-yiji {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .almanac-yi, .almanac-ji {
+            flex: 1;
+            min-width: 140px;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .almanac-yi {
+            background: rgba(201,169,110,0.08);
+            border: 1px solid rgba(201,169,110,0.2);
+        }
+        .almanac-ji {
+            background: rgba(180,60,60,0.06);
+            border: 1px solid rgba(180,60,60,0.15);
+        }
+        .almanac-yi-label {
+            font-family: var(--serif);
+            color: var(--gold);
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .almanac-ji-label {
+            font-family: var(--serif);
+            color: #c85050;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .almanac-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+        }
+        .almanac-tag-yi {
+            display: inline-block;
+            padding: 3px 10px;
+            background: rgba(201,169,110,0.12);
+            border: 1px solid rgba(201,169,110,0.25);
+            border-radius: 14px;
+            color: var(--gold-light);
+            font-size: 0.78rem;
+        }
+        .almanac-tag-ji {
+            display: inline-block;
+            padding: 3px 10px;
+            background: rgba(180,60,60,0.08);
+            border: 1px solid rgba(180,60,60,0.2);
+            border-radius: 14px;
+            color: #d48888;
+            font-size: 0.78rem;
+        }
+        .almanac-time {
+            margin-top: 16px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        @media (max-width: 480px) {
+            .almanac-card { padding: 24px 16px; }
+            .almanac-date { font-size: 1.3rem; }
+            .almanac-yi, .almanac-ji { min-width: 120px; padding: 12px; }
+        }
+
         /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
             .hero-title { font-size: 3rem; letter-spacing: 0.3em; }
@@ -1024,6 +1172,35 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
             </svg>
+        </div>
+    </section>
+
+    <!-- ========== ALMANAC ========== -->
+    <section class="almanac-section" id="almanac">
+        <div class="section-header fade-in">
+            <div class="ornament">
+                <span class="ornament-line"></span>
+                <span class="ornament-symbol">📅</span>
+                <span class="ornament-line"></span>
+            </div>
+            <h2 class="section-title">🏮 今日老黄历</h2>
+            <p class="section-subtitle">Chinese Almanac</p>
+        </div>
+        <div class="almanac-card fade-in" id="almanac-card">
+            <div class="almanac-date" id="almanac-date">加载中...</div>
+            <div class="almanac-lunar" id="almanac-lunar"></div>
+            <div class="almanac-ganzhi" id="almanac-ganzhi"></div>
+            <div class="almanac-yiji">
+                <div class="almanac-yi">
+                    <div class="almanac-yi-label">宜</div>
+                    <div class="almanac-tags" id="almanac-yi"></div>
+                </div>
+                <div class="almanac-ji">
+                    <div class="almanac-ji-label">忌</div>
+                    <div class="almanac-tags" id="almanac-ji"></div>
+                </div>
+            </div>
+            <div class="almanac-time" id="almanac-time"></div>
         </div>
     </section>
 
@@ -1899,6 +2076,240 @@
         document.querySelectorAll('.fade-in').forEach(el => {
             observer.observe(el);
         });
+
+        // ===== 返回顶部浮动按钮 =====
+        (function() {
+            const btn = document.getElementById('float-top-btn');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 400) {
+                    btn.classList.add('visible');
+                } else {
+                    btn.classList.remove('visible');
+                }
+            });
+        })();
+
+        // ===== 今日老黄历 =====
+        (function() {
+            // 天干地支
+            const TIAN_GAN = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+            const DI_ZHI = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+            const SHENG_XIAO = ['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪'];
+            
+            // 农历月份
+            const LUNAR_MONTHS = ['正月','二月','三月','四月','五月','六月','七月','八月','九月','十月','冬月','腊月'];
+            const LUNAR_DAYS = ['初一','初二','初三','初四','初五','初六','初七','初八','初九','初十',
+                               '十一','十二','十三','十四','十五','十六','十七','十八','十九','二十',
+                               '廿一','廿二','廿三','廿四','廿五','廿六','廿七','廿八','廿九','三十'];
+            
+            // 简化的农历数据（2024-2028年）
+            // 每年用一个整数编码：前12位表示各月大小(1=30天,0=29天)，后4位表示闰月月份(0=无闰月)
+            const LUNAR_INFO = {
+                2024: [0x24,0x4e,0x4e,0x2d,0x2d,0x4e,0x2d,0x4c,0x2d,0x4c,0x2c,0x4c, 6],  // 闰6月
+                2025: [0x4e,0x4e,0x2d,0x4e,0x2d,0x4c,0x2d,0x4c,0x2c,0x4c,0x2c,0x4c, 0],
+                2026: [0x4e,0x2e,0x4e,0x2d,0x4c,0x2d,0x4c,0x2c,0x4c,0x2c,0x4c,0x2c, 0],
+                2027: [0x4e,0x2e,0x2e,0x4c,0x2d,0x4c,0x2c,0x4c,0x2c,0x4c,0x2c,0x4c, 0],
+                2028: [0x4e,0x2e,0x2e,0x4c,0x2d,0x4c,0x2c,0x4c,0x2c,0x4c,0x2c,0x4c, 0]
+            };
+            
+            // 农历月大小表
+            const LUNAR_MONTH_DAYS = {
+                2024: [29,30,29,29,30,29,30,29,30,30,30,29], // 闰6月
+                2025: [30,30,29,30,29,30,29,30,29,30,29,30],
+                2026: [30,29,30,29,30,29,30,29,30,29,30,29],
+                2027: [30,29,29,30,29,30,29,30,29,30,29,30],
+                2028: [30,29,29,30,29,30,29,30,29,30,29,30]
+            };
+            
+            // 春节(农历正月初一)对应的公历日期 - 关键锚点
+            const SPRING_FESTIVAL = {
+                2024: [2, 10],  // 2024年2月10日
+                2025: [1, 29],  // 2025年1月29日
+                2026: [2, 17],  // 2026年2月17日
+                2027: [2, 6],   // 2027年2月6日
+                2028: [1, 26]   // 2028年1月26日
+            };
+            
+            // 宜忌数据池
+            const YI_ITEMS = ['祈福','出行','开市','交易','纳财','嫁娶','动土','修造','入宅','安床',
+                             '祭祀','求嗣','签约','搬家','装修','开业','求医','入学','开光','沐浴',
+                             '解除','冠笄','竖柱','上梁','栽种','牧养','会友','赴任','经络'];
+            const JI_ITEMS = ['诸事不宜','动土','破土','安葬','开渠','穿井','嫁娶','出行','开市',
+                             '修造','入宅','伐木','纳畜','词讼','行丧','针灸','捕鱼','掘井','伐树',
+                             '远行','夜行','杀生','破屋','诉讼','搬家'];
+            
+            // 根据日期生成伪随机宜忌（同一天结果一致）
+            function getDailyYiJi(year, month, day) {
+                const seed = year * 10000 + month * 100 + day;
+                // 简单哈希
+                let h1 = (seed * 2654435761) >>> 0;
+                let h2 = (seed * 2246822519) >>> 0;
+                
+                const yiCount = 4 + (h1 % 4); // 4-7个宜
+                const jiCount = 3 + (h2 % 3); // 3-5个忌
+                
+                const yi = [];
+                const ji = [];
+                const usedYi = new Set();
+                const usedJi = new Set();
+                
+                for (let i = 0; i < yiCount; i++) {
+                    let idx = (h1 + i * 7) % YI_ITEMS.length;
+                    if (!usedYi.has(idx)) {
+                        yi.push(YI_ITEMS[idx]);
+                        usedYi.add(idx);
+                    }
+                }
+                for (let i = 0; i < jiCount; i++) {
+                    let idx = (h2 + i * 11) % JI_ITEMS.length;
+                    if (!usedJi.has(idx)) {
+                        ji.push(JI_ITEMS[idx]);
+                        usedJi.add(idx);
+                    }
+                }
+                
+                return { yi, ji };
+            }
+            
+            // 计算天干地支年
+            function getGanZhiYear(year) {
+                const ganIdx = (year - 4) % 10;
+                const zhiIdx = (year - 4) % 12;
+                return TIAN_GAN[ganIdx] + DI_ZHI[zhiIdx];
+            }
+            
+            // 计算生肖
+            function getShengXiao(year) {
+                return SHENG_XIAO[(year - 4) % 12];
+            }
+            
+            // 计算月干支（简化版）
+            function getGanZhiMonth(year, month) {
+                const yearGan = (year - 4) % 10;
+                const monthGanBase = (yearGan % 5) * 2 + month;
+                const ganIdx = monthGanBase % 10;
+                const zhiIdx = (month + 1) % 12;
+                return TIAN_GAN[ganIdx] + DI_ZHI[zhiIdx];
+            }
+            
+            // 计算日干支（基于已知锚点推算）
+            function getGanZhiDay(year, month, day) {
+                // 锚点：2024年1月1日 = 甲子日 (简化计算)
+                const anchor = new Date(2024, 0, 1);
+                const target = new Date(year, month - 1, day);
+                const diffDays = Math.floor((target - anchor) / 86400000);
+                const ganIdx = ((diffDays % 10) + 10) % 10;
+                const zhiIdx = ((diffDays % 12) + 12) % 12;
+                return TIAN_GAN[ganIdx] + DI_ZHI[zhiIdx];
+            }
+            
+            // 获取时辰
+            function getShiChen(hour) {
+                const shichen = ['子时','丑时','寅时','卯时','辰时','巳时','午时','未时','申时','酉时','戌时','亥时'];
+                const idx = Math.floor((hour + 1) / 2) % 12;
+                return shichen[idx];
+            }
+            
+            // 简化农历日期计算
+            function getLunarDate(year, month, day) {
+                const sf = SPRING_FESTIVAL[year];
+                if (!sf) return null;
+                
+                // 计算从春节到目标日期的天数
+                const springDate = new Date(year, sf[0] - 1, sf[1]);
+                const targetDate = new Date(year, month - 1, day);
+                
+                if (targetDate < springDate) {
+                    // 还没到春节，属于上一年的农历
+                    const prevSf = SPRING_FESTIVAL[year - 1];
+                    if (prevSf) {
+                        const prevSpring = new Date(year - 1, prevSf[0] - 1, prevSf[1]);
+                        const daysDiff = Math.floor((targetDate - prevSpring) / 86400000);
+                        return getLunarFromDays(year - 1, daysDiff);
+                    }
+                    return null;
+                }
+                
+                const daysDiff = Math.floor((targetDate - springDate) / 86400000);
+                return getLunarFromDays(year, daysDiff);
+            }
+            
+            function getLunarFromDays(lunarYear, days) {
+                const monthDays = LUNAR_MONTH_DAYS[lunarYear];
+                if (!monthDays) return null;
+                
+                let lunarMonth = 0;
+                let lunarDay = days + 1;
+                
+                for (let i = 0; i < 12; i++) {
+                    if (lunarDay <= monthDays[i]) {
+                        lunarMonth = i + 1;
+                        break;
+                    }
+                    lunarDay -= monthDays[i];
+                }
+                
+                if (lunarMonth === 0) {
+                    lunarMonth = 12;
+                    lunarDay = Math.max(1, lunarDay);
+                }
+                
+                return {
+                    year: lunarYear,
+                    month: lunarMonth,
+                    day: lunarDay,
+                    monthStr: LUNAR_MONTHS[lunarMonth - 1] || '正月',
+                    dayStr: LUNAR_DAYS[(lunarDay - 1) % 30] || '初一'
+                };
+            }
+            
+            // 主渲染函数
+            function renderAlmanac() {
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = now.getMonth() + 1;
+                const day = now.getDate();
+                const hour = now.getHours();
+                const minute = now.getMinutes();
+                
+                const weekDays = ['日','一','二','三','四','五','六'];
+                
+                // 公历日期
+                document.getElementById('almanac-date').textContent = 
+                    `${year}年${month}月${day}日 星期${weekDays[now.getDay()]}`;
+                
+                // 农历日期
+                const lunar = getLunarDate(year, month, day);
+                if (lunar) {
+                    document.getElementById('almanac-lunar').textContent = 
+                        `农历${lunar.monthStr}${lunar.dayStr} · 属${getShengXiao(lunar.year)}`;
+                }
+                
+                // 天干地支
+                const gzYear = getGanZhiYear(lunar ? lunar.year : year);
+                const gzMonth = getGanZhiMonth(year, month);
+                const gzDay = getGanZhiDay(year, month, day);
+                const shiChen = getShiChen(hour);
+                document.getElementById('almanac-ganzhi').textContent = 
+                    `${gzYear}年 ${gzMonth}月 ${gzDay}日 ${shiChen}`;
+                
+                // 宜忌
+                const yiji = getDailyYiJi(year, month, day);
+                document.getElementById('almanac-yi').innerHTML = 
+                    yiji.yi.map(t => `<span class="almanac-tag-yi">${t}</span>`).join('');
+                document.getElementById('almanac-ji').innerHTML = 
+                    yiji.ji.map(t => `<span class="almanac-tag-ji">${t}</span>`).join('');
+                
+                // 当前时间
+                const timeStr = `${String(hour).padStart(2,'0')}:${String(minute).padStart(2,'0')}`;
+                document.getElementById('almanac-time').textContent = `当前时刻 ${timeStr} · ${shiChen}`;
+            }
+            
+            renderAlmanac();
+            // 每分钟更新一次时间
+            setInterval(renderAlmanac, 60000);
+        })();
+
     </script>
 
     <!-- 新闻详情模态框 -->
@@ -1908,5 +2319,8 @@
             <div id="news-modal-body"></div>
         </div>
     </div>
+    <!-- ========== FLOATING BACK TO TOP ========== -->
+    <button class="float-top-btn" id="float-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="返回顶部">↑</button>
+
 </body>
 </html>
