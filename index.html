@@ -1779,7 +1779,7 @@
                 </div>
                 <h2 style="font-family:var(--serif); color:var(--gold-light); font-size:1.5rem; line-height:1.6; margin-bottom:20px; letter-spacing:0.05em;">${article.title}</h2>
                 <div style="color:var(--text-primary); font-size:1rem; line-height:2; margin-bottom:24px; padding:20px; background:rgba(255,255,255,0.03); border-radius:12px; border-left:3px solid var(--gold);">
-                    ${article.excerpt || ''}
+                    ${(article.excerpt || '').split(/\n\n+/).map(p => '<p style="margin-bottom:16px;">' + p.replace(/\n/g, '<br>') + '</p>').join('')}
                 </div>
                 <div style="text-align:center; padding-top:16px; border-top:1px solid rgba(201,169,110,0.2);">
                     <button onclick="closeNewsModal(); document.getElementById('contact').scrollIntoView({behavior:'smooth'});" 
