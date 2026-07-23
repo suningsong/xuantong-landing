@@ -74,12 +74,13 @@
             z-index: 0;
         }
 
-        /* 整体压暗保证文字可读，但不盖住背景 */
+        /* 整体压暗，中心区域更暗以确保文字清晰可读 */
         .hero::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(6,6,12,0.45);
+            background:
+                radial-gradient(ellipse at 50% 45%, rgba(6,6,12,0.7) 0%, rgba(6,6,12,0.45) 40%, rgba(6,6,12,0.3) 70%, rgba(6,6,12,0.15) 100%);
             z-index: 1;
         }
 
@@ -97,14 +98,14 @@
             z-index: 2;
         }
 
-        /* 八卦装饰图标 */
+        /* 八卦装饰图标 - 精致小巧 */
         .bagua-icon {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 30px;
-            opacity: 0.9;
-            filter: drop-shadow(0 0 20px rgba(201,169,110,0.4));
-            animation: rotate 60s linear infinite;
+            width: 56px;
+            height: 56px;
+            margin-bottom: 24px;
+            opacity: 0.75;
+            filter: drop-shadow(0 0 15px rgba(201,169,110,0.35));
+            animation: rotate 80s linear infinite;
         }
 
         @keyframes rotate {
@@ -114,54 +115,82 @@
 
         .hero-title {
             font-family: var(--serif);
-            font-size: 4rem;
-            font-weight: 700;
-            letter-spacing: 0.3em;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #C9A96E 0%, #E8D5A3 50%, #8B6914 100%);
+            font-size: 4.5rem;
+            font-weight: 900;
+            letter-spacing: 0.4em;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #C9A96E 0%, #E8D5A3 40%, #F5ECD0 50%, #E8D5A3 60%, #8B6914 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            filter: drop-shadow(0 0 30px rgba(201,169,110,0.3));
+            text-shadow: none;
+            position: relative;
+            line-height: 1.3;
+        }
+        .hero-title::after {
+            content: '玄同先生';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            font-size: inherit;
+            font-weight: inherit;
+            letter-spacing: inherit;
+            background: none;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            text-shadow:
+                0 0 30px rgba(201,169,110,0.4),
+                0 0 60px rgba(201,169,110,0.2),
+                0 0 100px rgba(201,169,110,0.1);
+            pointer-events: none;
+            z-index: -1;
         }
 
         .hero-subtitle {
             font-family: var(--serif);
-            font-size: 1.2rem;
+            font-size: 1.35rem;
             color: var(--gold-light);
-            letter-spacing: 0.5em;
-            margin-bottom: 15px;
-            opacity: 0.9;
+            letter-spacing: 0.6em;
+            margin-bottom: 20px;
+            opacity: 0.85;
+            text-shadow: 0 0 20px rgba(201,169,110,0.25);
         }
 
         .hero-desc {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            max-width: 500px;
-            line-height: 2;
-            margin-bottom: 50px;
+            font-family: var(--serif);
+            font-size: 1.05rem;
+            color: rgba(201,169,110,0.7);
+            max-width: 600px;
+            line-height: 1.8;
+            margin-bottom: 48px;
+            letter-spacing: 0.15em;
+            text-shadow: 0 0 15px rgba(201,169,110,0.15);
         }
 
         .hero-cta {
             display: inline-flex;
             align-items: center;
             gap: 12px;
-            padding: 16px 48px;
-            background: transparent;
-            border: 1px solid var(--gold);
+            padding: 18px 56px;
+            background: linear-gradient(135deg, rgba(201,169,110,0.15) 0%, rgba(201,169,110,0.05) 100%);
+            border: 1.5px solid rgba(201,169,110,0.6);
             color: var(--gold-light);
             font-family: var(--serif);
-            font-size: 1rem;
-            letter-spacing: 0.2em;
+            font-size: 1.1rem;
+            letter-spacing: 0.25em;
             cursor: pointer;
             transition: all 0.4s ease;
             text-decoration: none;
+            border-radius: 6px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .hero-cta:hover {
-            background: var(--gold);
+            background: linear-gradient(135deg, #C9A96E 0%, #E8D5A3 100%);
             color: var(--bg-deep);
-            box-shadow: 0 0 40px rgba(201,169,110,0.3);
+            border-color: #E8D5A3;
+            box-shadow: 0 0 50px rgba(201,169,110,0.35), 0 4px 20px rgba(201,169,110,0.2);
+            transform: translateY(-2px);
         }
 
         /* 向下滚动指示 */
@@ -175,10 +204,10 @@
         }
 
         .scroll-indicator svg {
-            width: 24px;
-            height: 24px;
+            width: 20px;
+            height: 20px;
             stroke: var(--gold);
-            opacity: 0.6;
+            opacity: 0.4;
         }
 
         @keyframes bounce {
@@ -311,12 +340,26 @@
         /* ========== FORM SECTION ========== */
         .form-section {
             display: none;
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 50px 30px;
-            background: rgba(10,10,15,0.8);
-            border: 1px solid var(--border-gold);
-            backdrop-filter: blur(10px);
+            max-width: 520px;
+            margin: 30px auto;
+            padding: 48px 36px 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 14px;
+            border: 1.5px solid transparent;
+            background-clip: padding-box;
+            box-shadow:
+                0 0 0 1.5px rgba(201,169,110,0.5),
+                0 8px 40px rgba(201,169,110,0.12),
+                0 0 80px rgba(201,169,110,0.06);
+            position: relative;
+        }
+        .form-section::before {
+            content: '';
+            position: absolute;
+            inset: -1.5px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #C9A96E 0%, #E8D5A3 40%, #8B6914 100%);
+            z-index: -1;
         }
 
         .form-section.active {
@@ -331,51 +374,101 @@
 
         .form-section h3 {
             font-family: var(--serif);
-            color: var(--gold-light);
+            color: #8B6914;
             font-size: 1.5rem;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 8px;
             letter-spacing: 0.1em;
+        }
+        .form-section h3::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #C9A96E, transparent);
+            margin: 12px auto 0;
         }
 
         .form-group {
-            margin-bottom: 24px;
+            margin-bottom: 22px;
         }
 
         .form-group label {
             display: block;
-            color: var(--text-secondary);
+            color: #6B5B3E;
             font-size: 0.85rem;
             margin-bottom: 8px;
             letter-spacing: 0.05em;
+            font-weight: 500;
         }
 
         .form-group input, .form-group select {
             width: 100%;
-            padding: 14px 18px;
-            background: rgba(201,169,110,0.05);
-            border: 1px solid var(--border-gold);
-            color: var(--text-primary);
+            padding: 13px 16px;
+            background: #fff;
+            border: 1.5px solid #D4C5A0;
+            color: #2D2A24;
             font-size: 1rem;
+            border-radius: 8px;
             transition: all 0.3s ease;
         }
 
         .form-group input:focus, .form-group select:focus {
             outline: none;
-            border-color: var(--gold);
-            background: rgba(201,169,110,0.08);
+            border-color: #C9A96E;
+            border-width: 2px;
+            box-shadow: 0 0 0 3px rgba(201,169,110,0.15), 0 0 20px rgba(201,169,110,0.08);
+        }
+
+        .form-group input::placeholder {
+            color: #B8AD98;
         }
 
         .form-group select option {
-            background: var(--bg-deep);
-            color: var(--text-primary);
+            background: #fff;
+            color: #2D2A24;
+        }
+
+        /* 性别切换按钮 */
+        .gender-toggle {
+            display: flex;
+            gap: 0;
+            border: 1.5px solid #D4C5A0;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #fff;
+        }
+        .gender-toggle label {
+            flex: 1;
+            text-align: center;
+            padding: 12px 16px;
+            cursor: pointer;
+            color: #6B5B3E;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            margin-bottom: 0;
+            transition: all 0.3s ease;
+            border-right: 1px solid #D4C5A0;
+            font-weight: 500;
+        }
+        .gender-toggle label:last-child {
+            border-right: none;
+        }
+        .gender-toggle input[type="radio"] {
+            display: none;
+        }
+        .gender-toggle label:has(input:checked) {
+            background: linear-gradient(135deg, #C9A96E, #E8D5A3);
+            color: #fff;
+            font-weight: 600;
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.2);
         }
 
         .submit-btn {
             width: 100%;
             padding: 16px;
-            background: var(--gold);
-            color: var(--bg-deep);
+            background: linear-gradient(135deg, #C9A96E 0%, #8B6914 100%);
+            color: #fff;
             border: none;
             font-size: 1rem;
             font-weight: 600;
@@ -383,16 +476,20 @@
             cursor: pointer;
             transition: all 0.3s ease;
             margin-top: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(201,169,110,0.3);
         }
 
         .submit-btn:hover {
-            background: var(--gold-light);
-            box-shadow: 0 0 30px rgba(201,169,110,0.3);
+            background: linear-gradient(135deg, #E8D5A3 0%, #C9A96E 100%);
+            box-shadow: 0 6px 25px rgba(201,169,110,0.4);
+            transform: translateY(-1px);
         }
 
         .submit-btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
+            transform: none;
         }
 
         /* 日历类型切换 */
@@ -400,9 +497,10 @@
             display: flex;
             gap: 0;
             margin-bottom: 10px;
-            border: 1px solid var(--border-gold);
-            border-radius: 4px;
+            border: 1.5px solid #D4C5A0;
+            border-radius: 8px;
             overflow: hidden;
+            background: #fff;
         }
 
         .calendar-switch label {
@@ -410,12 +508,13 @@
             text-align: center;
             padding: 10px 15px;
             cursor: pointer;
-            color: var(--text-secondary);
+            color: #6B5B3E;
             font-size: 0.85rem;
             letter-spacing: 0.05em;
             margin-bottom: 0;
             transition: all 0.3s ease;
-            border-right: 1px solid var(--border-gold);
+            border-right: 1px solid #D4C5A0;
+            font-weight: 500;
         }
 
         .calendar-switch label:last-child {
@@ -423,13 +522,13 @@
         }
 
         .calendar-switch input[type="radio"]:checked + span {
-            color: var(--gold-light);
+            color: #fff;
             font-weight: 600;
         }
 
         .calendar-switch label:has(input:checked) {
-            background: rgba(201,169,110,0.15);
-            color: var(--gold-light);
+            background: linear-gradient(135deg, #C9A96E, #E8D5A3);
+            color: #fff;
         }
 
         .calendar-switch input[type="radio"] {
@@ -438,7 +537,7 @@
 
         .calendar-hint {
             font-size: 0.75rem;
-            color: var(--text-muted);
+            color: #9B8E78;
             margin-top: 6px;
             font-style: italic;
         }
@@ -844,27 +943,38 @@
             gap: 8px;
             padding: 10px 20px;
             background: transparent;
-            border: 1px solid var(--border-gold);
-            color: var(--text-secondary);
+            border: 1px solid #D4C5A0;
+            color: #8B7B5E;
             font-size: 0.85rem;
             cursor: pointer;
             transition: all 0.3s ease;
             margin-bottom: 20px;
+            border-radius: 6px;
         }
 
         .back-btn:hover {
-            border-color: var(--gold);
-            color: var(--gold);
+            border-color: #C9A96E;
+            color: #8B6914;
+            background: rgba(201,169,110,0.06);
         }
 
         /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
-            .hero-title { font-size: 2.5rem; letter-spacing: 0.2em; }
-            .hero-subtitle { font-size: 1rem; letter-spacing: 0.3em; }
-            .hero-desc { font-size: 0.9rem; }
+            .hero-title { font-size: 2.8rem; letter-spacing: 0.25em; }
+            .hero-subtitle { font-size: 1.1rem; letter-spacing: 0.4em; }
+            .hero-desc { font-size: 0.95rem; letter-spacing: 0.1em; }
+            .hero-cta { padding: 15px 40px; font-size: 1rem; }
             .section-title { font-size: 1.5rem; }
             .services-grid { grid-template-columns: 1fr; }
             .articles-grid { grid-template-columns: 1fr; }
+            .form-section {
+                margin: 20px 12px;
+                padding: 36px 20px 30px;
+                border-radius: 12px;
+            }
+            .form-section::before {
+                border-radius: 13px;
+            }
         }
 
         /* ========== FADE IN ANIMATION ========== */
@@ -877,6 +987,75 @@
         .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
+        }
+
+        /* ========== TAB NAVIGATION ========== */
+        .tab-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(201,169,110,0.15);
+            padding: 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .tab-nav::-webkit-scrollbar {
+            display: none;
+        }
+        .tab-nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: max-content;
+            padding: 0 10px;
+        }
+        .tab-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 14px 20px;
+            font-family: var(--serif);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+            flex-shrink: 0;
+            user-select: none;
+            letter-spacing: 0.05em;
+        }
+        .tab-item:hover {
+            color: var(--gold-light);
+            background: rgba(201,169,110,0.05);
+        }
+        .tab-item.active {
+            color: var(--gold);
+            border-bottom-color: var(--gold);
+            background: rgba(201,169,110,0.08);
+        }
+        .tab-item .tab-icon {
+            font-size: 1rem;
+            line-height: 1;
+        }
+        .tab-item .tab-label {
+            font-size: 0.85rem;
+        }
+        @media (max-width: 768px) {
+            .tab-nav-inner {
+                justify-content: flex-start;
+                padding: 0 8px;
+            }
+            .tab-item {
+                padding: 12px 16px;
+                font-size: 0.82rem;
+            }
         }
     </style>
 </head>
@@ -907,11 +1086,7 @@
 
         <h1 class="hero-title">玄同先生</h1>
         <p class="hero-subtitle">国 学 命 理</p>
-        <p class="hero-desc">
-            传承千年国学智慧<br>
-            以易经八字、奇门遁甲、风水堪舆<br>
-            为您解读人生密码，指引前行方向
-        </p>
+        <p class="hero-desc">传承千年智慧 · 解读人生密码</p>
         <a href="#services" class="hero-cta">
             开启命理之旅
         </a>
@@ -922,6 +1097,33 @@
             </svg>
         </div>
     </section>
+
+
+    <!-- ========== TAB NAVIGATION ========== -->
+    <nav class="tab-nav" id="tab-nav">
+        <div class="tab-nav-inner">
+            <div class="tab-item" data-service="bazi" onclick="selectServiceFromTab('bazi')">
+                <span class="tab-icon">☰</span>
+                <span class="tab-label">八字运势</span>
+            </div>
+            <div class="tab-item" data-service="caiyun" onclick="selectServiceFromTab('caiyun')">
+                <span class="tab-icon">💰</span>
+                <span class="tab-label">财运分析</span>
+            </div>
+            <div class="tab-item" data-service="shiye" onclick="selectServiceFromTab('shiye')">
+                <span class="tab-icon">🏛</span>
+                <span class="tab-label">事业分析</span>
+            </div>
+            <div class="tab-item" data-service="aiqing" onclick="selectServiceFromTab('aiqing')">
+                <span class="tab-icon">💕</span>
+                <span class="tab-label">爱情分析</span>
+            </div>
+            <div class="tab-item" data-service="qimen" onclick="selectServiceFromTab('qimen')">
+                <span class="tab-icon">🔮</span>
+                <span class="tab-label">奇门遁甲</span>
+            </div>
+        </div>
+    </nav>
 
     <!-- ========== SERVICES ========== -->
     <section class="services-section" id="services">
@@ -946,6 +1148,16 @@
                 <h3 class="service-title">财运分析</h3>
                 <p class="service-desc">剖析财星运势，把握投资时机，助您财运亨通</p>
             </div>
+            <div class="service-card" onclick="selectService('shiye', event)">
+                <div class="service-icon">业</div>
+                <h3 class="service-title">事业分析</h3>
+                <p class="service-desc">洞察事业运势，把握发展良机，助您仕途顺遂</p>
+            </div>
+            <div class="service-card" onclick="selectService('aiqing', event)">
+                <div class="service-icon">缘</div>
+                <h3 class="service-title">爱情分析</h3>
+                <p class="service-desc">解析姻缘运势，觅得良缘佳偶，成就天作之合</p>
+            </div>
             <div class="service-card" onclick="selectService('qimen', event)">
                 <div class="service-icon">遁</div>
                 <h3 class="service-title">奇门遁甲</h3>
@@ -969,11 +1181,10 @@
                 </div>
                 <div class="form-group">
                     <label>性别</label>
-                    <select id="gender" required>
-                        <option value="">请选择</option>
-                        <option value="male">男</option>
-                        <option value="female">女</option>
-                    </select>
+                    <div class="gender-toggle">
+                        <label><input type="radio" name="gender" value="male" checked><span>♂ 男</span></label>
+                        <label><input type="radio" name="gender" value="female"><span>♀ 女</span></label>
+                    </div>
                 </div>
                 <!-- 八字/财运/风水 专用：出生信息 -->
                 <div id="birth-fields">
@@ -1127,11 +1338,31 @@
     <script>
         let currentService = '';
 
+        function selectServiceFromTab(type) {
+            // Update tab active state
+            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+            document.querySelector(`.tab-item[data-service="${type}"]`).classList.add('active');
+            // Call the existing selectService
+            selectService(type);
+            // Scroll to tab nav area
+            document.getElementById('tab-nav').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
         function selectService(type, event) {
             currentService = type;
+            // Sync tab active state
+            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+            const tabEl = document.querySelector(`.tab-item[data-service="${type}"]`);
+            if (tabEl) {
+                tabEl.classList.add('active');
+                // Scroll tab into view on mobile
+                tabEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
             const titles = {
                 'bazi': '八字命理',
                 'caiyun': '财运分析',
+                'shiye': '事业分析',
+                'aiqing': '爱情分析',
                 'qimen': '奇门遁甲',
                 'fengshui': '风水堪舆'
             };
@@ -1171,10 +1402,13 @@
 
         function goBack() {
             document.getElementById('form-section').classList.remove('active');
+            document.getElementById('form-section').style.display = '';
             document.getElementById('result-section').classList.remove('active');
             document.querySelector('.services-grid').style.display = 'grid';
             document.getElementById('articles').style.display = 'block';
             document.getElementById('contact').style.display = 'block';
+            // Clear tab highlighting
+            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
         }
 
         async function submitForm(e) {
@@ -1188,7 +1422,7 @@
             const formData = {
                 service: currentService,
                 name: document.getElementById('name').value,
-                gender: document.getElementById('gender').value,
+                gender: document.querySelector('input[name="gender"]:checked').value,
                 question: document.getElementById('question').value
             };
             // 奇门遁甲用起卦时间和地点，其他用出生信息
@@ -1293,6 +1527,8 @@
                 const serviceNames = {
                     'bazi': '八字命理',
                     'caiyun': '财运分析',
+                    'shiye': '事业分析',
+                    'aiqing': '爱情分析',
                     'qimen': '奇门遁甲',
                     'fengshui': '风水堪舆'
                 };
@@ -1446,8 +1682,8 @@
 
         // ===== 专业报告格式化 =====
         function formatReport(text, formData) {
-            const serviceMap = {'bazi':'八字命理','caiyun':'财运分析','qimen':'奇门遁甲','fengshui':'风水堪舆'};
-            const icons = {'bazi':'命','caiyun':'财','qimen':'遁','fengshui':'宅'};
+            const serviceMap = {'bazi':'八字命理','caiyun':'财运分析','shiye':'事业分析','aiqing':'爱情分析','qimen':'奇门遁甲','fengshui':'风水堪舆'};
+            const icons = {'bazi':'命','caiyun':'财','shiye':'业','aiqing':'缘','qimen':'遁','fengshui':'宅'};
             const now = new Date();
             const dateStr = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日`;
 
@@ -1523,7 +1759,7 @@
             const formData = {
                 service: currentService,
                 name: document.getElementById('name').value,
-                gender: document.getElementById('gender').value === 'male' ? '男' : '女',
+                gender: document.querySelector('input[name="gender"]:checked').value === 'male' ? '男' : '女',
                 birthdate: document.getElementById('birthdate').value,
                 calendarType: calendarType,
                 birthtime: document.getElementById('birthtime').value,
@@ -1532,7 +1768,7 @@
                 time: new Date().toLocaleString('zh-CN')
             };
 
-            const serviceMap = {'bazi':'八字命理','caiyun':'财运分析','qimen':'奇门遁甲','fengshui':'风水堪舆'};
+            const serviceMap = {'bazi':'八字命理','caiyun':'财运分析','shiye':'事业分析','aiqing':'爱情分析','qimen':'奇门遁甲','fengshui':'风水堪舆'};
 
             try {
                 const res = await fetch('https://api.web3forms.com/submit', {
