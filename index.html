@@ -66,28 +66,19 @@
 
         .hero-bg-layer {
             position: absolute;
-            top: -5%; left: -5%;
-            width: 110%; height: 110%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: url('hero-bg.jpg') center center / cover no-repeat;
             z-index: 0;
-            animation: kenBurns 35s ease-in-out infinite alternate;
-            will-change: transform;
         }
 
-        @keyframes kenBurns {
-            0%   { transform: scale(1)    translate(0, 0); }
-            33%  { transform: scale(1.08) translate(-1%, -0.5%); }
-            66%  { transform: scale(1.05) translate(0.5%, -1%); }
-            100% { transform: scale(1.1)  translate(-0.5%, 0.5%); }
-        }
-
+        /* 只压暗边缘让文字可读，中间完全透明 */
         .hero::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
             background: 
-                radial-gradient(ellipse at 50% 40%, rgba(8,8,16,0.35) 0%, rgba(8,8,16,0.85) 100%),
-                linear-gradient(180deg, rgba(8,8,16,0.2) 0%, rgba(8,8,16,0.55) 100%);
+                radial-gradient(ellipse at 50% 35%, transparent 30%, rgba(6,6,12,0.55) 100%);
             z-index: 1;
         }
 
@@ -1625,13 +1616,13 @@
             observer.observe(el);
         });
 
-        // ========== 沉浸式动态背景：仙鹤 + 云雾 + 光点 + 光线 ==========
+        // ========== 背景增强动画：宫殿金光 + 鹤翼微光 + 底部薄雾 + 金粉粒子 ==========
         (function() {
             const canvas = document.getElementById('hero-canvas');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
             let w, h;
-            let cranes = [], mists = [], particles = [], floaters = [], rays = [];
+            let glowParticles = [], sparks = [], mistPuffs = [];
             const isMobile = window.innerWidth < 768;
 
             function resize() {
@@ -1639,157 +1630,93 @@
                 h = canvas.height = canvas.offsetHeight;
             }
 
-            // ===== 仙鹤 =====
-            class Crane {
-                constructor(startOffscreen) {
-                    this.size = Math.random() * 18 + 22;
-                    this.y = Math.random() * h * 0.35 + h * 0.03;
-                    this.dir = Math.random() > 0.5 ? 1 : -1;
-                    this.x = this.dir === 1 ? -80 - Math.random() * 200 : w + 80 + Math.random() * 200;
-                    this.speedX = (Math.random() * 0.5 + 0.25) * this.dir;
-                    this.speedY = (Math.random() - 0.5) * 0.15;
-                    this.wingPhase = Math.random() * Math.PI * 2;
-                    this.wingSpeed = Math.random() * 0.05 + 0.035;
-                    this.wobble = Math.random() * Math.PI * 2;
-                    this.opacity = Math.random() * 0.25 + 0.45;
-                    if (!startOffscreen) {
-                        this.x = Math.random() * w;
-                    }
+            // ===== 宫殿金光粒子（从宫殿位置升起）=====
+            // 宫殿大致在画面中下方 (x:40%-60%, y:55%-75%)
+            class GlowParticle {
+                constructor() { this.reset(true); }
+                reset(init) {
+                    // 宫殿中心区域
+                    this.x = w * 0.5 + (Math.random() - 0.5) * w * 0.18;
+                    this.baseY = h * 0.72;
+                    this.y = init ? Math.random() * h * 0.3 + h * 0.55 : this.baseY;
+                    this.size = Math.random() * 1.8 + 0.6;
+                    this.speedY = -(Math.random() * 0.25 + 0.08);
+                    this.speedX = (Math.random() - 0.5) * 0.15;
+                    this.life = Math.random() * 0.6 + 0.4;
+                    this.decay = Math.random() * 0.003 + 0.002;
+                    this.pulse = Math.random() * Math.PI * 2;
+                    this.hue = Math.random() > 0.7 ? '200,200,255' : '220,190,110'; // 金色 or 蓝白
                 }
                 update() {
                     this.x += this.speedX;
-                    this.wobble += 0.012;
-                    this.y += this.speedY + Math.sin(this.wobble) * 0.12;
-                    this.wingPhase += this.wingSpeed;
-                    // 飞出屏幕后重新进入
-                    if (this.dir === 1 && this.x > w + 120) this.resetCrane();
-                    if (this.dir === -1 && this.x < -120) this.resetCrane();
-                    if (this.y < -60) this.y = h * 0.3;
-                    if (this.y > h * 0.5) this.y = h * 0.05;
-                }
-                resetCrane() {
-                    this.x = this.dir === 1 ? -80 - Math.random() * 150 : w + 80 + Math.random() * 150;
-                    this.y = Math.random() * h * 0.35 + h * 0.03;
-                    this.speedX = (Math.random() * 0.5 + 0.25) * this.dir;
-                    this.opacity = Math.random() * 0.25 + 0.45;
+                    this.y += this.speedY;
+                    this.pulse += 0.03;
+                    this.life -= this.decay;
+                    if (this.life <= 0 || this.y < h * 0.2) this.reset(false);
                 }
                 draw() {
-                    ctx.save();
-                    ctx.translate(this.x, this.y);
-                    ctx.scale(this.dir, 1);
-                    const wingFlap = Math.sin(this.wingPhase) * 0.45;
-                    const s = this.size;
-
-                    // 光晕
-                    const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, s * 2.5);
-                    glow.addColorStop(0, `rgba(220,200,150,${this.opacity * 0.08})`);
-                    glow.addColorStop(1, 'rgba(220,200,150,0)');
+                    const a = this.life * (0.6 + 0.4 * Math.sin(this.pulse));
                     ctx.beginPath();
-                    ctx.arc(0, 0, s * 2.5, 0, Math.PI * 2);
-                    ctx.fillStyle = glow;
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${this.hue},${a})`;
                     ctx.fill();
-
-                    // 身体
+                    // 微光晕
                     ctx.beginPath();
-                    ctx.ellipse(0, 0, s * 0.5, s * 0.12, 0, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(235,225,200,${this.opacity * 0.75})`;
+                    ctx.arc(this.x, this.y, this.size * 2.5, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${this.hue},${a * 0.15})`;
                     ctx.fill();
-
-                    // 左翅
-                    ctx.save();
-                    ctx.rotate(-0.15 + wingFlap);
-                    ctx.beginPath();
-                    ctx.moveTo(-s * 0.15, -s * 0.05);
-                    ctx.bezierCurveTo(-s * 0.5, -s * 0.35, -s * 0.85, -s * 0.55, -s * 1.3, -s * 0.18);
-                    ctx.bezierCurveTo(-s * 0.95, -s * 0.35, -s * 0.5, -s * 0.15, -s * 0.15, -s * 0.02);
-                    ctx.fillStyle = `rgba(230,218,190,${this.opacity * 0.7})`;
-                    ctx.fill();
-                    // 翅尖深色
-                    ctx.beginPath();
-                    ctx.moveTo(-s * 0.9, -s * 0.38);
-                    ctx.bezierCurveTo(-s * 1.1, -s * 0.45, -s * 1.3, -s * 0.2, -s * 1.3, -s * 0.18);
-                    ctx.bezierCurveTo(-s * 1.15, -s * 0.28, -s * 1.0, -s * 0.35, -s * 0.9, -s * 0.38);
-                    ctx.fillStyle = `rgba(40,35,25,${this.opacity * 0.5})`;
-                    ctx.fill();
-                    ctx.restore();
-
-                    // 右翅
-                    ctx.save();
-                    ctx.rotate(0.15 - wingFlap);
-                    ctx.beginPath();
-                    ctx.moveTo(s * 0.15, -s * 0.05);
-                    ctx.bezierCurveTo(s * 0.5, -s * 0.35, s * 0.85, -s * 0.55, s * 1.3, -s * 0.18);
-                    ctx.bezierCurveTo(s * 0.95, -s * 0.35, s * 0.5, -s * 0.15, s * 0.15, -s * 0.02);
-                    ctx.fillStyle = `rgba(230,218,190,${this.opacity * 0.7})`;
-                    ctx.fill();
-                    // 翅尖深色
-                    ctx.beginPath();
-                    ctx.moveTo(s * 0.9, -s * 0.38);
-                    ctx.bezierCurveTo(s * 1.1, -s * 0.45, s * 1.3, -s * 0.2, s * 1.3, -s * 0.18);
-                    ctx.bezierCurveTo(s * 1.15, -s * 0.28, s * 1.0, -s * 0.35, s * 0.9, -s * 0.38);
-                    ctx.fillStyle = `rgba(40,35,25,${this.opacity * 0.5})`;
-                    ctx.fill();
-                    ctx.restore();
-
-                    // 脖子
-                    ctx.beginPath();
-                    ctx.moveTo(s * 0.4, 0);
-                    ctx.bezierCurveTo(s * 0.55, -s * 0.12, s * 0.6, -s * 0.22, s * 0.65, -s * 0.15);
-                    ctx.strokeStyle = `rgba(235,225,200,${this.opacity * 0.6})`;
-                    ctx.lineWidth = s * 0.045;
-                    ctx.stroke();
-
-                    // 头
-                    ctx.beginPath();
-                    ctx.arc(s * 0.65, -s * 0.15, s * 0.06, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(235,225,200,${this.opacity * 0.65})`;
-                    ctx.fill();
-
-                    // 丹顶（红点）
-                    ctx.beginPath();
-                    ctx.arc(s * 0.65, -s * 0.19, s * 0.025, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(200,60,50,${this.opacity * 0.7})`;
-                    ctx.fill();
-
-                    // 尾羽
-                    ctx.beginPath();
-                    ctx.moveTo(-s * 0.45, 0);
-                    ctx.bezierCurveTo(-s * 0.6, s * 0.05, -s * 0.75, s * 0.02, -s * 0.85, s * 0.1);
-                    ctx.moveTo(-s * 0.45, s * 0.02);
-                    ctx.bezierCurveTo(-s * 0.6, s * 0.1, -s * 0.72, s * 0.08, -s * 0.8, s * 0.18);
-                    ctx.strokeStyle = `rgba(50,45,30,${this.opacity * 0.45})`;
-                    ctx.lineWidth = s * 0.03;
-                    ctx.stroke();
-
-                    ctx.restore();
                 }
             }
 
-            // ===== 云雾仙气 =====
-            class MistLayer {
-                constructor(layer) {
-                    this.layer = layer; // 0=远, 1=中, 2=近
+            // ===== 鹤翼金光闪烁（在图中鹤的位置附近）=====
+            // 三只鹤大约在 y:15%-25%, x:20%-35%, 42%-58%, 65%-80%
+            class WingSpark {
+                constructor(craneIndex) {
+                    this.craneIndex = craneIndex;
+                    const craneX = [0.28, 0.5, 0.73][craneIndex];
+                    const craneY = [0.20, 0.16, 0.22][craneIndex];
+                    this.baseX = w * craneX;
+                    this.baseY = h * craneY;
+                    this.offset = Math.random() * Math.PI * 2;
+                    this.speed = Math.random() * 0.015 + 0.01;
+                    this.radius = Math.random() * 30 + 15;
+                }
+                draw(time) {
+                    const v = Math.sin(time * this.speed + this.offset);
+                    if (v < 0.3) return; // 只在波峰闪烁
+                    const a = (v - 0.3) * 0.15;
+                    const px = this.baseX + Math.sin(time * 0.001 + this.offset) * 8;
+                    const py = this.baseY + Math.cos(time * 0.0008 + this.offset) * 5;
+                    const grad = ctx.createRadialGradient(px, py, 0, px, py, this.radius);
+                    grad.addColorStop(0, `rgba(255,230,160,${a})`);
+                    grad.addColorStop(0.5, `rgba(220,200,120,${a * 0.4})`);
+                    grad.addColorStop(1, 'rgba(200,180,100,0)');
+                    ctx.beginPath();
+                    ctx.arc(px, py, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = grad;
+                    ctx.fill();
+                }
+            }
+
+            // ===== 底部薄雾（只在画面最下方轻轻飘）=====
+            class MistPuff {
+                constructor() {
                     this.reset();
                 }
                 reset() {
-                    this.x = Math.random() * w * 1.5 - w * 0.25;
-                    this.y = h * (0.45 + this.layer * 0.15) + Math.random() * h * 0.15;
-                    this.radiusX = Math.random() * 250 + 180 + this.layer * 60;
-                    this.radiusY = Math.random() * 35 + 18;
-                    this.speedX = (Math.random() * 0.2 + 0.06) * (1 + this.layer * 0.4);
-                    this.speedY = Math.sin(Math.random() * Math.PI * 2) * 0.02;
-                    this.opacity = (0.04 - this.layer * 0.008) + Math.random() * 0.025;
+                    this.x = Math.random() * w * 1.3 - w * 0.15;
+                    this.y = h * 0.82 + Math.random() * h * 0.12;
+                    this.radiusX = Math.random() * 200 + 120;
+                    this.radiusY = Math.random() * 15 + 8;
+                    this.speedX = (Math.random() * 0.15 + 0.04) * (Math.random() > 0.5 ? 1 : -1);
+                    this.opacity = Math.random() * 0.04 + 0.015;
                     this.phase = Math.random() * Math.PI * 2;
-                    this.phaseSpeed = Math.random() * 0.008 + 0.003;
                 }
                 update() {
                     this.x += this.speedX;
-                    this.phase += this.phaseSpeed;
-                    this.y += Math.sin(this.phase) * 0.08;
-                    if (this.x - this.radiusX > w + 100) {
-                        this.x = -this.radiusX - 50;
-                        this.y = h * (0.45 + this.layer * 0.15) + Math.random() * h * 0.15;
-                    }
+                    this.phase += 0.006;
+                    if (this.x < -this.radiusX * 2) this.x = w + this.radiusX;
+                    if (this.x > w + this.radiusX * 2) this.x = -this.radiusX;
                 }
                 draw() {
                     const a = this.opacity * (0.6 + 0.4 * Math.sin(this.phase));
@@ -1797,108 +1724,11 @@
                     ctx.translate(this.x, this.y);
                     ctx.scale(1, this.radiusY / this.radiusX);
                     const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, this.radiusX);
-                    grad.addColorStop(0, `rgba(225,215,190,${a})`);
-                    grad.addColorStop(0.4, `rgba(210,200,175,${a * 0.5})`);
-                    grad.addColorStop(1, 'rgba(200,190,170,0)');
+                    grad.addColorStop(0, `rgba(240,235,220,${a})`);
+                    grad.addColorStop(0.5, `rgba(230,225,210,${a * 0.5})`);
+                    grad.addColorStop(1, 'rgba(220,215,200,0)');
                     ctx.beginPath();
                     ctx.arc(0, 0, this.radiusX, 0, Math.PI * 2);
-                    ctx.fillStyle = grad;
-                    ctx.fill();
-                    ctx.restore();
-                }
-            }
-
-            // ===== 金色光点 =====
-            class Particle {
-                constructor() { this.reset(); }
-                reset() {
-                    this.x = Math.random() * w;
-                    this.y = Math.random() * h;
-                    this.size = Math.random() * 2 + 0.5;
-                    this.speedX = (Math.random() - 0.5) * 0.3;
-                    this.speedY = -Math.random() * 0.35 - 0.08;
-                    this.opacity = Math.random() * 0.5 + 0.2;
-                    this.pulse = Math.random() * Math.PI * 2;
-                    this.pulseSpeed = Math.random() * 0.02 + 0.008;
-                }
-                update() {
-                    this.x += this.speedX;
-                    this.y += this.speedY;
-                    this.pulse += this.pulseSpeed;
-                    if (this.y < -10 || this.x < -10 || this.x > w + 10) {
-                        this.x = Math.random() * w;
-                        this.y = h + 10;
-                    }
-                }
-                draw() {
-                    const a = this.opacity * (0.5 + 0.5 * Math.sin(this.pulse));
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(201,169,110,${a})`;
-                    ctx.fill();
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size * 3, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(201,169,110,${a * 0.12})`;
-                    ctx.fill();
-                }
-            }
-
-            // ===== 漂浮光团 =====
-            class Floater {
-                constructor() { this.reset(); }
-                reset() {
-                    this.x = Math.random() * w;
-                    this.y = Math.random() * h;
-                    this.radius = Math.random() * 70 + 35;
-                    this.speedX = (Math.random() - 0.5) * 0.15;
-                    this.speedY = (Math.random() - 0.5) * 0.1;
-                    this.opacity = Math.random() * 0.05 + 0.015;
-                    this.phase = Math.random() * Math.PI * 2;
-                }
-                update() {
-                    this.x += this.speedX;
-                    this.y += this.speedY;
-                    this.phase += 0.004;
-                    if (this.x < -this.radius * 2) this.x = w + this.radius;
-                    if (this.x > w + this.radius * 2) this.x = -this.radius;
-                    if (this.y < -this.radius * 2) this.y = h + this.radius;
-                    if (this.y > h + this.radius * 2) this.y = -this.radius;
-                }
-                draw() {
-                    const a = this.opacity * (0.7 + 0.3 * Math.sin(this.phase));
-                    const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
-                    grad.addColorStop(0, `rgba(201,169,110,${a})`);
-                    grad.addColorStop(1, 'rgba(201,169,110,0)');
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = grad;
-                    ctx.fill();
-                }
-            }
-
-            // ===== 光线（从宫殿/道观后方射出） =====
-            function drawLightRays(time) {
-                const cx = w * 0.5;
-                const cy = h * 0.55;
-                const rayCount = isMobile ? 4 : 7;
-                for (let i = 0; i < rayCount; i++) {
-                    const angle = (i / rayCount) * Math.PI * 0.8 - Math.PI * 0.4;
-                    const len = h * 0.9;
-                    const spread = 0.06 + Math.sin(time * 0.0003 + i * 1.2) * 0.02;
-                    const a = 0.025 + Math.sin(time * 0.0005 + i * 0.8) * 0.012;
-
-                    ctx.save();
-                    ctx.translate(cx, cy);
-                    ctx.rotate(angle);
-                    const grad = ctx.createLinearGradient(0, 0, 0, -len);
-                    grad.addColorStop(0, `rgba(220,200,150,${a})`);
-                    grad.addColorStop(0.3, `rgba(210,190,140,${a * 0.6})`);
-                    grad.addColorStop(1, 'rgba(200,180,130,0)');
-                    ctx.beginPath();
-                    ctx.moveTo(-spread * len, 0);
-                    ctx.lineTo(-spread * len * 0.3, -len);
-                    ctx.lineTo(spread * len * 0.3, -len);
-                    ctx.lineTo(spread * len, 0);
                     ctx.fillStyle = grad;
                     ctx.fill();
                     ctx.restore();
@@ -1908,55 +1738,40 @@
             // ===== 初始化 =====
             function init() {
                 resize();
-                const craneCount = isMobile ? 2 : 4;
-                const mistCount = isMobile ? 4 : 7;
-                const particleCount = isMobile ? 25 : 50;
-                const floaterCount = isMobile ? 3 : 5;
+                glowParticles = [];
+                sparks = [];
+                mistPuffs = [];
 
-                cranes = [];
-                mists = [];
-                particles = [];
-                floaters = [];
+                const gpCount = isMobile ? 20 : 35;
+                for (let i = 0; i < gpCount; i++) glowParticles.push(new GlowParticle());
 
-                for (let i = 0; i < craneCount; i++) cranes.push(new Crane(true));
-                for (let i = 0; i < mistCount; i++) mists.push(new MistLayer(i % 3));
-                for (let i = 0; i < particleCount; i++) particles.push(new Particle());
-                for (let i = 0; i < floaterCount; i++) floaters.push(new Floater());
+                // 三只鹤的闪烁光
+                for (let c = 0; c < 3; c++) {
+                    for (let i = 0; i < 3; i++) sparks.push(new WingSpark(c));
+                }
+
+                const mistCount = isMobile ? 3 : 5;
+                for (let i = 0; i < mistCount; i++) mistPuffs.push(new MistPuff());
             }
 
             // ===== 主循环 =====
-            let startTime = performance.now();
             function animate(time) {
-                const elapsed = time - startTime;
                 ctx.clearRect(0, 0, w, h);
 
-                // 1. 光线（最底层）
-                drawLightRays(elapsed);
+                // 1. 底部薄雾（最后面）
+                mistPuffs.forEach(m => { m.update(); m.draw(); });
 
-                // 2. 漂浮光团
-                floaters.forEach(f => { f.update(); f.draw(); });
+                // 2. 宫殿金光粒子
+                glowParticles.forEach(p => { p.update(); p.draw(); });
 
-                // 3. 远处云雾
-                mists.filter((_, i) => i % 3 === 0).forEach(m => { m.update(); m.draw(); });
-
-                // 4. 中层云雾
-                mists.filter((_, i) => i % 3 === 1).forEach(m => { m.update(); m.draw(); });
-
-                // 5. 仙鹤
-                cranes.forEach(c => { c.update(); c.draw(); });
-
-                // 6. 近处云雾（在鹤前面飘，增加层次）
-                mists.filter((_, i) => i % 3 === 2).forEach(m => { m.update(); m.draw(); });
-
-                // 7. 金色光点（最前层）
-                particles.forEach(p => { p.update(); p.draw(); });
+                // 3. 鹤翼金光闪烁
+                sparks.forEach(s => s.draw(time));
 
                 requestAnimationFrame(animate);
             }
 
             window.addEventListener('resize', () => {
                 resize();
-                // 移动端切换时重新调整数量
                 const nowMobile = window.innerWidth < 768;
                 if (nowMobile !== isMobile) location.reload();
             });
