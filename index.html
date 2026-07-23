@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玄同先生 · 国学命理</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <!-- Open Graph / 微信分享 -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="玄同先生 · 国学命理">
+    <meta property="og:description" content="传承千年国学智慧，八字测算、财运分析、奇门遁甲、风水堪舆">
+    <meta property="og:image" content="og-image.png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="玄同先生 · 国学命理">
+    <meta name="twitter:description" content="传承千年国学智慧，八字测算、财运分析、奇门遁甲、风水堪舆">
+    <meta name="twitter:image" content="og-image.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #C9A96E;
+            --gold-light: #E8D5A3;
+            --gold-dark: #8B6914;
+            --bg-deep: #0A0A0F;
+            --bg-card: rgba(201,169,110,0.06);
+            --bg-card-hover: rgba(201,169,110,0.12);
+            --border-gold: rgba(201,169,110,0.18);
+            --text-primary: #F5F0E8;
+            --text-secondary: #A09888;
+            --text-muted: #6B6157;
+            --serif: 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
+            --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg-deep);
+            min-height: 100vh;
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* ===== 全局装饰 ===== */
+        .gold-line {
+            width: 40px; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 0 auto;
+        }
+        .gold-line-long {
+            width: 80px; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 0 auto;
+        }
+
+        /* ===== 导航栏 ===== */
+        .nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 16px 24px;
+            display: flex; justify-content: space-between; align-items: center;
+            background: linear-gradient(180deg, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0) 100%);
+            backdrop-filter: blur(10px);
+        }
+        .nav-brand {
+            font-family: var(--serif);
+            font-size: 18px; font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 4px;
+        }
+        .nav-contact {
+            font-size: 12px; color: var(--text-secondary);
+            letter-spacing: 1px;
+        }
+
+        /* ===== Hero ===== */
+        .hero {
+            padding: 100px 24px 60px;
+            text-align: center;
+            position: relative;
+        }
+        .hero::before {
+            content: '☯';
+            position: absolute; top: 60px; left: 50%; transform: translateX(-50%);
+            font-size: 120px; opacity: 0.04;
+            color: var(--gold);
+        }
+        .hero-tagline {
+            font-size: 11px; letter-spacing: 6px; text-transform: uppercase;
+            color: var(--gold); margin-bottom: 24px;
+            font-family: var(--sans);
+        }
+        .hero h1 {
+            font-family: var(--serif);
+            font-size: 42px; font-weight: 900;
+            color: var(--text-primary);
+            letter-spacing: 8px; margin-bottom: 16px;
+            line-height: 1.2;
+        }
+        .hero-sub {
+            font-family: var(--serif);
+            font-size: 15px; color: var(--text-secondary);
+            letter-spacing: 3px; margin-bottom: 32px;
+        }
+        .hero-desc {
+            font-size: 13px; color: var(--text-muted);
+            line-height: 2; max-width: 320px; margin: 0 auto;
+        }
+
+        /* ===== 四大服务 ===== */
+        .services-section {
+            padding: 48px 20px;
+        }
+        .section-header {
+            text-align: center; margin-bottom: 40px;
+        }
+        .section-header .label {
+            font-size: 10px; letter-spacing: 5px; text-transform: uppercase;
+            color: var(--gold); margin-bottom: 12px;
+        }
+        .section-header h2 {
+            font-family: var(--serif);
+            font-size: 24px; font-weight: 700;
+            color: var(--text-primary); letter-spacing: 4px;
+            margin-bottom: 12px;
+        }
+
+        .services-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+            max-width: 420px; margin: 0 auto;
+        }
+        .service-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: 2px;
+            padding: 28px 16px 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative; overflow: hidden;
+        }
+        .service-card::after {
+            content: '';
+            position: absolute; top: 0; left: -100%; width: 100%; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            transition: left 0.6s;
+        }
+        .service-card:hover::after, .service-card.active::after { left: 0; }
+        .service-card:hover, .service-card.active {
+            background: var(--bg-card-hover);
+            border-color: var(--gold);
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 40px rgba(201,169,110,0.08);
+        }
+        .service-card .icon {
+            font-size: 28px; margin-bottom: 14px; display: block;
+            filter: grayscale(0.2);
+        }
+        .service-card .title {
+            font-family: var(--serif);
+            font-size: 16px; font-weight: 700;
+            color: var(--gold); letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+        .service-card .desc {
+            font-size: 11px; color: var(--text-muted); letter-spacing: 1px;
+        }
+
+        /* ===== 表单 ===== */
+        .form-panel {
+            max-width: 420px; margin: 0 auto;
+            padding: 0 20px;
+            display: none;
+            animation: fadeSlideUp 0.5s ease;
+        }
+        .form-panel.active { display: block; }
+
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-card {
+            background: linear-gradient(135deg, rgba(201,169,110,0.08) 0%, rgba(201,169,110,0.02) 100%);
+            border: 1px solid var(--border-gold);
+            border-radius: 2px;
+            padding: 32px 24px;
+        }
+        .form-card h3 {
+            font-family: var(--serif);
+            font-size: 20px; font-weight: 700;
+            color: var(--gold); text-align: center;
+            letter-spacing: 3px; margin-bottom: 28px;
+        }
+        .field {
+            margin-bottom: 20px;
+        }
+        .field label {
+            display: block; font-size: 12px;
+            color: var(--text-secondary); letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .field input, .field select, .field textarea {
+            width: 100%; padding: 12px 16px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(201,169,110,0.15);
+            border-radius: 1px;
+            color: var(--text-primary); font-size: 14px;
+            outline: none; transition: all 0.3s;
+            font-family: var(--sans);
+        }
+        .field input:focus, .field select:focus, .field textarea:focus {
+            border-color: var(--gold);
+            background: rgba(0,0,0,0.5);
+        }
+        .field select option { background: #111; color: #fff; }
+        .field textarea { resize: vertical; min-height: 80px; }
+
+        .btn-submit {
+            width: 100%; padding: 14px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            border: none; border-radius: 1px;
+            color: #0A0A0F; font-size: 14px; font-weight: 700;
+            letter-spacing: 3px; cursor: pointer;
+            transition: all 0.3s; margin-top: 8px;
+            font-family: var(--serif);
+        }
+        .btn-submit:hover {
+            box-shadow: 0 8px 24px rgba(201,169,110,0.3);
+            transform: translateY(-1px);
+        }
+
+        /* ===== 结果 ===== */
+        .result-panel {
+            max-width: 420px; margin: 20px auto; padding: 0 20px;
+            display: none; animation: fadeSlideUp 0.5s ease;
+        }
+        .result-panel.active { display: block; }
+        .result-card {
+            background: linear-gradient(135deg, rgba(201,169,110,0.08) 0%, rgba(201,169,110,0.02) 100%);
+            border: 1px solid var(--border-gold);
+            border-radius: 2px; padding: 32px 24px;
+        }
+        .result-card h3 {
+            font-family: var(--serif);
+            font-size: 18px; font-weight: 700;
+            color: var(--gold); text-align: center;
+            letter-spacing: 3px; margin-bottom: 20px;
+        }
+        .result-body {
+            font-family: var(--serif);
+            font-size: 14px; line-height: 2;
+            color: var(--text-secondary); white-space: pre-wrap;
+        }
+        .loading-dots {
+            text-align: center; padding: 40px 0; color: var(--gold);
+            font-family: var(--serif); letter-spacing: 2px;
+        }
+        .loading-dots span { animation: dotPulse 1.4s infinite; }
+        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes dotPulse {
+            0%,80%,100% { opacity: 0.2; } 40% { opacity: 1; }
+        }
+
+        /* ===== 玄学文章 ===== */
+        .articles-section {
+            padding: 48px 20px;
+            max-width: 420px; margin: 0 auto;
+        }
+        .article-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: 2px;
+            padding: 24px 20px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .article-item:hover {
+            background: var(--bg-card-hover);
+            border-color: rgba(201,169,110,0.35);
+        }
+        .article-tag {
+            display: inline-block;
+            font-size: 10px; letter-spacing: 2px;
+            color: var(--gold); border: 1px solid rgba(201,169,110,0.3);
+            padding: 3px 10px; margin-bottom: 10px;
+            border-radius: 1px;
+        }
+        .article-item h4 {
+            font-family: var(--serif);
+            font-size: 16px; font-weight: 700;
+            color: var(--text-primary); letter-spacing: 1px;
+            margin-bottom: 8px; line-height: 1.5;
+        }
+        .article-item p {
+            font-size: 12px; color: var(--text-muted);
+            line-height: 1.8; letter-spacing: 0.5px;
+            display: -webkit-box; -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .article-meta {
+            margin-top: 12px;
+            font-size: 10px; color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+        .article-detail {
+            display: none; margin-top: 16px; padding-top: 16px;
+            border-top: 1px solid rgba(201,169,110,0.1);
+        }
+        .article-item.expanded .article-detail { display: block; }
+        .article-detail p {
+            display: block; -webkit-line-clamp: unset;
+            font-size: 13px; color: var(--text-secondary);
+            line-height: 2;
+        }
+
+        /* ===== 联系方式 ===== */
+        .contact-section {
+            padding: 48px 20px;
+            text-align: center;
+            max-width: 420px; margin: 0 auto;
+        }
+        .contact-card {
+            background: linear-gradient(135deg, rgba(201,169,110,0.1) 0%, rgba(201,169,110,0.03) 100%);
+            border: 1px solid rgba(201,169,110,0.3);
+            border-radius: 2px; padding: 40px 24px;
+        }
+        .contact-label {
+            font-family: var(--serif);
+            font-size: 15px; color: var(--gold-light);
+            letter-spacing: 2px; margin-bottom: 24px;
+            line-height: 1.8;
+        }
+        .contact-phone {
+            font-size: 20px; color: var(--text-primary);
+            font-weight: 700; letter-spacing: 2px;
+            margin-bottom: 28px;
+        }
+        .contact-phone a {
+            color: var(--text-primary); text-decoration: none;
+        }
+        .divider-text {
+            font-size: 11px; color: var(--text-muted);
+            letter-spacing: 3px; margin-bottom: 20px;
+        }
+        .qr-wrapper {
+            display: inline-block;
+            background: rgba(255,255,255,0.95);
+            padding: 12px; border-radius: 2px;
+        }
+        .qr-wrapper img {
+            width: 160px; height: 160px; display: block;
+        }
+        .qr-text {
+            font-size: 11px; color: var(--text-muted);
+            letter-spacing: 2px; margin-top: 12px;
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            padding: 40px 24px 60px;
+            text-align: center;
+        }
+        .footer-brand {
+            font-family: var(--serif);
+            font-size: 14px; color: var(--gold);
+            letter-spacing: 5px; margin-bottom: 12px;
+        }
+        .footer-line {
+            width: 24px; height: 1px;
+            background: var(--gold); opacity: 0.3;
+            margin: 16px auto;
+        }
+        .footer-text {
+            font-size: 10px; color: var(--text-muted);
+            letter-spacing: 1px; line-height: 2;
+        }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 360px) {
+            .services-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 32px; letter-spacing: 4px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航 -->
+    <nav class="nav">
+        <div class="nav-brand">玄同先生</div>
+        <div class="nav-contact">155-1188-0707</div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-tagline">传承千年 · 启迪当下</div>
+        <h1>玄同先生</h1>
+        <div class="hero-sub">国学命理 · 知命不惧</div>
+        <div class="gold-line-long"></div>
+        <p class="hero-desc" style="margin-top:24px;">
+            溯源千年易学智慧<br>以国学之道，解当下之惑
+        </p>
+    </section>
+
+    <!-- 四大服务 -->
+    <section class="services-section">
+        <div class="section-header">
+            <div class="label">Services</div>
+            <h2>命理四科</h2>
+            <div class="gold-line" style="margin-top:12px;"></div>
+        </div>
+        <div class="services-grid">
+            <div class="service-card" onclick="selectService('bazi')">
+                <span class="icon">卦</span>
+                <div class="title">八字测算</div>
+                <div class="desc">生辰命理 · 全盘解析</div>
+            </div>
+            <div class="service-card" onclick="selectService('wealth')">
+                <span class="icon">财</span>
+                <div class="title">财运分析</div>
+                <div class="desc">财星格局 · 运势走向</div>
+            </div>
+            <div class="service-card" onclick="selectService('qimen')">
+                <span class="icon">遁</span>
+                <div class="title">奇门遁甲</div>
+                <div class="desc">天时地利 · 趋吉避凶</div>
+            </div>
+            <div class="service-card" onclick="selectService('fengshui')">
+                <span class="icon">堪</span>
+                <div class="title">风水堪舆</div>
+                <div class="desc">宅运调理 · 旺局布局</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 八字 -->
+    <div id="baziForm" class="form-panel">
+        <div class="form-card">
+            <h3>八字测算</h3>
+            <div class="field"><label>姓名</label><input type="text" id="name" placeholder="请输入姓名"></div>
+            <div class="field"><label>性别</label>
+                <select id="gender"><option value="男">男</option><option value="女">女</option></select>
+            </div>
+            <div class="field"><label>出生日期（公历）</label><input type="date" id="birthDate"></div>
+            <div class="field"><label>出生时辰</label>
+                <select id="birthTime">
+                    <option value="">请选择</option>
+                    <option value="子时(23-01)">子时 23:00-01:00</option>
+                    <option value="丑时(01-03)">丑时 01:00-03:00</option>
+                    <option value="寅时(03-05)">寅时 03:00-05:00</option>
+                    <option value="卯时(05-07)">卯时 05:00-07:00</option>
+                    <option value="辰时(07-09)">辰时 07:00-09:00</option>
+                    <option value="巳时(09-11)">巳时 09:00-11:00</option>
+                    <option value="午时(11-13)">午时 11:00-13:00</option>
+                    <option value="未时(13-15)">未时 13:00-15:00</option>
+                    <option value="申时(15-17)">申时 15:00-17:00</option>
+                    <option value="酉时(17-19)">酉时 17:00-19:00</option>
+                    <option value="戌时(19-21)">戌时 19:00-21:00</option>
+                    <option value="亥时(21-23)">亥时 21:00-23:00</option>
+                </select>
+            </div>
+            <button class="btn-submit" onclick="submitForm('bazi')">开 始 测 算</button>
+        </div>
+    </div>
+
+    <!-- 财运 -->
+    <div id="wealthForm" class="form-panel">
+        <div class="form-card">
+            <h3>财运分析</h3>
+            <div class="field"><label>姓名</label><input type="text" id="wealthName" placeholder="请输入姓名"></div>
+            <div class="field"><label>性别</label>
+                <select id="wealthGender"><option value="男">男</option><option value="女">女</option></select>
+            </div>
+            <div class="field"><label>出生日期（公历）</label><input type="date" id="wealthBirthDate"></div>
+            <div class="field"><label>出生时辰</label>
+                <select id="wealthBirthTime">
+                    <option value="">请选择</option>
+                    <option value="子时(23-01)">子时 23:00-01:00</option>
+                    <option value="丑时(01-03)">丑时 01:00-03:00</option>
+                    <option value="寅时(03-05)">寅时 03:00-05:00</option>
+                    <option value="卯时(05-07)">卯时 05:00-07:00</option>
+                    <option value="辰时(07-09)">辰时 07:00-09:00</option>
+                    <option value="巳时(09-11)">巳时 09:00-11:00</option>
+                    <option value="午时(11-13)">午时 11:00-13:00</option>
+                    <option value="未时(13-15)">未时 13:00-15:00</option>
+                    <option value="申时(15-17)">申时 15:00-17:00</option>
+                    <option value="酉时(17-19)">酉时 17:00-19:00</option>
+                    <option value="戌时(19-21)">戌时 19:00-21:00</option>
+                    <option value="亥时(21-23)">亥时 21:00-23:00</option>
+                </select>
+            </div>
+            <button class="btn-submit" onclick="submitForm('wealth')">开 始 分 析</button>
+        </div>
+    </div>
+
+    <!-- 奇门 -->
+    <div id="qimenForm" class="form-panel">
+        <div class="form-card">
+            <h3>奇门遁甲</h3>
+            <div class="field"><label>您的疑问</label><textarea id="question" placeholder="请描述想咨询的问题，如事业决策、感情选择、投资方向等"></textarea></div>
+            <div class="field"><label>起局日期</label><input type="date" id="qimenDate"></div>
+            <div class="field"><label>起局时辰</label>
+                <select id="qimenTime">
+                    <option value="">请选择</option>
+                    <option value="子时(23-01)">子时 23:00-01:00</option>
+                    <option value="丑时(01-03)">丑时 01:00-03:00</option>
+                    <option value="寅时(03-05)">寅时 03:00-05:00</option>
+                    <option value="卯时(05-07)">卯时 05:00-07:00</option>
+                    <option value="辰时(07-09)">辰时 07:00-09:00</option>
+                    <option value="巳时(09-11)">巳时 09:00-11:00</option>
+                    <option value="午时(11-13)">午时 11:00-13:00</option>
+                    <option value="未时(13-15)">未时 13:00-15:00</option>
+                    <option value="申时(15-17)">申时 15:00-17:00</option>
+                    <option value="酉时(17-19)">酉时 17:00-19:00</option>
+                    <option value="戌时(19-21)">戌时 19:00-21:00</option>
+                    <option value="亥时(21-23)">亥时 21:00-23:00</option>
+                </select>
+            </div>
+            <button class="btn-submit" onclick="submitForm('qimen')">起 局 解 盘</button>
+        </div>
+    </div>
+
+    <!-- 风水 -->
+    <div id="fengshuiForm" class="form-panel">
+        <div class="form-card">
+            <h3>风水堪舆</h3>
+            <div class="field"><label>房屋朝向</label>
+                <select id="houseDirection">
+                    <option value="">请选择</option>
+                    <option value="坐北朝南">坐北朝南</option>
+                    <option value="坐南朝北">坐南朝北</option>
+                    <option value="坐东朝西">坐东朝西</option>
+                    <option value="坐西朝东">坐西朝东</option>
+                    <option value="坐东北朝西南">坐东北朝西南</option>
+                    <option value="坐东南朝西北">坐东南朝西北</option>
+                    <option value="坐西南朝东北">坐西南朝东北</option>
+                    <option value="坐西北朝东南">坐西北朝东南</option>
+                </select>
+            </div>
+            <div class="field"><label>建成年份</label><input type="number" id="buildYear" placeholder="如：2010" min="1900" max="2030"></div>
+            <div class="field"><label>上传户型图</label><input type="file" id="houseImage" accept="image/*"></div>
+            <button class="btn-submit" onclick="submitForm('fengshui')">堪 興 分 析</button>
+        </div>
+    </div>
+
+    <!-- 结果 -->
+    <div id="resultSection" class="result-panel">
+        <div class="result-card">
+            <h3>测 算 结 果</h3>
+            <div class="gold-line" style="margin-bottom:20px;"></div>
+            <div id="resultContent" class="result-body"></div>
+        </div>
+    </div>
+
+    <!-- 玄学小文 -->
+    <section class="articles-section">
+        <div class="section-header" style="margin-bottom:28px;">
+            <div class="label">Today's Insight</div>
+            <h2>今日国学</h2>
+            <div class="gold-line" style="margin-top:12px;"></div>
+        </div>
+
+        <div class="article-item" onclick="toggleArticle(this)">
+            <span class="article-tag">节气 · 大暑</span>
+            <h4>大暑至，火气极——五行火旺如何养心护运</h4>
+            <p>今日大暑，二十四节气之最热。《月令七十二候集解》云："暑，热也，热之中分为大小，此为盛热。"大暑属火，火旺则心躁，五行中火对应心脏与南方离卦……</p>
+            <div class="article-meta">2026.07.23 · 阅读全文</div>
+            <div class="article-detail">
+                <p>今日大暑，二十四节气之最热。《月令七十二候集解》云："暑，热也，热之中分为大小，此为盛热。"大暑属火，火旺则心躁，五行中火对应心脏与南方离卦。
+
+从命理角度看，火旺之季对命局喜火者乃事业腾达之机，忌火者则需敛锋养晦。《黄帝内经》有言："夏三月，此谓蕃秀，使气得泄。"大暑养生核心：一忌大汗伤阳，二忌贪凉损脾，三宜午时静养心安。
+
+风水层面，南方离位本月旺气最盛，可在住宅正南位放置红色或紫色物件以催旺火气，但命局忌火者反宜在此位置水景或黑色物件以制衡。
+
+奇门看大暑日：天英星值令，宜静不宜动，重大决策宜推迟至立秋后。此日吉方：东南、正北；凶方：正南、西南。</p>
+            </div>
+        </div>
+
+        <div class="article-item" onclick="toggleArticle(this)">
+            <span class="article-tag">时事 · 国运</span>
+            <h4>从易学看中美博弈：乾坤交战，谁主沉浮</h4>
+            <p>中美关系再起波澜，降税安排推进中。以《易经》观之，当下格局如"天地否"向"地天泰"过渡之象——上乾下坤，气不相交……</p>
+            <div class="article-meta">2026.07.23 · 阅读全文</div>
+            <div class="article-detail">
+                <p>中美关系再起波澜，降税安排推进中。以《易经》观之，当下格局如"天地否"向"地天泰"过渡之象——上乾下坤，气不相交，看似阻滞；然否极泰来，九五爻动则"其亡其亡，系于苞桑"，危中有机。
+
+乾卦象美，刚健进取，然上九"亢龙有悔"已显势极之兆。坤卦象中，厚德载物，六五"黄裳元吉"示柔中得位之利。乾坤交战，非一战定乾坤，乃长久博弈。
+
+从三元九运看，2024-2043年行下元九运，离卦当令，火运主科技与文化。中国恰行离火旺运，科技创新迭出正合天时。美国行金运退气，金火相克，冲突难免，但火克金亦主东方势起。
+
+投资者当下宜守不宜攻，待否卦转泰之机。个人命局喜火者，此运正可大展宏图。</p>
+            </div>
+        </div>
+
+        <div class="article-item" onclick="toggleArticle(this)">
+            <span class="article-tag">风水 · 台风</span>
+            <h4>台风"红霞"将生：风水学中"风"与"水"的真正力量</h4>
+            <p>台风"红霞"或将生成，民间谈风色变。然风水之学，本就是"风"与"水"二字——藏风聚气，得水为上……</p>
+            <div class="article-meta">2026.07.23 · 阅读全文</div>
+            <div class="article-detail">
+                <p>台风"红霞"或将生成，民间谈风色变。然风水之学，本就是"风"与"水"二字——藏风聚气，得水为上。郭璞《葬书》云："气乘风则散，界水则止。"
+
+台风之"风"，在风水语境中属于"煞风"——风速过猛，冲散宅气，非吉风也。沿海宅邸逢台风季，宜检视：一、东南方门窗是否加固（东南为巽位，主风入之口）；二、宅前有无挡风之物，若空旷无依则犯"风煞"；三、台风过后宜开窗通风换气，清散郁滞。
+
+有趣的是，台风虽为灾，却亦带来大量水气。风水中"水"为财，台风雨后若宅内无渗漏，反为"水聚明堂"之象，主进财。前提是宅体坚固，方能"乘气界水"。
+
+近期准备买房者，建议避开一线临海无遮挡之宅，选择有山丘或建筑群挡风之位，方合"藏风"之要。</p>
+            </div>
+        </div>
+
+        <div class="article-item" onclick="toggleArticle(this)">
+            <span class="article-tag">命理 · 财运</span>
+            <h4>A股缩量轮动：从命理看下半年投资方向</h4>
+            <p>市场缩量轮动，增量资金观望。命理财运看，九运离火当令，科技、文化、新能源属火属木，大方向不改……</p>
+            <div class="article-meta">2026.07.23 · 阅读全文</div>
+            <div class="article-detail">
+                <p>市场缩量轮动，增量资金观望。命理财运看，九运离火当令，科技、文化、新能源属火属木，大方向不改。
+
+从五行行业映射：火运旺则电子、AI、传媒、新能源最得势；木生火，则教育、医药、农林亦受益；水克火，金融、航运压力偏大；金被火克，传统制造、矿业承压；土泄火，地产仍在调整期。
+
+下半年投资建议：一、命局喜火木者，可逢低布局AI及新能源赛道，但须控制仓位；二、忌火者宜配黄金、国债等金水属性资产对冲；三、农历七月（阳历8月）鬼月市场波动加大，宜守不宜攻；四、立秋（8月7日）后金气渐强，科技股或有一波回调，但火运未退，中期仍看多。
+
+记住《易经》之训："君子以俭德辟难，不可荣以禄。"投资之道，首在守本，次在获利。</p>
+            </div>
+        </div>
+
+        <div class="article-item" onclick="toggleArticle(this)">
+            <span class="article-tag">国学 · 养生</span>
+            <h4>高温50℃：极端酷暑下的五行调候与宅运化解</h4>
+            <p>国家级气象站首现50℃高温，火气之盛史所罕见。从五行调候论，火极必欲水济……</p>
+            <div class="article-meta">2026.07.23 · 阅读全文</div>
+            <div class="article-detail">
+                <p>国家级气象站首现50℃高温，火气之盛史所罕见。从五行调候论，火极必欲水济，此乃天道自然之理。
+
+个人调候法：一、命局火旺者，此季最易心浮气躁、血压升高，宜多着黑蓝之色（水色），佩戴黑曜石或海蓝宝；二、命局水旺者反喜此火，可着红紫之衣以助火势，事业或现转机；三、土命人此季火生土旺，精力充沛但易过劳，须防脾胃之疾。
+
+宅运化解：室温过高则宅中"火气"偏亢，久居令人心神不宁。化解之法：一、家中北方（坎水位）置水缸或鱼缸，以水制火；二、减少南方红色物件，增白色、银色金属物件泄火之气；三、午后1-3点（未时）火气最烈，宜拉帘遮阳，静卧养心；四、家中空调出风口忌正对床头或沙发，此为"冷风煞"，反致头痛肩颈不适。
+
+古人云："火炎昆冈，玉石俱焚。"极热之时，无论命局如何，皆宜减事安身，待秋凉再图进取。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系方式 -->
+    <section class="contact-section">
+        <div class="section-header" style="margin-bottom:28px;">
+            <div class="label">Contact</div>
+            <h2>如需详细解读</h2>
+            <div class="gold-line" style="margin-top:12px;"></div>
+        </div>
+        <div class="contact-card">
+            <div class="contact-label">
+                线上测算为纲要概述<br>
+                深度解读请联系先生
+            </div>
+            <div class="contact-phone">
+                <a href="tel:15511880707">155 - 1188 - 0707</a>
+            </div>
+            <div class="divider-text">或 扫 码 添 加</div>
+            <div class="qr-wrapper">
+                <img src="https://www.coze.cn/s/aMhSgNYaXxs/" alt="微信二维码">
+            </div>
+            <div class="qr-text">微 信 扫 一 扫 · 添 加 好 友</div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-brand">玄 同 先 生</div>
+        <div class="footer-line"></div>
+        <div class="footer-text">
+            传承国学智慧 · 解读人生密码<br>
+            本服务基于传统命理学，仅供文化参考<br>
+            人生抉择请理性判断
+        </div>
+    </footer>
+
+    <script>
+        const DEEPSEEK_API_KEY = atob('c2stOWUzNjE4ZGM5ZWZjNGZkNGI0NWVlMjBjZWExODYzM2U=');
+        const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';
+
+        function selectService(type) {
+            ['bazi','wealth','qimen','fengshui'].forEach(t => {
+                document.getElementById(t + 'Form').classList.remove('active');
+            });
+            document.getElementById(type + 'Form').classList.add('active');
+            document.querySelectorAll('.service-card').forEach(c => c.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            const today = new Date().toISOString().split('T')[0];
+            document.querySelectorAll('input[type="date"]').forEach(el => { if(!el.value) el.value = today; });
+
+            document.getElementById(type + 'Form').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        async function submitForm(type) {
+            if (!validateInput(type)) return;
+            const prompt = buildPrompt(type);
+            const rs = document.getElementById('resultSection');
+            const rc = document.getElementById('resultContent');
+            rs.classList.add('active');
+            rc.innerHTML = '<div class="loading-dots">正 在 测 算<span>.</span><span>.</span><span>.</span></div>';
+            rs.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            try {
+                const res = await fetch(DEEPSEEK_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${DEEPSEEK_API_KEY}` },
+                    body: JSON.stringify({
+                        model: 'deepseek-chat',
+                        messages: [
+                            { role: 'system', content: '你是一位精通中国传统命理文化的玄学大师，擅长八字、风水、奇门遁甲等领域。请用专业、准确、易懂的语言为用户提供命理分析和建议。回答要体现传统文化的智慧，同时注意语言温和，避免绝对化表述。回答格式清晰，用编号分段。' },
+                            { role: 'user', content: prompt }
+                        ],
+                        temperature: 0.7, max_tokens: 1500
+                    })
+                });
+                if (!res.ok) throw new Error(res.status);
+                const data = await res.json();
+                rc.textContent = data.choices[0].message.content;
+            } catch (e) {
+                rc.textContent = '系统暂不可用，请稍后再试\n\n或直接联系先生：155-1188-0707';
+            }
+        }
+
+        function validateInput(type) {
+            const v = id => document.getElementById(id).value.trim();
+            switch(type) {
+                case 'bazi': if(!v('name')||!v('birthDate')||!v('birthTime')){alert('请填写完整信息');return false;} break;
+                case 'wealth': if(!v('wealthName')||!v('wealthBirthDate')||!v('wealthBirthTime')){alert('请填写完整信息');return false;} break;
+                case 'qimen': if(!v('question')||!v('qimenDate')||!v('qimenTime')){alert('请填写完整信息');return false;} break;
+                case 'fengshui': if(!v('houseDirection')||!v('buildYear')||!document.getElementById('houseImage').files.length){alert('请填写完整信息并上传户型图');return false;} break;
+            }
+            return true;
+        }
+
+        function buildPrompt(type) {
+            const v = id => document.getElementById(id).value.trim();
+            switch(type) {
+                case 'bazi': return `请为我进行八字命理分析。\n基本信息：姓名：${v('name')}，性别：${v('gender')}，出生日期：${v('birthDate')}，出生时辰：${v('birthTime')}\n\n请详细分析：\n1. 八字排盘及五行分析\n2. 性格特点和命运走向\n3. 事业运势和发展建议\n4. 感情婚姻状况和建议\n5. 健康注意事项\n6. 近期运势分析\n\n请用专业的命理语言，结合传统智慧进行分析。`;
+                case 'wealth': return `请为我进行财运专项分析。\n基本信息：姓名：${v('wealthName')}，性别：${v('wealthGender')}，出生日期：${v('wealthBirthDate')}，出生时辰：${v('wealthBirthTime')}\n\n请重点分析：\n1. 先天财运格局和财星位置\n2. 适合的职业方向和财富积累方式\n3. 投资理财建议和注意事项\n4. 未来几年的财运走势\n5. 如何提升财运的方法\n\n请结合八字理论，给出具体的财运分析和建议。`;
+                case 'qimen': return `请根据以下信息进行奇门遁甲分析。\n求测信息：问题：${v('question')}，起局时间：${v('qimenDate')} ${v('qimenTime')}\n\n请进行奇门遁甲分析：\n1. 确定用神和吉凶方位\n2. 分析时局格局\n3. 针对问题的具体解读\n4. 行动建议和时间选择\n\n请用奇门遁甲的专业方法进行分析。`;
+                case 'fengshui': return `请分析该房屋的风水格局。\n房屋信息：朝向：${v('houseDirection')}，建成年份：${v('buildYear')}年\n注意：用户已上传户型图。\n\n请从以下方面进行风水分析：\n1. 整体风水格局评估\n2. 各功能区域风水特点\n3. 存在的问题和改善建议\n4. 旺财布局和风水调整方案\n5. 居住者运势影响分析\n\n请给出实用的风水布局建议。`;
+            }
+        }
+
+        function toggleArticle(el) {
+            el.classList.toggle('expanded');
+            const meta = el.querySelector('.article-meta');
+            if (el.classList.contains('expanded')) {
+                meta.textContent = '2026.07.23 · 收起';
+            } else {
+                meta.textContent = '2026.07.23 · 阅读全文';
+            }
+        }
+    </scri
