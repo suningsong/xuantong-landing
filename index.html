@@ -1,30 +1,25 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <link rel="preload" as="image" href="hero-bg.jpg" fetchpriority="high">
-    <!-- JSON由JS按需加载，不preload避免阻塞进度条 -->
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>玄同先生 · 国学命理</title>
     <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔮</text></svg>">
     <!-- <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png"> -->
-    <link rel="apple-touch-icon" sizes="180x180" href="favicon-192.png">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔮</text></svg>">
     <!-- Open Graph / 微信分享 -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="玄同先生 · 国学命理">
     <meta property="og:description" content="你的命盘里藏着惊天秘密 🔮 八字精批·财运破解·奇门运筹·风水布局">
-    <meta property="og:image" content="https://ysgncq.cn/favicon-512.png">
+    <meta property="og:image" content="https://ysgncq.cn/favicon-192.png">
     <meta property="og:image:width" content="192">
     <meta property="og:image:height" content="192">
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="玄同先生 · 国学命理">
     <meta name="twitter:description" content="你的命盘里藏着惊天秘密 🔮 八字精批·财运破解·奇门运筹·风水布局">
-    <meta name="twitter:image" content="https://suningsong.github.io/xuantong-landing/og-image.png">
+    <meta name="twitter:image" content="https://ysgncq.cn/favicon-192.png">
     <style>
         :root {
             --gold: #C9A96E;
@@ -1974,7 +1969,7 @@
         async function loadArticles() {
             try {
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 5000);
+                const timeoutId = setTimeout(() => controller.abort(), 3000);
                 const resp = await fetch('articles.json', { signal: controller.signal });
                 clearTimeout(timeoutId);
                 if (!resp.ok) throw new Error('Articles load failed');
@@ -2021,7 +2016,7 @@
             try {
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 3000);
-                const res = await fetch('news.json?v=' + new Date().toISOString().slice(0,10), { signal: controller.signal });
+                const res = await fetch('news.json', { signal: controller.signal });
                 clearTimeout(timeoutId);
                 const data = await res.json();
                 const dateEl = document.getElementById('news-date');
