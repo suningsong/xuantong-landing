@@ -1810,7 +1810,7 @@
         // ===== 每日新闻加载 =====
         async function loadNews() {
             try {
-                const res = await fetch('news.json?t=' + Date.now());
+                const res = await fetch('news.json?v=' + new Date().toISOString().slice(0,10));
                 const data = await res.json();
                 const dateEl = document.getElementById('news-date');
                 const listEl = document.getElementById('news-list');
