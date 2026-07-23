@@ -421,22 +421,22 @@
             <div class="gold-line" style="margin-top:12px;"></div>
         </div>
         <div class="services-grid">
-            <div class="service-card" onclick="selectService('bazi')">
+            <div class="service-card" onclick="selectService('bazi', event)">
                 <span class="icon">卦</span>
                 <div class="title">八字测算</div>
                 <div class="desc">生辰命理 · 全盘解析</div>
             </div>
-            <div class="service-card" onclick="selectService('wealth')">
+            <div class="service-card" onclick="selectService('wealth', event)">
                 <span class="icon">财</span>
                 <div class="title">财运分析</div>
                 <div class="desc">财星格局 · 运势走向</div>
             </div>
-            <div class="service-card" onclick="selectService('qimen')">
+            <div class="service-card" onclick="selectService('qimen', event)">
                 <span class="icon">遁</span>
                 <div class="title">奇门遁甲</div>
                 <div class="desc">天时地利 · 趋吉避凶</div>
             </div>
-            <div class="service-card" onclick="selectService('fengshui')">
+            <div class="service-card" onclick="selectService('fengshui', event)">
                 <span class="icon">堪</span>
                 <div class="title">风水堪舆</div>
                 <div class="desc">宅运调理 · 旺局布局</div>
@@ -690,7 +690,7 @@
         const DEEPSEEK_API_KEY = atob('c2stOWUzNjE4ZGM5ZWZjNGZkNGI0NWVlMjBjZWExODYzM2U=');
         const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';
 
-        function selectService(type) {
+        function selectService(type, event) {
             ['bazi','wealth','qimen','fengshui'].forEach(t => {
                 document.getElementById(t + 'Form').classList.remove('active');
             });
