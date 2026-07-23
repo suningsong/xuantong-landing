@@ -4,6 +4,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <link rel="preload" as="image" href="hero-bg.jpg">
     <link rel="preload" as="fetch" href="news.json" crossorigin>
+    <link rel="preload" as="fetch" href="articles.json" crossorigin>
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <meta charset="UTF-8">
@@ -825,6 +826,10 @@
             font-size: 0.85rem;
             color: var(--text-secondary);
             line-height: 1.8;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         /* ========== CONTACT SECTION ========== */
@@ -1164,37 +1169,7 @@
         </div>
 
         <div class="articles-grid fade-in" id="articles-grid">
-            <div class="article-card" onclick='showNewsDetail({"cat": "🔥 命理揭秘", "title": "你的八字，正在偷偷决定你35岁以后的命运", "excerpt": "很多人不知道，出生时辰的偏差直接影响命盘格局。3个天干地支的组合，就注定了你一生的财富上限。八字中藏干透干的秘密，决定了你中年之后的运势走向。掌握自己的命盘密码，顺势而为，才能事半功倍。"})' style="cursor:pointer;">
-                <div class="article-category">🔥 命理揭秘</div>
-                <h3 class="article-title">你的八字，正在偷偷决定你35岁以后的命运</h3>
-                <p class="article-excerpt">很多人不知道，出生时辰的偏差直接影响命盘格局。3个天干地支的组合，就注定了你一生的财富上限...</p>
-            </div>
-            <div class="article-card" onclick='showNewsDetail({"cat": "🏠 风水破局", "title": "你家客厅犯了\"穿心煞\"？难怪财运一直上不来", "excerpt": "进门直对阳台、沙发背后无靠、镜子对着大门...这些致命风水错误，正在悄悄吞噬你的财运和事业运。阳宅风水讲究\"藏风聚气\"，客厅作为家中气场汇聚之地，布局稍有差池便会漏财损运。化解之法，在于重新布局气口与明堂。"})' style="cursor:pointer;">
-                <div class="article-category">🏠 风水破局</div>
-                <h3 class="article-title">你家客厅犯了"穿心煞"？难怪财运一直上不来</h3>
-                <p class="article-excerpt">进门直对阳台、沙发背后无靠、镜子对着大门...这些致命风水错误，正在悄悄吞噬你的财运和事业运</p>
-            </div>
-            <div class="article-card" onclick='showNewsDetail({"cat": "📖 易经天机", "title": "易经第一卦就道破了天机：你的困局，3000年前已有答案", "excerpt": "“潜龙勿用”不是让你躺平，而是在告诉你一个被99%的人误解的成功法则。读懂乾卦，人生豁然开朗。乾卦六爻从初九到上九，揭示了事物从萌芽到鼎盛再到衰退的完整周期，每一个阶段都有其独特的处世智慧。"})' style="cursor:pointer;">
-                <div class="article-category">📖 易经天机</div>
-                <h3 class="article-title">易经第一卦就道破了天机：你的困局，3000年前已有答案</h3>
-                <p class="article-excerpt">"潜龙勿用"不是让你躺平，而是在告诉你一个被99%的人误解的成功法则。读懂乾卦，人生豁然开朗</p>
-            </div>
-            <div class="article-card" onclick='showNewsDetail({"cat": "⭐ 运势预警", "title": "2025乙巳年：这3个生肖要格外小心，有一个大坎要过", "excerpt": "太岁当头坐，无喜必有祸。属蛇、猪、虎的朋友注意了，明年的运势转折点上，做对一件事就能逆风翻盘。乙巳年太岁在巳，与亥相冲，与寅相害，与申相刑。犯太岁者需在年初做好化解准备，方能趋吉避凶。"})' style="cursor:pointer;">
-                <div class="article-category">⭐ 运势预警</div>
-                <h3 class="article-title">2025乙巳年：这3个生肖要格外小心，有一个大坎要过</h3>
-                <p class="article-excerpt">太岁当头坐，无喜必有祸。属蛇、猪、虎的朋友注意了，明年的运势转折点上，做对一件事就能逆风翻盘</p>
-            </div>
-            <div class="article-card" onclick='showNewsDetail({"cat": "🌊 五行密码", "title": "你是\"水命\"还是\"火命\"？一查便知，90%的人算错了", "excerpt": "纳音五行和日主五行是两套完全不同的体系。用错了，所有风水调理、颜色选择全都会适得其反。很多人按出生年份的纳音来定自己的命格，但实际上，真正的命理核心在于日柱天干——那才是你的元神所在。"})' style="cursor:pointer;">
-                <div class="article-category">🌊 五行密码</div>
-                <h3 class="article-title">你是"水命"还是"火命"？一查便知，90%的人算错了</h3>
-                <p class="article-excerpt">纳音五行和日主五行是两套完全不同的体系。用错了，所有风水调理、颜色选择全都会适得其反</p>
-            </div>
-            <div class="article-card" onclick='showNewsDetail({"cat": "📅 择日秘法", "title": "黄历上的\"宜\"和\"忌\"，原来90%的人都看错了", "excerpt": "黄道吉日不是千篇一律的。同一天的吉凶，对不同生肖完全不同。大师择日的秘密，今天一次说清。真正的择日需要结合当事人的八字、事体性质、方位朝向等多重因素，绝非翻翻老黄历那么简单。"})' style="cursor:pointer;">
-                <div class="article-category">📅 择日秘法</div>
-                <h3 class="article-title">黄历上的"宜"和"忌"，原来90%的人都看错了</h3>
-                <p class="article-excerpt">黄道吉日不是千篇一律的。同一天的吉凶，对不同生肖完全不同。大师择日的秘密，今天一次说清</p>
-                <p style="color:var(--gold); font-size:0.8rem; margin-top:8px; opacity:0.7;">点击阅读全文 →</p>
-            </div>
+            <div style="text-align:center; color: var(--text-muted); padding: 40px; grid-column: 1/-1;">正在加载精选文章...</div>
         </div>
     </section>
 
@@ -1816,6 +1791,54 @@
                 });
             }
         });
+
+        // ===== 精选文章加载 =====
+        let articlesData = [];
+        
+        async function loadArticles() {
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000);
+                const resp = await fetch('articles.json', { signal: controller.signal });
+                clearTimeout(timeoutId);
+                if (!resp.ok) throw new Error('Articles load failed');
+                articlesData = await resp.json();
+                renderArticles();
+            } catch(e) {
+                console.warn('Articles load failed:', e);
+                document.getElementById('articles-grid').innerHTML = '<div style="text-align:center; color: var(--text-muted); padding: 40px; grid-column: 1/-1;">精选文章加载中...</div>';
+            }
+        }
+        
+        function renderArticles() {
+            const grid = document.getElementById('articles-grid');
+            grid.innerHTML = articlesData.map((item, idx) => `
+                <div class="article-card" data-article-index="${idx}" style="cursor:pointer;">
+                    <div class="article-category">${item.cat}</div>
+                    <h3 class="article-title">${item.title}</h3>
+                    <p class="article-excerpt">${(item.summary || item.excerpt || '').substring(0, 80).replace(/\n/g, ' ')}...</p>
+                    <p style="color:var(--gold); font-size:0.8rem; margin-top:8px; opacity:0.7;">点击阅读全文 →</p>
+                </div>
+            `).join('');
+        }
+        
+        // Article card click handler (event delegation)
+        document.addEventListener('click', function(e) {
+            const card = e.target.closest('[data-article-index]');
+            if (card) {
+                const idx = parseInt(card.dataset.articleIndex);
+                if (articlesData[idx]) {
+                    showNewsDetail({
+                        tag: articlesData[idx].cat,
+                        title: articlesData[idx].title,
+                        excerpt: articlesData[idx].excerpt
+                    });
+                }
+            }
+        });
+        
+        // Load articles on page load
+        loadArticles();
 
         // ===== 每日新闻加载 =====
         async function loadNews() {
