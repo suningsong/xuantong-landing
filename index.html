@@ -65,6 +65,15 @@
             background: url('https://ysgncq.cn/hero-bg.jpg') center center / cover no-repeat;
         }
 
+        .hero-bg-img {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            z-index: 0;
+        }
+
         /* 只压暗边缘让文字可读，中间完全透明 */
         .hero::before {
             content: '';
@@ -875,6 +884,7 @@
 <body>
     <!-- ========== HERO ========== -->
     <section class="hero" id="hero">
+        <img class="hero-bg-img" src="hero-bg.jpg" alt="">
         <canvas id="hero-canvas"></canvas>
         <!-- 太极八卦图标 -->
         <svg class="bagua-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
