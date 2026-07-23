@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <link rel="preload" as="image" href="hero-bg.jpg">
-    <link rel="preload" as="fetch" href="news.json" crossorigin>
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>玄同先生 · 国学命理</title>
@@ -571,11 +566,6 @@
             font-size: 0.85rem;
             color: var(--text-secondary);
             line-height: 1.8;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            word-break: break-all;
         }
 
         /* ========== RESULT SECTION ========== */
@@ -1287,11 +1277,9 @@
             // 根据服务类型切换表单字段
             const birthFields = document.getElementById('birth-fields');
             const qimenFields = document.getElementById('qimen-fields');
-            const fengshuiFields = document.getElementById('fengshui-fields');
             if (type === 'qimen') {
                 birthFields.style.display = 'none';
                 qimenFields.style.display = 'block';
-                if (fengshuiFields) fengshuiFields.style.display = 'none';
                 // 移除出生信息的required
                 document.getElementById('birthdate').removeAttribute('required');
                 document.getElementById('birthtime').removeAttribute('required');
@@ -1299,16 +1287,9 @@
                 const now = new Date();
                 now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
                 document.getElementById('qimen-time').value = now.toISOString().slice(0, 16);
-            } else if (type === 'fengshui') {
-                birthFields.style.display = 'none';
-                qimenFields.style.display = 'none';
-                if (fengshuiFields) fengshuiFields.style.display = 'block';
-                document.getElementById('birthdate').removeAttribute('required');
-                document.getElementById('birthtime').removeAttribute('required');
             } else {
                 birthFields.style.display = 'block';
                 qimenFields.style.display = 'none';
-                if (fengshuiFields) fengshuiFields.style.display = 'none';
                 document.getElementById('birthdate').setAttribute('required', '');
                 document.getElementById('birthtime').setAttribute('required', '');
             }
@@ -1346,7 +1327,7 @@
                 name: document.getElementById('name').value,
                 gender: document.getElementById('gender').value,
                 question: document.getElementById('question').value,
-                fengshuiDesc: document.getElementById('fengshui-desc') ? document.getElementById('fengshui-desc').value : '',
+                fengshuiDesc: document.getElementById('fengshui-desc') ? document.getElementById('fengshui-desc').value : 
             };
             // 奇门遁甲用起卦时间和地点，其他用出生信息
             if (currentService === 'qimen') {
@@ -1789,7 +1770,7 @@
                 </div>
                 <h2 style="font-family:var(--serif); color:var(--gold-light); font-size:1.5rem; line-height:1.6; margin-bottom:20px; letter-spacing:0.05em;">${article.title}</h2>
                 <div style="color:var(--text-primary); font-size:1rem; line-height:2; margin-bottom:24px; padding:20px; background:rgba(255,255,255,0.03); border-radius:12px; border-left:3px solid var(--gold);">
-                    ${(article.excerpt || '').split(/\n\n+/).map(p => '<p style="margin-bottom:16px;">' + p.replace(/\n/g, '<br>') + '</p>').join('')}
+                    ${article.excerpt || ''}
                 </div>
                 <div style="text-align:center; padding-top:16px; border-top:1px solid rgba(201,169,110,0.2);">
                     <button onclick="closeNewsModal(); document.getElementById('contact').scrollIntoView({behavior:'smooth'});" 
@@ -1820,24 +1801,20 @@
         // ===== 每日新闻加载 =====
         async function loadNews() {
             try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 3000);
-                const res = await fetch('news.json?v=' + new Date().toISOString().slice(0,10), { signal: controller.signal });
-                clearTimeout(timeoutId);
+                const res = await fetch('news.json?t=' + Date.now());
                 const data = await res.json();
                 const dateEl = document.getElementById('news-date');
                 const listEl = document.getElementById('news-list');
                 dateEl.textContent = data.date || new Date().toLocaleDateString('zh-CN', {year:'numeric',month:'long',day:'numeric'});
                 let html = '';
-                window.__newsArticles = data.articles || [];
                 (data.articles || []).forEach((item, i) => {
                     html += `
-                    <div class="news-card" data-news-index="${i}" style="cursor:pointer;">
+                    <div class="news-card" onclick='showNewsDetail(${JSON.stringify(item).replace(/'/g, "\'")})' style="cursor:pointer;">
                         <div class="news-index">${i + 1}</div>
                         <div class="news-body">
                             <span class="news-tag">${item.tag || '玄学资讯'}</span>
                             <h3 class="news-title">${item.title}</h3>
-                            <p class="news-excerpt">${(item.excerpt || '').substring(0, 80).replace(/\n/g, ' ')}${(item.excerpt || '').length > 80 ? '...' : ''}</p>
+                            <p class="news-excerpt">${item.excerpt || ''}</p>
                             <p style="color:var(--gold); font-size:0.8rem; margin-top:8px; opacity:0.7;">点击查看详细内容 →</p>
                         </div>
                     </div>`;
@@ -1847,16 +1824,6 @@
                 document.getElementById('news-list').innerHTML = '<div style="text-align:center;color:var(--text-muted);">最新资讯加载中...</div>';
             }
         }
-        // 新闻卡片点击事件委托
-        document.addEventListener('click', function(e) {
-            var card = e.target.closest('.news-card');
-            if (card && card.dataset.newsIndex !== undefined) {
-                // 延迟执行，确保 loadNews 已填充数据
-                var idx = parseInt(card.dataset.newsIndex);
-                var newsData = window.__newsArticles || [];
-                if (newsData[idx]) showNewsDetail(newsData[idx]);
-            }
-        });
         loadNews();
 
         // Scroll animation
