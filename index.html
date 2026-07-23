@@ -62,13 +62,7 @@
             text-align: center;
             padding: 60px 20px;
             overflow: hidden;
-        }
-
-        .hero-bg-layer {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
             background: url('hero-bg.jpg') center center / cover no-repeat;
-            z-index: 0;
         }
 
         /* 只压暗边缘让文字可读，中间完全透明 */
@@ -881,7 +875,6 @@
 <body>
     <!-- ========== HERO ========== -->
     <section class="hero" id="hero">
-        <div class="hero-bg-layer"></div>
         <canvas id="hero-canvas"></canvas>
         <!-- 太极八卦图标 -->
         <svg class="bagua-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
