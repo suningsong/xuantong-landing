@@ -11,14 +11,14 @@
     <!-- Open Graph / 微信分享 -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="玄同先生 · 国学命理">
-    <meta property="og:description" content="传承千年国学智慧，八字测算、财运分析、奇门遁甲、风水堪舆">
+    <meta property="og:description" content="你的命盘里藏着惊天秘密 🔮 八字精批·财运破解·奇门运筹·风水布局">
     <meta property="og:image" content="https://suningsong.github.io/xuantong-landing/og-image.png">
     <meta property="og:image:width" content="512">
     <meta property="og:image:height" content="512">
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="玄同先生 · 国学命理">
-    <meta name="twitter:description" content="传承千年国学智慧，八字测算、财运分析、奇门遁甲、风水堪舆">
+    <meta name="twitter:description" content="你的命盘里藏着惊天秘密 🔮 八字精批·财运破解·奇门运筹·风水布局">
     <meta name="twitter:image" content="https://suningsong.github.io/xuantong-landing/og-image.png">
     <style>
         :root {
@@ -96,54 +96,94 @@
 
         .hero-title {
             font-family: var(--serif);
-            font-size: 4rem;
-            font-weight: 700;
-            letter-spacing: 0.3em;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #C9A96E 0%, #E8D5A3 50%, #8B6914 100%);
+            font-size: 5rem;
+            font-weight: 900;
+            letter-spacing: 0.5em;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #8B6914 0%, #C9A96E 25%, #E8D5A3 50%, #C9A96E 75%, #8B6914 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            filter: drop-shadow(0 0 30px rgba(201,169,110,0.3));
+            filter: drop-shadow(0 0 40px rgba(201,169,110,0.5)) drop-shadow(0 4px 20px rgba(0,0,0,0.8));
+            text-shadow: none;
+            position: relative;
+        }
+
+        .hero-title::after {
+            content: '玄同先生';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #8B6914 0%, #C9A96E 25%, #E8D5A3 50%, #C9A96E 75%, #8B6914 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: blur(20px);
+            opacity: 0.4;
+            z-index: -1;
         }
 
         .hero-subtitle {
             font-family: var(--serif);
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             color: var(--gold-light);
-            letter-spacing: 0.5em;
-            margin-bottom: 15px;
-            opacity: 0.9;
+            letter-spacing: 0.6em;
+            margin-bottom: 20px;
+            opacity: 1;
+            text-shadow: 0 0 20px rgba(201,169,110,0.6), 0 2px 10px rgba(0,0,0,0.8);
         }
 
         .hero-desc {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            max-width: 500px;
-            line-height: 2;
+            font-size: 1.05rem;
+            color: var(--gold-light);
+            max-width: 560px;
+            line-height: 2.2;
             margin-bottom: 50px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            font-family: var(--serif);
+            letter-spacing: 0.05em;
         }
 
         .hero-cta {
             display: inline-flex;
             align-items: center;
             gap: 12px;
-            padding: 16px 48px;
-            background: transparent;
+            padding: 18px 56px;
+            background: linear-gradient(135deg, rgba(201,169,110,0.15) 0%, rgba(201,169,110,0.05) 100%);
             border: 1px solid var(--gold);
             color: var(--gold-light);
             font-family: var(--serif);
-            font-size: 1rem;
-            letter-spacing: 0.2em;
+            font-size: 1.1rem;
+            letter-spacing: 0.3em;
             cursor: pointer;
             transition: all 0.4s ease;
             text-decoration: none;
+            text-shadow: 0 0 10px rgba(201,169,110,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(201,169,110,0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .hero-cta:hover::before {
+            left: 100%;
         }
 
         .hero-cta:hover {
             background: var(--gold);
             color: var(--bg-deep);
-            box-shadow: 0 0 40px rgba(201,169,110,0.3);
+            box-shadow: 0 0 60px rgba(201,169,110,0.4), 0 0 120px rgba(201,169,110,0.1);
+            text-shadow: none;
         }
 
         /* 向下滚动指示 */
@@ -299,6 +339,8 @@
             background: rgba(10,10,15,0.8);
             border: 1px solid var(--border-gold);
             backdrop-filter: blur(10px);
+            overflow: hidden;
+            box-sizing: border-box;
         }
 
         .form-section.active {
@@ -340,6 +382,24 @@
             color: var(--text-primary);
             font-size: 1rem;
             transition: all 0.3s ease;
+            box-sizing: border-box;
+            max-width: 100%;
+        }
+
+        /* 日期/时间输入移动端兼容 */
+        .form-group input[type="date"],
+        .form-group input[type="datetime-local"] {
+            -webkit-appearance: none;
+            appearance: none;
+            min-width: 0;
+            width: 100%;
+            box-sizing: border-box;
+            max-width: 100%;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            overflow: hidden;
         }
 
         .form-group input:focus, .form-group select:focus {
@@ -841,12 +901,29 @@
 
         /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
-            .hero-title { font-size: 2.5rem; letter-spacing: 0.2em; }
-            .hero-subtitle { font-size: 1rem; letter-spacing: 0.3em; }
-            .hero-desc { font-size: 0.9rem; }
+            .hero-title { font-size: 3rem; letter-spacing: 0.3em; }
+            .hero-title::after { font-size: 3rem; letter-spacing: 0.3em; }
+            .hero-subtitle { font-size: 1.1rem; letter-spacing: 0.4em; }
+            .hero-desc { font-size: 0.95rem; padding: 0 10px; }
+            .hero-cta { padding: 14px 36px; font-size: 1rem; }
             .section-title { font-size: 1.5rem; }
             .services-grid { grid-template-columns: 1fr; }
             .articles-grid { grid-template-columns: 1fr; }
+            .form-section { padding: 40px 20px; }
+            .form-group input, .form-group select { padding: 12px 14px; font-size: 0.95rem; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title { font-size: 2.4rem; letter-spacing: 0.25em; }
+            .hero-title::after { font-size: 2.4rem; letter-spacing: 0.25em; }
+            .hero-subtitle { font-size: 1rem; letter-spacing: 0.3em; }
+            .hero-desc { font-size: 0.9rem; line-height: 2; }
+            .form-section { padding: 30px 16px; }
+            .form-group input[type="date"],
+            .form-group input[type="datetime-local"] {
+                font-size: 16px; /* Prevent zoom on iOS */
+                padding: 12px 14px;
+            }
         }
 
         /* ========== FADE IN ANIMATION ========== */
@@ -888,12 +965,12 @@
         <h1 class="hero-title">玄同先生</h1>
         <p class="hero-subtitle">国 学 命 理</p>
         <p class="hero-desc">
-            传承千年国学智慧<br>
-            以易经八字、奇门遁甲、风水堪舆<br>
-            为您解读人生密码，指引前行方向
+            🔮 你的命盘里，藏着你不知道的惊天秘密<br>
+            90%的人一生都在逆风而行，只因未曾读懂自己的命<br>
+            千年古法，一朝点破——你的命运，本不该如此
         </p>
         <a href="#services" class="hero-cta">
-            开启命理之旅
+            ⚡ 立即揭开命运真相
         </a>
 
         <div class="scroll-indicator">
@@ -911,37 +988,37 @@
                 <span class="ornament-symbol">☰</span>
                 <span class="ornament-line"></span>
             </div>
-            <h2 class="section-title">命理服务</h2>
-            <p class="section-subtitle">Divination Services</p>
+            <h2 class="section-title">🔱 四大古法·为你破局</h2>
+            <p class="section-subtitle">Ancient Wisdom · Modern Answers</p>
         </div>
 
         <div class="services-grid fade-in">
             <div class="service-card" onclick="selectService('bazi', event)">
                 <div class="service-icon">命</div>
                 <h3 class="service-title">八字命理</h3>
-                <p class="service-desc">精批生辰八字，解析命局五行，揭示人生运势起伏</p>
+                <p class="service-desc">🎯 你的八字里藏着3个多数人不知道的转运密码，一旦破解，人生开挂</p>
             </div>
             <div class="service-card" onclick="selectService('caiyun', event)">
                 <div class="service-icon">财</div>
                 <h3 class="service-title">财运分析</h3>
-                <p class="service-desc">剖析财星运势，把握投资时机，助您财运亨通</p>
+                <p class="service-desc">💰 为什么你总是赚不到钱？命里的财库缺口，9步之内必有解法</p>
             </div>
             <div class="service-card" onclick="selectService('qimen', event)">
                 <div class="service-icon">遁</div>
                 <h3 class="service-title">奇门遁甲</h3>
-                <p class="service-desc">古法奇门预测，运筹帷幄，决胜千里之外</p>
+                <p class="service-desc">⚔️ 诸葛孔明用奇门遁甲决胜千里，你的人生同样需要一场精准运筹</p>
             </div>
             <div class="service-card" onclick="selectService('fengshui', event)">
                 <div class="service-icon">宅</div>
                 <h3 class="service-title">风水堪舆</h3>
-                <p class="service-desc">勘察阴阳宅风水，调和服务环境，趋吉避凶</p>
+                <p class="service-desc">🏠 你家大门朝向可能正在"漏财"！风水大师绝不会告诉你的5个致命布局</p>
             </div>
         </div>
 
         <!-- 表单区域 -->
         <div id="form-section" class="form-section">
             <button class="back-btn" onclick="goBack()">← 返回</button>
-            <h3 id="form-title">八字命理</h3>
+            <h3 id="form-title">✨ 开启你的命理密码</h3>
             <form id="divination-form" onsubmit="submitForm(event)">
                 <div class="form-group">
                     <label>姓名</label>
@@ -1001,7 +1078,7 @@
                     <label>您的问题</label>
                     <input type="text" id="question" placeholder="请输入您想咨询的问题">
                 </div>
-                <button type="submit" class="submit-btn" id="submit-btn">开始测算</button>
+                <button type="submit" class="submit-btn" id="submit-btn">🔮 立即开启天命测算</button>
             </form>
         </div>
 
@@ -1020,40 +1097,40 @@
                 <span class="ornament-symbol">☷</span>
                 <span class="ornament-line"></span>
             </div>
-            <h2 class="section-title">国学智慧</h2>
-            <p class="section-subtitle">Wisdom & Insights</p>
+            <h2 class="section-title">📜 天机可悟·智者先知</h2>
+            <p class="section-subtitle">Unlock the Code of Destiny</p>
         </div>
 
         <div class="articles-grid fade-in" id="articles-grid">
             <div class="article-card">
-                <div class="article-category">命理基础</div>
-                <h3 class="article-title">八字入门：如何看懂自己的命盘</h3>
-                <p class="article-excerpt">八字，又称四柱，是中国传统命理学的基础。通过出生年月日时的天干地支组合，揭示一个人先天的命运轨迹...</p>
+                <div class="article-category">🔥 命理揭秘</div>
+                <h3 class="article-title">你的八字，正在偷偷决定你35岁以后的命运</h3>
+                <p class="article-excerpt">很多人不知道，出生时辰的偏差直接影响命盘格局。3个天干地支的组合，就注定了你一生的财富上限...</p>
             </div>
             <div class="article-card">
-                <div class="article-category">风水知识</div>
-                <h3 class="article-title">家居风水：客厅布局的五大原则</h3>
-                <p class="article-excerpt">客厅是家庭的中心，也是气场汇聚之所。合理的布局能够提升家运，促进家庭和谐与财运...</p>
+                <div class="article-category">🏠 风水破局</div>
+                <h3 class="article-title">你家客厅犯了"穿心煞"？难怪财运一直上不来</h3>
+                <p class="article-excerpt">进门直对阳台、沙发背后无靠、镜子对着大门...这些致命风水错误，正在悄悄吞噬你的财运和事业运</p>
             </div>
             <div class="article-card">
-                <div class="article-category">易经智慧</div>
-                <h3 class="article-title">易经六十四卦：乾卦的人生启示</h3>
-                <p class="article-excerpt">乾卦为六十四卦之首，象征天道刚健。"天行健，君子以自强不息"，蕴含着深刻的人生哲理...</p>
+                <div class="article-category">📖 易经天机</div>
+                <h3 class="article-title">易经第一卦就道破了天机：你的困局，3000年前已有答案</h3>
+                <p class="article-excerpt">"潜龙勿用"不是让你躺平，而是在告诉你一个被99%的人误解的成功法则。读懂乾卦，人生豁然开朗</p>
             </div>
             <div class="article-card">
-                <div class="article-category">运势指南</div>
-                <h3 class="article-title">2024甲辰年十二生肖运势详解</h3>
-                <p class="article-excerpt">甲辰龙年，天干甲木，地支辰土。不同生肖在这一年的运势各有起伏，如何趋吉避凶...</p>
+                <div class="article-category">⭐ 运势预警</div>
+                <h3 class="article-title">2025乙巳年：这3个生肖要格外小心，有一个大坎要过</h3>
+                <p class="article-excerpt">太岁当头坐，无喜必有祸。属蛇、猪、虎的朋友注意了，明年的运势转折点上，做对一件事就能逆风翻盘</p>
             </div>
             <div class="article-card">
-                <div class="article-category">传统文化</div>
-                <h3 class="article-title">五行相生相克：理解宇宙的平衡法则</h3>
-                <p class="article-excerpt">金木水火土，五行相生相克，构成了宇宙万物运行的基本规律。理解五行，就理解了天地之道...</p>
+                <div class="article-category">🌊 五行密码</div>
+                <h3 class="article-title">你是"水命"还是"火命"？一查便知，90%的人算错了</h3>
+                <p class="article-excerpt">纳音五行和日主五行是两套完全不同的体系。用错了，所有风水调理、颜色选择全都会适得其反</p>
             </div>
             <div class="article-card">
-                <div class="article-category">择日指南</div>
-                <h3 class="article-title">如何选择黄道吉日：择日的智慧</h3>
-                <p class="article-excerpt">中国传统讲究择吉日而行，婚嫁、开业、搬家等重要事宜都需要选择一个吉利的日子...</p>
+                <div class="article-category">📅 择日秘法</div>
+                <h3 class="article-title">黄历上的"宜"和"忌"，原来90%的人都看错了</h3>
+                <p class="article-excerpt">黄道吉日不是千篇一律的。同一天的吉凶，对不同生肖完全不同。大师择日的秘密，今天一次说清</p>
             </div>
         </div>
     </section>
@@ -1066,8 +1143,8 @@
                 <span class="ornament-symbol">☲</span>
                 <span class="ornament-line"></span>
             </div>
-            <h2 class="section-title">每日玄学热点</h2>
-            <p class="section-subtitle">Daily Metaphysics Insights</p>
+            <h2 class="section-title">🌙 今日天机·不可不知</h2>
+            <p class="section-subtitle">Today's Cosmic Whispers</p>
         </div>
         <p class="news-date" id="news-date">加载中...</p>
         <div class="news-list fade-in" id="news-list">
@@ -1083,17 +1160,17 @@
                 <span class="ornament-symbol">☯</span>
                 <span class="ornament-line"></span>
             </div>
-            <h2 class="section-title">联系我们</h2>
-            <p class="section-subtitle">Get in Touch</p>
+            <h2 class="section-title">☯ 有缘千里来相会</h2>
+            <p class="section-subtitle">Your Destiny Awaits</p>
         </div>
 
         <div class="contact-methods fade-in">
             <div class="contact-item">
-                <span class="contact-label">电话咨询</span>
+                <span class="contact-label">📞 命理热线·有问必答</span>
                 <span class="contact-value"><a href="tel:15511880707">155-1188-0707</a></span>
             </div>
             <div class="contact-item">
-                <span class="contact-label">微信咨询</span>
+                <span class="contact-label">💬 添加微信·一对一解读</span>
                 <img src="wechat-qr.jpg" alt="微信二维码" class="wechat-qr">
             </div>
         </div>
