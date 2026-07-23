@@ -955,32 +955,47 @@
                         <option value="female">女</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>出生日期</label>
-                    <div class="calendar-switch">
-                        <label><input type="radio" name="calendarType" value="阳历" checked><span>阳历（公历）</span></label>
-                        <label><input type="radio" name="calendarType" value="阴历"><span>阴历（农历）</span></label>
+                <!-- 八字/财运/风水 专用：出生信息 -->
+                <div id="birth-fields">
+                    <div class="form-group">
+                        <label>出生日期</label>
+                        <div class="calendar-switch">
+                            <label><input type="radio" name="calendarType" value="阳历" checked><span>阳历（公历）</span></label>
+                            <label><input type="radio" name="calendarType" value="阴历"><span>阴历（农历）</span></label>
+                        </div>
+                        <input type="date" id="birthdate" required>
+                        <div class="calendar-hint" id="calendar-hint">公历日期，即日常使用的日期</div>
                     </div>
-                    <input type="date" id="birthdate" required>
-                    <div class="calendar-hint" id="calendar-hint">公历日期，即日常使用的日期</div>
+                    <div class="form-group">
+                        <label>出生时辰</label>
+                        <select id="birthtime" required>
+                            <option value="">请选择</option>
+                            <option value="子时 (23:00-01:00)">子时 (23:00-01:00)</option>
+                            <option value="丑时 (01:00-03:00)">丑时 (01:00-03:00)</option>
+                            <option value="寅时 (03:00-05:00)">寅时 (03:00-05:00)</option>
+                            <option value="卯时 (05:00-07:00)">卯时 (05:00-07:00)</option>
+                            <option value="辰时 (07:00-09:00)">辰时 (07:00-09:00)</option>
+                            <option value="巳时 (09:00-11:00)">巳时 (09:00-11:00)</option>
+                            <option value="午时 (11:00-13:00)">午时 (11:00-13:00)</option>
+                            <option value="未时 (13:00-15:00)">未时 (13:00-15:00)</option>
+                            <option value="申时 (15:00-17:00)">申时 (15:00-17:00)</option>
+                            <option value="酉时 (17:00-19:00)">酉时 (17:00-19:00)</option>
+                            <option value="戌时 (19:00-21:00)">戌时 (19:00-21:00)</option>
+                            <option value="亥时 (21:00-23:00)">亥时 (21:00-23:00)</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>出生时辰</label>
-                    <select id="birthtime" required>
-                        <option value="">请选择</option>
-                        <option value="子时 (23:00-01:00)">子时 (23:00-01:00)</option>
-                        <option value="丑时 (01:00-03:00)">丑时 (01:00-03:00)</option>
-                        <option value="寅时 (03:00-05:00)">寅时 (03:00-05:00)</option>
-                        <option value="卯时 (05:00-07:00)">卯时 (05:00-07:00)</option>
-                        <option value="辰时 (07:00-09:00)">辰时 (07:00-09:00)</option>
-                        <option value="巳时 (09:00-11:00)">巳时 (09:00-11:00)</option>
-                        <option value="午时 (11:00-13:00)">午时 (11:00-13:00)</option>
-                        <option value="未时 (13:00-15:00)">未时 (13:00-15:00)</option>
-                        <option value="申时 (15:00-17:00)">申时 (15:00-17:00)</option>
-                        <option value="酉时 (17:00-19:00)">酉时 (17:00-19:00)</option>
-                        <option value="戌时 (19:00-21:00)">戌时 (19:00-21:00)</option>
-                        <option value="亥时 (21:00-23:00)">亥时 (21:00-23:00)</option>
-                    </select>
+                <!-- 奇门遁甲 专用：起卦时间和地点 -->
+                <div id="qimen-fields" style="display:none;">
+                    <div class="form-group">
+                        <label>起卦时间</label>
+                        <input type="datetime-local" id="qimen-time" required>
+                        <div class="calendar-hint">即您心中起念提问的时间，默认当前时间</div>
+                    </div>
+                    <div class="form-group">
+                        <label>所在地</label>
+                        <input type="text" id="location" placeholder="如：北京市、上海市浦东新区">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>您的问题</label>
@@ -1102,6 +1117,26 @@
             };
             document.getElementById('form-title').textContent = titles[type];
             
+            // 根据服务类型切换表单字段
+            const birthFields = document.getElementById('birth-fields');
+            const qimenFields = document.getElementById('qimen-fields');
+            if (type === 'qimen') {
+                birthFields.style.display = 'none';
+                qimenFields.style.display = 'block';
+                // 移除出生信息的required
+                document.getElementById('birthdate').removeAttribute('required');
+                document.getElementById('birthtime').removeAttribute('required');
+                // 设置起卦时间默认值（当前时间）
+                const now = new Date();
+                now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+                document.getElementById('qimen-time').value = now.toISOString().slice(0, 16);
+            } else {
+                birthFields.style.display = 'block';
+                qimenFields.style.display = 'none';
+                document.getElementById('birthdate').setAttribute('required', '');
+                document.getElementById('birthtime').setAttribute('required', '');
+            }
+            
             // 隐藏其他内容
             document.querySelector('.services-grid').style.display = 'none';
             document.getElementById('articles').style.display = 'none';
@@ -1134,11 +1169,17 @@
                 service: currentService,
                 name: document.getElementById('name').value,
                 gender: document.getElementById('gender').value,
-                birthdate: document.getElementById('birthdate').value,
-                calendarType: calendarType,
-                birthtime: document.getElementById('birthtime').value,
                 question: document.getElementById('question').value
             };
+            // 奇门遁甲用起卦时间和地点，其他用出生信息
+            if (currentService === 'qimen') {
+                formData.qimenTime = document.getElementById('qimen-time').value;
+                formData.location = document.getElementById('location').value;
+            } else {
+                formData.birthdate = document.getElementById('birthdate').value;
+                formData.calendarType = calendarType;
+                formData.birthtime = document.getElementById('birthtime').value;
+            }
 
             // 显示加载状态
             document.getElementById('form-section').style.display = 'none';
@@ -1236,8 +1277,50 @@
                     'fengshui': '风水堪舆'
                 };
 
-                const calendarInfo = calendarType === '阴历' ? '（农历日期）' : '（公历日期）';
-                const prompt = `你是一位德高望重的国学大师，精通${serviceNames[currentService]}，有40年以上的实战经验，曾为众多企业家和名人做命理咨询。请根据以下信息进行详尽的专业测算：
+                let prompt = '';
+                if (currentService === 'qimen') {
+                    // 奇门遁甲：以起卦时间和地点为核心
+                    const qimenDate = formData.qimenTime ? new Date(formData.qimenTime) : new Date();
+                    const timeStr = qimenDate.getFullYear() + '年' + (qimenDate.getMonth()+1) + '月' + qimenDate.getDate() + '日 ' + qimenDate.getHours() + ':' + String(qimenDate.getMinutes()).padStart(2,'0');
+                    prompt = `你是一位德高望重的国学大师，精通奇门遁甲，有40年以上的实战经验，曾为众多企业家和名将做运筹决策咨询。请根据以下起卦信息进行奇门遁甲排盘和详解：
+
+【起卦信息】
+姓名：${formData.name}
+性别：${formData.gender === 'male' ? '男' : '女'}
+起卦时间：${timeStr}
+所在地：${formData.location || '未指定'}
+咨询问题：${formData.question || '请全面分析当前局势'}
+
+请严格按照以下格式输出专业奇门遁甲分析报告，内容必须详实、专业、有深度，总字数不少于1500字：
+
+## 奇门排盘
+（列出此时空的奇门遁甲盘局信息：值符、值使、九星、八门、八神、天盘地盘三奇六仪的布局，说明阴阳遁几局）
+
+## 格局分析
+（分析奇门盘中的关键格局，如天盘地盘的组合、吉凶格（如龙回首、鸟跌穴、青龙逃走等），星门神仪的旺衰状态）
+
+## 用神取用
+（根据所问之事选取用神，分析用神落宫的状态、与日干的关系、旺衰休囚，判断事情的总体走向）
+
+## ${formData.question ? '问题详解' : '局势综论'}
+（针对求测者的具体问题进行深入分析，结合用神、值符、值使、天盘地盘等综合判断。如未指定问题，则分析当前时局的整体吉凶）
+
+## 趋吉避凶
+（给出具体的运筹建议：有利方位、行动时机、需要避开的凶格、可借用的吉神吉门等，要具体可操作）
+
+## 结语
+（一段富含哲理的寄语，给求测者以指引和信心）
+
+要求：
+1. 使用奇门遁甲专业术语并附带通俗解释
+2. 排盘信息要准确，格局分析要有理有据
+3. 结合《奇门遁甲》《烟波钓叟歌》等经典理论
+4. 语气庄重专业但不失温暖
+5. 内容积极向上，给人以指引和希望`;
+                } else {
+                    // 八字/财运/风水：以出生信息为核心
+                    const calendarInfo = formData.calendarType === '阴历' ? '（农历日期）' : '（公历日期）';
+                    prompt = `你是一位德高望重的国学大师，精通${serviceNames[currentService]}，有40年以上的实战经验，曾为众多企业家和名人做命理咨询。请根据以下信息进行详尽的专业测算：
 
 【求测信息】
 姓名：${formData.name}
@@ -1257,7 +1340,7 @@
 ## 运势详析
 （分阶段分析命主的大运流年走势，包括事业运、财运、感情运、健康运，每个方面都要具体分析）
 
-## ${formData.question !== '无' ? '问题专答' : '重点提示'}
+## ${formData.question ? '问题专答' : '重点提示'}
 （针对求测者的具体问题进行深入解答，如果没有具体问题则分析命局中最需要关注的方面）
 
 ## 趋吉避凶
@@ -1272,6 +1355,7 @@
 3. 结合传统经典（如《滴天髓》《穷通宝鉴》《三命通会》等）的理论
 4. 语气庄重专业但不失温暖
 5. 内容积极向上，给人以指引和希望`;
+                }
 
                 const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
                     method: 'POST',
