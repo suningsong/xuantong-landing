@@ -937,6 +937,38 @@
             opacity: 1;
             transform: translateY(0);
         }
+    
+        /* 风水堪舆 - 户型图上传区域 */
+        .upload-area {
+            border: 2px dashed rgba(201,169,110,0.4);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(201,169,110,0.03);
+        }
+        .upload-area:hover {
+            border-color: var(--gold);
+            background: rgba(201,169,110,0.08);
+        }
+        .upload-area.has-image {
+            border-color: var(--gold);
+            background: rgba(201,169,110,0.05);
+        }
+        .upload-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+        .upload-text {
+            color: var(--gold);
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+        }
+        .upload-hint {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
     </style>
 </head>
 <body>
@@ -1074,7 +1106,27 @@
                         <input type="text" id="location" placeholder="如：北京市、上海市浦东新区">
                     </div>
                 </div>
-                <div class="form-group">
+
+                <!-- 风水堪舆 专用：户型图上传 -->
+                <div id="fengshui-fields" style="display:none;">
+                    <div class="form-group">
+                        <label>📐 上传户型图</label>
+                        <div class="upload-area" id="upload-area" onclick="document.getElementById('floorplan-input').click()">
+                            <input type="file" id="floorplan-input" accept="image/*" style="display:none;" onchange="handleFloorplanUpload(this)">
+                            <div id="upload-placeholder">
+                                <div class="upload-icon">🏠</div>
+                                <p class="upload-text">点击上传您的户型图</p>
+                                <p class="upload-hint">支持 JPG/PNG 格式，建议清晰正面照片</p>
+                            </div>
+                            <img id="floorplan-preview" style="display:none; max-width:100%; max-height:200px; border-radius:8px; margin-top:10px;" alt="户型图预览">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>📝 描述您的户型情况</label>
+                        <textarea id="fengshui-desc" rows="3" placeholder="请描述：大门朝向、各房间方位、窗户位置、目前遇到的问题等" style="width:100%; padding:12px; background:rgba(255,255,255,0.05); border:1px solid rgba(201,169,110,0.3); border-radius:8px; color:var(--text-primary); font-size:0.9rem; resize:vertical; font-family:inherit;"></textarea>
+                    </div>
+                </div>
+                <div class="form-group" id="question-group">
                     <label>您的问题</label>
                     <input type="text" id="question" placeholder="请输入您想咨询的问题">
                 </div>
@@ -1102,35 +1154,36 @@
         </div>
 
         <div class="articles-grid fade-in" id="articles-grid">
-            <div class="article-card">
+            <div class="article-card" onclick='showNewsDetail({"cat": "🔥 命理揭秘", "title": "你的八字，正在偷偷决定你35岁以后的命运", "excerpt": "很多人不知道，出生时辰的偏差直接影响命盘格局。3个天干地支的组合，就注定了你一生的财富上限。八字中藏干透干的秘密，决定了你中年之后的运势走向。掌握自己的命盘密码，顺势而为，才能事半功倍。"})' style="cursor:pointer;">
                 <div class="article-category">🔥 命理揭秘</div>
                 <h3 class="article-title">你的八字，正在偷偷决定你35岁以后的命运</h3>
                 <p class="article-excerpt">很多人不知道，出生时辰的偏差直接影响命盘格局。3个天干地支的组合，就注定了你一生的财富上限...</p>
             </div>
-            <div class="article-card">
+            <div class="article-card" onclick='showNewsDetail({"cat": "🏠 风水破局", "title": "你家客厅犯了\"穿心煞\"？难怪财运一直上不来", "excerpt": "进门直对阳台、沙发背后无靠、镜子对着大门...这些致命风水错误，正在悄悄吞噬你的财运和事业运。阳宅风水讲究\"藏风聚气\"，客厅作为家中气场汇聚之地，布局稍有差池便会漏财损运。化解之法，在于重新布局气口与明堂。"})' style="cursor:pointer;">
                 <div class="article-category">🏠 风水破局</div>
                 <h3 class="article-title">你家客厅犯了"穿心煞"？难怪财运一直上不来</h3>
                 <p class="article-excerpt">进门直对阳台、沙发背后无靠、镜子对着大门...这些致命风水错误，正在悄悄吞噬你的财运和事业运</p>
             </div>
-            <div class="article-card">
+            <div class="article-card" onclick='showNewsDetail({"cat": "📖 易经天机", "title": "易经第一卦就道破了天机：你的困局，3000年前已有答案", "excerpt": "“潜龙勿用”不是让你躺平，而是在告诉你一个被99%的人误解的成功法则。读懂乾卦，人生豁然开朗。乾卦六爻从初九到上九，揭示了事物从萌芽到鼎盛再到衰退的完整周期，每一个阶段都有其独特的处世智慧。"})' style="cursor:pointer;">
                 <div class="article-category">📖 易经天机</div>
                 <h3 class="article-title">易经第一卦就道破了天机：你的困局，3000年前已有答案</h3>
                 <p class="article-excerpt">"潜龙勿用"不是让你躺平，而是在告诉你一个被99%的人误解的成功法则。读懂乾卦，人生豁然开朗</p>
             </div>
-            <div class="article-card">
+            <div class="article-card" onclick='showNewsDetail({"cat": "⭐ 运势预警", "title": "2025乙巳年：这3个生肖要格外小心，有一个大坎要过", "excerpt": "太岁当头坐，无喜必有祸。属蛇、猪、虎的朋友注意了，明年的运势转折点上，做对一件事就能逆风翻盘。乙巳年太岁在巳，与亥相冲，与寅相害，与申相刑。犯太岁者需在年初做好化解准备，方能趋吉避凶。"})' style="cursor:pointer;">
                 <div class="article-category">⭐ 运势预警</div>
                 <h3 class="article-title">2025乙巳年：这3个生肖要格外小心，有一个大坎要过</h3>
                 <p class="article-excerpt">太岁当头坐，无喜必有祸。属蛇、猪、虎的朋友注意了，明年的运势转折点上，做对一件事就能逆风翻盘</p>
             </div>
-            <div class="article-card">
+            <div class="article-card" onclick='showNewsDetail({"cat": "🌊 五行密码", "title": "你是\"水命\"还是\"火命\"？一查便知，90%的人算错了", "excerpt": "纳音五行和日主五行是两套完全不同的体系。用错了，所有风水调理、颜色选择全都会适得其反。很多人按出生年份的纳音来定自己的命格，但实际上，真正的命理核心在于日柱天干——那才是你的元神所在。"})' style="cursor:pointer;">
                 <div class="article-category">🌊 五行密码</div>
                 <h3 class="article-title">你是"水命"还是"火命"？一查便知，90%的人算错了</h3>
                 <p class="article-excerpt">纳音五行和日主五行是两套完全不同的体系。用错了，所有风水调理、颜色选择全都会适得其反</p>
             </div>
-            <div class="article-card">
+            <div class="article-card" onclick='showNewsDetail({"cat": "📅 择日秘法", "title": "黄历上的\"宜\"和\"忌\"，原来90%的人都看错了", "excerpt": "黄道吉日不是千篇一律的。同一天的吉凶，对不同生肖完全不同。大师择日的秘密，今天一次说清。真正的择日需要结合当事人的八字、事体性质、方位朝向等多重因素，绝非翻翻老黄历那么简单。"})' style="cursor:pointer;">
                 <div class="article-category">📅 择日秘法</div>
                 <h3 class="article-title">黄历上的"宜"和"忌"，原来90%的人都看错了</h3>
                 <p class="article-excerpt">黄道吉日不是千篇一律的。同一天的吉凶，对不同生肖完全不同。大师择日的秘密，今天一次说清</p>
+                <p style="color:var(--gold); font-size:0.8rem; margin-top:8px; opacity:0.7;">点击阅读全文 →</p>
             </div>
         </div>
     </section>
@@ -1183,6 +1236,33 @@
 
     <script>
         let currentService = '';
+
+
+        // 风水堪舆 - 户型图上传预览
+        function handleFloorplanUpload(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                if (!file.type.startsWith('image/')) {
+                    alert('请上传图片格式的文件');
+                    return;
+                }
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('图片大小不能超过5MB');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('floorplan-preview');
+                    const placeholder = document.getElementById('upload-placeholder');
+                    const uploadArea = document.getElementById('upload-area');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    placeholder.style.display = 'none';
+                    uploadArea.classList.add('has-image');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
 
         function selectService(type, event) {
             currentService = type;
@@ -1246,7 +1326,8 @@
                 service: currentService,
                 name: document.getElementById('name').value,
                 gender: document.getElementById('gender').value,
-                question: document.getElementById('question').value
+                question: document.getElementById('question').value,
+                fengshuiDesc: document.getElementById('fengshui-desc') ? document.getElementById('fengshui-desc').value : 
             };
             // 奇门遁甲用起卦时间和地点，其他用出生信息
             if (currentService === 'qimen') {
@@ -1394,8 +1475,45 @@
 3. 结合《奇门遁甲》《烟波钓叟歌》等经典理论
 4. 语气庄重专业但不失温暖
 5. 内容积极向上，给人以指引和希望`;
+                } else if (currentService === 'fengshui') {
+                    // 风水堪舆：以户型图描述为核心
+                    const descInfo = formData.fengshuiDesc || '用户未提供详细描述';
+                    prompt = `你是一位德高望重的风水堪舆大师，精通阳宅风水、形势派与理气派，有40年以上的实地勘察经验，曾为众多企业和名门望族堪舆宅邸。请根据以下户型信息进行详尽的专业风水分析：
+
+【户型信息】
+姓名：${formData.name}
+性别：${formData.gender === 'male' ? '男' : '女'}
+户型描述：${descInfo}
+咨询问题：${formData.question || '请全面分析此户型风水'}
+
+请严格按照以下格式输出专业风水分析报告，内容必须详实、专业、有深度，总字数不少于1500字：
+
+## 户型总论
+（根据描述分析此户型的整体格局，判断户型的基本风水特征，如是否方正、有无缺角、整体朝向等）
+
+## 各区域风水详析
+（逐一分析大门、客厅、卧室、厨房、卫生间、阳台等各功能区的风水吉凶，指出存在的问题和改善方向）
+
+## 重点问题诊断
+（针对用户描述中提到的具体问题进行深入分析，如未提供则分析户型中最需要注意的风水问题）
+
+## 财运与事业运分析
+（从风水角度分析此户型对居住者财运和事业运的影响，指出催财催贵的方位和方法）
+
+## 趋吉避凶建议
+（给出具体的风水调理方案：吉位利用、凶位化解、摆设建议、颜色搭配、植物摆放等，要具体可操作）
+
+## 结语
+（一段富含哲理的寄语，给求测者以指引和信心）
+
+要求：
+1. 使用风水专业术语但附带通俗解释
+2. 分析要有理有据，结合形势派和理气派理论
+3. 结合《阳宅三要》《葬书》《青囊序》等经典理论
+4. 语气庄重专业但不失温暖
+5. 内容积极向上，给人以指引和希望`;
                 } else {
-                    // 八字/财运/风水：以出生信息为核心
+                    // 八字/财运：以出生信息为核心
                     const calendarInfo = formData.calendarType === '阴历' ? '（农历日期）' : '（公历日期）';
                     prompt = `你是一位德高望重的国学大师，精通${serviceNames[currentService]}，有40年以上的实战经验，曾为众多企业家和名人做命理咨询。请根据以下信息进行详尽的专业测算：
 
@@ -1498,6 +1616,15 @@
             document.getElementById('divination-form').reset();
             document.getElementById('submit-btn').disabled = false;
             document.getElementById('submit-btn').textContent = '开始测算';
+            // 重置风水堪舆上传区域
+            const preview = document.getElementById('floorplan-preview');
+            const placeholder = document.getElementById('upload-placeholder');
+            const uploadArea = document.getElementById('upload-area');
+            if (preview) { preview.style.display = 'none'; preview.src = ''; }
+            if (placeholder) placeholder.style.display = 'block';
+            if (uploadArea) uploadArea.classList.remove('has-image');
+            const fengshuiDesc = document.getElementById('fengshui-desc');
+            if (fengshuiDesc) fengshuiDesc.value = '';
             goBack();
         }
 
@@ -1629,6 +1756,48 @@
             }
         }
 
+
+        // ===== 新闻详情弹窗 =====
+        function showNewsDetail(article) {
+            const modal = document.getElementById('news-modal');
+            const body = document.getElementById('news-modal-body');
+            const dateStr = new Date().toLocaleDateString('zh-CN', {year:'numeric', month:'long', day:'numeric'});
+            
+            body.innerHTML = `
+                <div style="margin-bottom:20px;">
+                    <span style="display:inline-block; padding:4px 12px; background:linear-gradient(135deg, rgba(201,169,110,0.2), rgba(201,169,110,0.1)); border:1px solid rgba(201,169,110,0.4); border-radius:20px; color:var(--gold); font-size:0.8rem;">${article.tag || '玄学资讯'}</span>
+                    <p style="color:var(--text-muted); font-size:0.8rem; margin-top:8px;">${dateStr}</p>
+                </div>
+                <h2 style="font-family:var(--serif); color:var(--gold-light); font-size:1.5rem; line-height:1.6; margin-bottom:20px; letter-spacing:0.05em;">${article.title}</h2>
+                <div style="color:var(--text-primary); font-size:1rem; line-height:2; margin-bottom:24px; padding:20px; background:rgba(255,255,255,0.03); border-radius:12px; border-left:3px solid var(--gold);">
+                    ${article.excerpt || ''}
+                </div>
+                <div style="text-align:center; padding-top:16px; border-top:1px solid rgba(201,169,110,0.2);">
+                    <button onclick="closeNewsModal(); document.getElementById('contact').scrollIntoView({behavior:'smooth'});" 
+                        style="padding:12px 28px; background:linear-gradient(135deg, var(--gold-dark), var(--gold)); color:#0A0A0F; border:none; border-radius:8px; font-size:0.95rem; font-weight:700; cursor:pointer; font-family:var(--serif);">
+                        🔮 想深入了解？立即咨询大师
+                    </button>
+                </div>
+            `;
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeNewsModal() {
+            document.getElementById('news-modal').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+        
+        // 点击模态框背景关闭
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('news-modal');
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) closeNewsModal();
+                });
+            }
+        });
+
         // ===== 每日新闻加载 =====
         async function loadNews() {
             try {
@@ -1640,12 +1809,13 @@
                 let html = '';
                 (data.articles || []).forEach((item, i) => {
                     html += `
-                    <div class="news-card">
+                    <div class="news-card" onclick='showNewsDetail(${JSON.stringify(item).replace(/'/g, "\'")})' style="cursor:pointer;">
                         <div class="news-index">${i + 1}</div>
                         <div class="news-body">
                             <span class="news-tag">${item.tag || '玄学资讯'}</span>
                             <h3 class="news-title">${item.title}</h3>
                             <p class="news-excerpt">${item.excerpt || ''}</p>
+                            <p style="color:var(--gold); font-size:0.8rem; margin-top:8px; opacity:0.7;">点击查看详细内容 →</p>
                         </div>
                     </div>`;
                 });
@@ -1674,5 +1844,13 @@
             observer.observe(el);
         });
     </script>
+
+    <!-- 新闻详情模态框 -->
+    <div id="news-modal" class="news-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:10000; overflow-y:auto; backdrop-filter:blur(8px);">
+        <div class="news-modal-content" style="max-width:600px; margin:40px auto; padding:30px 24px; background:linear-gradient(145deg, #0F0F1A 0%, #1A1A2E 100%); border:1px solid rgba(201,169,110,0.3); border-radius:16px; position:relative;">
+            <button onclick="closeNewsModal()" style="position:absolute; top:16px; right:16px; background:none; border:1px solid rgba(201,169,110,0.4); color:var(--gold); font-size:1.2rem; width:36px; height:36px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center;">✕</button>
+            <div id="news-modal-body"></div>
+        </div>
+    </div>
 </body>
 </html>
