@@ -377,6 +377,137 @@
             cursor: not-allowed;
         }
 
+        /* 日历类型切换 */
+        .calendar-switch {
+            display: flex;
+            gap: 0;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-gold);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .calendar-switch label {
+            flex: 1;
+            text-align: center;
+            padding: 10px 15px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            margin-bottom: 0;
+            transition: all 0.3s ease;
+            border-right: 1px solid var(--border-gold);
+        }
+
+        .calendar-switch label:last-child {
+            border-right: none;
+        }
+
+        .calendar-switch input[type="radio"]:checked + span {
+            color: var(--gold-light);
+            font-weight: 600;
+        }
+
+        .calendar-switch label:has(input:checked) {
+            background: rgba(201,169,110,0.15);
+            color: var(--gold-light);
+        }
+
+        .calendar-switch input[type="radio"] {
+            display: none;
+        }
+
+        .calendar-hint {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+            font-style: italic;
+        }
+
+        /* ========== NEWS SECTION ========== */
+        .news-section {
+            padding: 80px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .news-date {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 30px;
+            letter-spacing: 0.1em;
+        }
+
+        .news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .news-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 20px 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .news-card:hover {
+            background: var(--bg-card-hover);
+            transform: translateX(6px);
+            border-color: rgba(201,169,110,0.4);
+        }
+
+        .news-index {
+            min-width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(201,169,110,0.1);
+            border: 1px solid var(--border-gold);
+            color: var(--gold);
+            font-family: var(--serif);
+            font-size: 0.85rem;
+            font-weight: 600;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .news-body {
+            flex: 1;
+        }
+
+        .news-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            color: var(--gold);
+            background: rgba(201,169,110,0.1);
+            border: 1px solid rgba(201,169,110,0.2);
+            padding: 2px 8px;
+            margin-bottom: 8px;
+            letter-spacing: 0.1em;
+        }
+
+        .news-title {
+            font-family: var(--serif);
+            font-size: 1.05rem;
+            color: var(--gold-light);
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+
+        .news-excerpt {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
         /* ========== RESULT SECTION ========== */
         .result-section {
             display: none;
@@ -409,6 +540,90 @@
 
         .result-content p {
             margin-bottom: 20px;
+        }
+
+        /* 专业报告样式 */
+        .report-header {
+            text-align: center;
+            padding: 30px 20px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-gold);
+            background: linear-gradient(180deg, rgba(201,169,110,0.05) 0%, transparent 100%);
+        }
+
+        .report-header .report-seal {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 15px;
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--serif);
+            font-size: 1.5rem;
+            color: var(--gold);
+        }
+
+        .report-header h4 {
+            font-family: var(--serif);
+            font-size: 1.3rem;
+            color: var(--gold-light);
+            letter-spacing: 0.2em;
+            margin-bottom: 10px;
+        }
+
+        .report-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .report-section {
+            margin-bottom: 28px;
+            padding-left: 16px;
+            border-left: 2px solid rgba(201,169,110,0.3);
+        }
+
+        .report-section-title {
+            font-family: var(--serif);
+            font-size: 1.1rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+            letter-spacing: 0.1em;
+        }
+
+        .report-section p {
+            color: var(--text-primary);
+            line-height: 2;
+            margin-bottom: 10px;
+        }
+
+        .report-highlight {
+            background: rgba(201,169,110,0.08);
+            border: 1px solid rgba(201,169,110,0.2);
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .report-highlight .label {
+            font-size: 0.8rem;
+            color: var(--gold);
+            letter-spacing: 0.1em;
+            margin-bottom: 6px;
+        }
+
+        .report-summary {
+            text-align: center;
+            padding: 24px;
+            margin-top: 30px;
+            border-top: 1px solid var(--border-gold);
+            font-family: var(--serif);
+            color: var(--gold-light);
+            font-size: 1rem;
+            letter-spacing: 0.1em;
+            line-height: 2;
         }
 
         .loading {
@@ -679,7 +894,12 @@
                 </div>
                 <div class="form-group">
                     <label>出生日期</label>
+                    <div class="calendar-switch">
+                        <label><input type="radio" name="calendarType" value="阳历" checked><span>阳历（公历）</span></label>
+                        <label><input type="radio" name="calendarType" value="阴历"><span>阴历（农历）</span></label>
+                    </div>
                     <input type="date" id="birthdate" required>
+                    <div class="calendar-hint" id="calendar-hint">公历日期，即日常使用的日期</div>
                 </div>
                 <div class="form-group">
                     <label>出生时辰</label>
@@ -760,6 +980,23 @@
         </div>
     </section>
 
+    <!-- ========== DAILY NEWS ========== -->
+    <section class="news-section" id="news">
+        <div class="section-header fade-in">
+            <div class="ornament">
+                <span class="ornament-line"></span>
+                <span class="ornament-symbol">☲</span>
+                <span class="ornament-line"></span>
+            </div>
+            <h2 class="section-title">每日玄学热点</h2>
+            <p class="section-subtitle">Daily Metaphysics Insights</p>
+        </div>
+        <p class="news-date" id="news-date">加载中...</p>
+        <div class="news-list fade-in" id="news-list">
+            <div style="text-align:center; color: var(--text-muted); padding: 40px;">正在加载最新资讯...</div>
+        </div>
+    </section>
+
     <!-- ========== CONTACT ========== -->
     <section class="contact-section" id="contact">
         <div class="section-header fade-in">
@@ -829,11 +1066,13 @@
             btn.disabled = true;
             btn.textContent = '正在测算...';
             
+            const calendarType = document.querySelector('input[name="calendarType"]:checked').value;
             const formData = {
                 service: currentService,
                 name: document.getElementById('name').value,
                 gender: document.getElementById('gender').value,
                 birthdate: document.getElementById('birthdate').value,
+                calendarType: calendarType,
                 birthtime: document.getElementById('birthtime').value,
                 question: document.getElementById('question').value
             };
@@ -861,21 +1100,42 @@
                     'fengshui': '风水堪舆'
                 };
 
-                const prompt = `你是一位精通${serviceNames[currentService]}的国学大师，有30年的命理研究经验。请根据以下信息进行专业测算：
+                const calendarInfo = calendarType === '阴历' ? '（农历日期）' : '（公历日期）';
+                const prompt = `你是一位德高望重的国学大师，精通${serviceNames[currentService]}，有40年以上的实战经验，曾为众多企业家和名人做命理咨询。请根据以下信息进行详尽的专业测算：
 
+【求测信息】
 姓名：${formData.name}
 性别：${formData.gender === 'male' ? '男' : '女'}
-出生日期：${formData.birthdate}
+出生日期：${formData.birthdate} ${calendarInfo}
 出生时辰：${formData.birthtime}
-咨询问题：${formData.question || '请全面分析'}
+咨询问题：${formData.question || '请全面分析运势'}
 
-请用专业但通俗易懂的语言进行分析，包括：
-1. 命局基本分析
-2. 运势走向
-3. 针对问题的具体解答
-4. 建议与化解方法
+请严格按照以下格式输出专业报告，内容必须详实、专业、有深度，总字数不少于1500字：
 
-请注意：内容要积极向上，给人以信心和指引。`;
+## 命盘总论
+（概述此命局的基本格局、天干地支组合、五行配置，分析命主的核心特质和天赋）
+
+## 五行分析
+（详细分析金木水火土五行的旺衰、喜忌、相生相克关系，指出命局中五行的强弱和平衡状态）
+
+## 运势详析
+（分阶段分析命主的大运流年走势，包括事业运、财运、感情运、健康运，每个方面都要具体分析）
+
+## ${formData.question !== '无' ? '问题专答' : '重点提示'}
+（针对求测者的具体问题进行深入解答，如果没有具体问题则分析命局中最需要关注的方面）
+
+## 趋吉避凶
+（给出具体可操作的建议，包括有利的方位、颜色、数字、贵人属相、注意事项等，要具体实用）
+
+## 结语
+（一段温暖的寄语，给求测者以信心和正能量）
+
+要求：
+1. 使用专业术语但要附带通俗解释
+2. 每个章节内容充实，不能敷衍
+3. 结合传统经典（如《滴天髓》《穷通宝鉴》《三命通会》等）的理论
+4. 语气庄重专业但不失温暖
+5. 内容积极向上，给人以指引和希望`;
 
                 const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
                     method: 'POST',
@@ -898,12 +1158,26 @@
                 
                 if (data.choices && data.choices[0]) {
                     const result = data.choices[0].message.content;
-                    document.getElementById('result-content').innerHTML = `
-                        <div style="white-space: pre-wrap;">${result}</div>
-                        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-gold); text-align: center;">
+                    const reportHtml = formatReport(result, formData);
+                    const phoneFormHtml = `
+                        <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--border-gold);">
+                            <div style="text-align: center; margin-bottom: 24px;">
+                                <p style="font-family: var(--serif); color: var(--gold-light); font-size: 1.1rem; margin-bottom: 8px;">✨ 获取完整详细报告</p>
+                                <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8;">填写手机号，我们将为您发送完整详细的命理咨询报告<br>包含深度分析、流年运势及专属化解方案</p>
+                            </div>
+                            <form onsubmit="submitPhone(event)" style="max-width: 360px; margin: 0 auto;">
+                                <div class="form-group" style="margin-bottom: 16px;">
+                                    <input type="tel" id="phone-number" required placeholder="请输入您的手机号" pattern="[0-9]{11}" maxlength="11" style="text-align: center; font-size: 1.1rem; letter-spacing: 0.1em;">
+                                </div>
+                                <button type="submit" class="submit-btn" id="phone-submit-btn">立即领取详细报告</button>
+                            </form>
+                            <p style="text-align: center; font-size: 0.75rem; color: var(--text-muted); margin-top: 12px;">我们承诺保护您的隐私信息</p>
+                        </div>
+                        <div style="margin-top: 30px; text-align: center;">
                             <button class="back-btn" onclick="resetForm()" style="margin: 0 auto;">重新测算</button>
                         </div>
                     `;
+                    document.getElementById('result-content').innerHTML = reportHtml + phoneFormHtml;
                 } else {
                     throw new Error('测算失败');
                 }
@@ -929,6 +1203,161 @@
             document.getElementById('submit-btn').textContent = '开始测算';
             goBack();
         }
+
+        // ===== 专业报告格式化 =====
+        function formatReport(text, formData) {
+            const serviceMap = {'bazi':'八字命理','caiyun':'财运分析','qimen':'奇门遁甲','fengshui':'风水堪舆'};
+            const icons = {'bazi':'命','caiyun':'财','qimen':'遁','fengshui':'宅'};
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日`;
+
+            // 构建报告头部
+            let html = `<div class="report-header">
+                <div class="report-seal">${icons[formData.service] || '☯'}</div>
+                <h4>${serviceMap[formData.service]}专业报告</h4>
+                <div class="report-meta">
+                    姓名：${formData.name} | 性别：${formData.gender === 'male' ? '男' : '女'}<br>
+                    出生：${formData.birthdate}（${formData.calendarType || '阳历'}）${formData.birthtime}<br>
+                    报告日期：${dateStr}
+                </div>
+            </div>`;
+
+            // 解析 ## 章节标题
+            const sections = text.split(/^## /m).filter(s => s.trim());
+            sections.forEach((section, idx) => {
+                const lines = section.split('\n');
+                const title = lines[0].trim();
+                const content = lines.slice(1).join('\n').trim();
+
+                if (title === '结语' || title.includes('结语')) {
+                    html += `<div class="report-summary">「 ${title} 」<br><br>${formatParagraphs(content)}</div>`;
+                } else {
+                    html += `<div class="report-section">
+                        <div class="report-section-title">◆ ${title}</div>
+                        ${formatParagraphs(content)}
+                    </div>`;
+                }
+            });
+
+            // 如果没有检测到 ## 格式，直接格式化全文
+            if (sections.length === 0) {
+                html += `<div class="report-section">${formatParagraphs(text)}</div>`;
+            }
+
+            return html;
+        }
+
+        function formatParagraphs(text) {
+            return text.split(/\n\n+/).map(p => {
+                p = p.trim();
+                if (!p) return '';
+                // 加粗文本 **text**
+                p = p.replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--gold-light)">$1</strong>');
+                // 小标题 ### 
+                p = p.replace(/^### (.*$)/gm, '<div style="font-family:var(--serif);color:var(--gold);font-size:0.95rem;margin:12px 0 6px;letter-spacing:0.05em">▸ $1</div>');
+                return `<p>${p.replace(/\n/g, '<br>')}</p>`;
+            }).join('');
+        }
+
+        // ===== 日历类型切换 =====
+        document.querySelectorAll('input[name="calendarType"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const hint = document.getElementById('calendar-hint');
+                if (this.value === '阴历') {
+                    hint.textContent = '请输入农历日期，系统将自动转换为公历进行测算';
+                } else {
+                    hint.textContent = '公历日期，即日常使用的日期';
+                }
+            });
+        });
+
+        // ===== 手机号提交 =====
+        async function submitPhone(e) {
+            e.preventDefault();
+            const btn = document.getElementById('phone-submit-btn');
+            const phone = document.getElementById('phone-number').value;
+            btn.disabled = true;
+            btn.textContent = '提交中...';
+
+            const calendarType = document.querySelector('input[name="calendarType"]:checked').value;
+            const formData = {
+                service: currentService,
+                name: document.getElementById('name').value,
+                gender: document.getElementById('gender').value === 'male' ? '男' : '女',
+                birthdate: document.getElementById('birthdate').value,
+                calendarType: calendarType,
+                birthtime: document.getElementById('birthtime').value,
+                question: document.getElementById('question').value || '无',
+                phone: phone,
+                time: new Date().toLocaleString('zh-CN')
+            };
+
+            const serviceMap = {'bazi':'八字命理','caiyun':'财运分析','qimen':'奇门遁甲','fengshui':'风水堪舆'};
+
+            try {
+                const res = await fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        access_key: 'WEB3FORMS_KEY_PLACEHOLDER',
+                        subject: `【玄同先生】新咨询 - ${serviceMap[formData.service]} - ${formData.name}`,
+                        from_name: '玄同先生网站',
+                        message: `
+姓名：${formData.name}
+性别：${formData.gender}
+日期类型：${formData.calendarType}
+出生日期：${formData.birthdate}
+出生时辰：${formData.birthtime}
+咨询问题：${formData.question}
+手机号：${formData.phone}
+提交时间：${formData.time}
+                        `.trim()
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    btn.textContent = '✓ 提交成功';
+                    btn.style.background = '#4CAF50';
+                    alert('提交成功！我们将在24小时内与您联系，为您提供详细的命理咨询报告。');
+                } else {
+                    throw new Error('提交失败');
+                }
+            } catch(err) {
+                // 降级方案：使用 mailto
+                const subject = encodeURIComponent(`【玄同先生】新咨询 - ${serviceMap[formData.service]} - ${formData.name}`);
+                const body = encodeURIComponent(`姓名：${formData.name}\n性别：${formData.gender}\n日期类型：${formData.calendarType}\n出生日期：${formData.birthdate}\n出生时辰：${formData.birthtime}\n咨询问题：${formData.question}\n手机号：${formData.phone}\n提交时间：${formData.time}`);
+                window.location.href = `mailto:475263124@qq.com?subject=${subject}&body=${body}`;
+                btn.textContent = '✓ 已发送';
+                btn.style.background = '#4CAF50';
+            }
+        }
+
+        // ===== 每日新闻加载 =====
+        async function loadNews() {
+            try {
+                const res = await fetch('news.json?t=' + Date.now());
+                const data = await res.json();
+                const dateEl = document.getElementById('news-date');
+                const listEl = document.getElementById('news-list');
+                dateEl.textContent = data.date || new Date().toLocaleDateString('zh-CN', {year:'numeric',month:'long',day:'numeric'});
+                let html = '';
+                (data.articles || []).forEach((item, i) => {
+                    html += `
+                    <div class="news-card">
+                        <div class="news-index">${i + 1}</div>
+                        <div class="news-body">
+                            <span class="news-tag">${item.tag || '玄学资讯'}</span>
+                            <h3 class="news-title">${item.title}</h3>
+                            <p class="news-excerpt">${item.excerpt || ''}</p>
+                        </div>
+                    </div>`;
+                });
+                listEl.innerHTML = html || '<div style="text-align:center;color:var(--text-muted);">暂无最新资讯</div>';
+            } catch(e) {
+                document.getElementById('news-list').innerHTML = '<div style="text-align:center;color:var(--text-muted);">最新资讯加载中...</div>';
+            }
+        }
+        loadNews();
 
         // Scroll animation
         const observerOptions = {
