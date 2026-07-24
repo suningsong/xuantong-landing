@@ -908,6 +908,36 @@
             color: var(--gold);
         }
 
+        /* ========== FLOATING RE-TEST BUTTON ========== */
+        .float-retest-btn {
+            position: fixed;
+            left: 20px;
+            bottom: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, rgba(10,10,15,0.95), rgba(20,20,30,0.95));
+            border: 1px solid var(--border-gold);
+            color: var(--gold);
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            text-decoration: none;
+        }
+        .float-retest-btn:hover {
+            border-color: var(--gold);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(201,169,110,0.3);
+        }
+        .float-retest-btn.visible {
+            display: flex;
+        }
+
         /* ========== FLOATING BACK TO TOP ========== */
         .float-top-btn {
             position: fixed;
@@ -1489,7 +1519,11 @@
 
         <!-- 结果区域 -->
         <div id="result-section" class="result-section">
-            <h3>测算结果</h3>
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
+                <button class="back-btn" onclick="resetForm()" style="margin-bottom:0;">← 重新测算</button>
+                <h3 style="margin-bottom:0; flex:1; text-align:center;">测算结果</h3>
+                <div style="width:100px;"></div>
+            </div>
             <div id="result-content" class="result-content"></div>
         </div>
     </section>
@@ -1645,6 +1679,7 @@
             document.getElementById('form-section').classList.remove('active');
             document.getElementById('form-section').style.display = '';
             document.getElementById('result-section').classList.remove('active');
+            document.getElementById('float-retest-btn').classList.remove('visible');
             document.querySelector('.services-grid').style.display = 'grid';
             document.getElementById('articles').style.display = 'block';
             document.getElementById('contact').style.display = 'block';
@@ -1678,6 +1713,7 @@
             // 显示加载状态
             document.getElementById('form-section').style.display = 'none';
             document.getElementById('result-section').classList.add('active');
+            document.getElementById('float-retest-btn').classList.add('visible');
             document.getElementById('result-content').innerHTML = `
                 <div class="loading">
                     <div class="loading-animation">
@@ -2607,6 +2643,7 @@ ${isCaiyun ? `（从命局财星入手，分析正财偏财的旺衰、财库有
         </div>
     </div>
     <!-- ========== FLOATING BACK TO TOP ========== -->
+    <button class="float-retest-btn" id="float-retest-btn" onclick="resetForm()" title="重新测算">↻</button>
     <button class="float-top-btn" id="float-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="返回顶部">↑</button>
 
 </body>
