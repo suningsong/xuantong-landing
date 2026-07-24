@@ -258,19 +258,22 @@
 
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .service-card {
             position: relative;
             background: var(--bg-card);
             border: 1px solid var(--border-gold);
-            padding: 40px 24px;
+            padding: 28px 18px;
             text-align: center;
             cursor: pointer;
             transition: all 0.4s ease;
             overflow: hidden;
+            border-radius: 12px;
         }
 
         .service-card::before {
@@ -297,13 +300,13 @@
         }
 
         .service-icon {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 24px;
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 1.6rem;
             color: var(--gold);
             border: 1px solid var(--border-gold);
             border-radius: 50%;
@@ -325,9 +328,13 @@
         }
 
         .service-desc {
-            font-size: 0.85rem;
+            font-size: 0.78rem;
             color: var(--text-secondary);
-            line-height: 1.8;
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         /* ========== FORM SECTION ========== */
@@ -616,6 +623,12 @@
             background: linear-gradient(180deg, rgba(201,169,110,0.05) 0%, transparent 100%);
         }
 
+        .report-decoration {
+            margin-bottom: 10px;
+            opacity: 0.9;
+            filter: drop-shadow(0 0 15px rgba(201,169,110,0.2));
+        }
+
         .report-header .report-seal {
             width: 60px;
             height: 60px;
@@ -636,6 +649,25 @@
             color: var(--gold-light);
             letter-spacing: 0.2em;
             margin-bottom: 10px;
+        }
+
+        .report-header-divider {
+            margin-top: 20px;
+            padding-top: 15px;
+            color: var(--gold);
+            font-size: 0.9rem;
+            letter-spacing: 0.3em;
+            opacity: 0.5;
+        }
+
+        .report-divider {
+            text-align: center;
+            padding: 16px 0;
+            color: var(--gold);
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+            opacity: 0.4;
+            font-family: var(--serif);
         }
 
         .report-meta {
@@ -893,19 +925,24 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 10px 20px;
-            background: transparent;
-            border: 1px solid var(--border-gold);
-            color: var(--text-secondary);
-            font-size: 0.85rem;
+            padding: 12px 28px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            border: none;
+            color: var(--bg-deep);
+            font-size: 0.95rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            border-radius: 30px;
             margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(201,169,110,0.3);
+            letter-spacing: 0.05em;
         }
 
         .back-btn:hover {
-            border-color: var(--gold);
-            color: var(--gold);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(201,169,110,0.5);
+            background: linear-gradient(135deg, var(--gold-light), var(--gold));
         }
 
         /* ========== FLOATING RE-TEST BUTTON ========== */
@@ -913,26 +950,28 @@
             position: fixed;
             left: 20px;
             bottom: 30px;
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, rgba(10,10,15,0.95), rgba(20,20,30,0.95));
-            border: 1px solid var(--border-gold);
-            color: var(--gold);
-            font-size: 1.2rem;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            border: none;
+            color: var(--bg-deep);
+            font-size: 0.9rem;
+            font-weight: 600;
             cursor: pointer;
-            border-radius: 50%;
+            border-radius: 30px;
             display: none;
             align-items: center;
             justify-content: center;
+            gap: 6px;
             z-index: 999;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 15px rgba(201,169,110,0.3);
             text-decoration: none;
+            letter-spacing: 0.05em;
         }
         .float-retest-btn:hover {
-            border-color: var(--gold);
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(201,169,110,0.3);
+            box-shadow: 0 6px 20px rgba(201,169,110,0.5);
+            background: linear-gradient(135deg, var(--gold-light), var(--gold));
         }
         .float-retest-btn.visible {
             display: flex;
@@ -1094,10 +1133,15 @@
             .hero-desc { font-size: 0.95rem; padding: 0 10px; }
             .hero-cta { padding: 14px 36px; font-size: 1rem; }
             .section-title { font-size: 1.5rem; }
-            .services-grid { grid-template-columns: 1fr; }
+            .services-grid { grid-template-columns: 1fr; max-width: 100%; }
             .articles-grid { grid-template-columns: 1fr; }
             .form-section { padding: 40px 20px; }
             .form-group input, .form-group select { padding: 12px 14px; font-size: 0.95rem; }
+        }
+
+        @media (max-width: 600px) {
+            .services-grid { grid-template-columns: 1fr; max-width: 100%; }
+            .service-card { padding: 24px 16px; }
         }
 
         @media (max-width: 480px) {
@@ -1106,6 +1150,7 @@
             .hero-subtitle { font-size: 1rem; letter-spacing: 0.3em; }
             .hero-desc { font-size: 0.9rem; line-height: 2; }
             .form-section { padding: 30px 16px; }
+            .service-card { padding: 20px 14px; }
             .form-group input[type="date"],
             .form-group input[type="datetime-local"] {
                 font-size: 16px; /* Prevent zoom on iOS */
@@ -1411,22 +1456,22 @@
             <div class="service-card" onclick="selectService('bazi', event)">
                 <div class="service-icon">命</div>
                 <h3 class="service-title">八字命理</h3>
-                <p class="service-desc">🎯 你的八字里藏着3个多数人不知道的转运密码，一旦破解，人生开挂</p>
+                <p class="service-desc">🎯 八字转运密码，破解即开挂</p>
             </div>
             <div class="service-card" onclick="selectService('caiyun', event)">
                 <div class="service-icon">财</div>
                 <h3 class="service-title">财运分析</h3>
-                <p class="service-desc">💰 为什么你总是赚不到钱？命里的财库缺口，9步之内必有解法</p>
+                <p class="service-desc">💰 命理财库缺口，9步化解</p>
             </div>
             <div class="service-card" onclick="selectService('qimen', event)">
                 <div class="service-icon">遁</div>
                 <h3 class="service-title">奇门遁甲</h3>
-                <p class="service-desc">⚔️ 诸葛孔明用奇门遁甲决胜千里，你的人生同样需要一场精准运筹</p>
+                <p class="service-desc">⚔️ 奇门运筹，精准决胜</p>
             </div>
             <div class="service-card" onclick="selectService('fengshui', event)">
                 <div class="service-icon">宅</div>
                 <h3 class="service-title">风水堪舆</h3>
-                <p class="service-desc">🏠 你家大门朝向可能正在"漏财"！风水大师绝不会告诉你的5个致命布局</p>
+                <p class="service-desc">🏠 五大风水致命布局揭秘</p>
             </div>
         </div>
 
@@ -1677,8 +1722,9 @@
 
         function goBack() {
             document.getElementById('form-section').classList.remove('active');
-            document.getElementById('form-section').style.display = '';
+            document.getElementById('form-section').style.display = 'none';
             document.getElementById('result-section').classList.remove('active');
+            document.getElementById('result-section').style.display = '';
             document.getElementById('float-retest-btn').classList.remove('visible');
             document.querySelector('.services-grid').style.display = 'grid';
             document.getElementById('articles').style.display = 'block';
@@ -2051,7 +2097,7 @@ ${isCaiyun ? `（从命局财星入手，分析正财偏财的旺衰、财库有
         function resetForm() {
             document.getElementById('divination-form').reset();
             document.getElementById('submit-btn').disabled = false;
-            document.getElementById('submit-btn').textContent = '开始测算';
+            document.getElementById('submit-btn').textContent = '🔮 立即开启天命测算';
             // 重置风水堪舆上传区域
             const preview = document.getElementById('floorplan-preview');
             const placeholder = document.getElementById('upload-placeholder');
@@ -2071,6 +2117,143 @@ ${isCaiyun ? `（从命局财星入手，分析正财偏财的旺衰、财库有
             const now = new Date();
             const dateStr = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日`;
 
+            // SVG装饰图案 - 根据服务类型生成不同主题
+            function getServiceDecoration(service) {
+                const decorations = {
+                    'bazi': `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="width:140px;height:140px;margin:0 auto 10px;display:block;">
+                        <defs>
+                            <radialGradient id="yinyang-grad" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="rgba(201,169,110,0.3)"/>
+                                <stop offset="100%" stop-color="rgba(201,169,110,0.05)"/>
+                            </radialGradient>
+                        </defs>
+                        <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(201,169,110,0.25)" stroke-width="1.5"/>
+                        <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(201,169,110,0.15)" stroke-width="1"/>
+                        <circle cx="100" cy="100" r="45" fill="url(#yinyang-grad)"/>
+                        <path d="M100 55 A22.5 22.5 0 0 1 100 100 A22.5 22.5 0 0 0 100 145 A45 45 0 0 1 100 55Z" fill="rgba(201,169,110,0.35)"/>
+                        <path d="M100 55 A22.5 22.5 0 0 0 100 100 A22.5 22.5 0 0 1 100 145 A45 45 0 0 0 100 55Z" fill="rgba(10,10,15,0.6)"/>
+                        <circle cx="100" cy="77.5" r="6" fill="rgba(10,10,15,0.7)"/>
+                        <circle cx="100" cy="122.5" r="6" fill="rgba(201,169,110,0.5)"/>
+                        <circle cx="100" cy="100" r="2" fill="rgba(201,169,110,0.6)"/>
+                        <!-- 八卦纹 -->
+                        <g transform="translate(100,100)" stroke="rgba(201,169,110,0.2)" stroke-width="3" stroke-linecap="round">
+                            <line x1="0" y1="-70" x2="0" y2="-58" />
+                            <line x1="49.5" y1="-49.5" x2="41" y2="-41" />
+                            <line x1="70" y1="0" x2="58" y2="0" />
+                            <line x1="49.5" y1="49.5" x2="41" y2="41" />
+                            <line x1="0" y1="70" x2="0" y2="58" />
+                            <line x1="-49.5" y1="49.5" x2="-41" y2="41" />
+                            <line x1="-70" y1="0" x2="-58" y2="0" />
+                            <line x1="-49.5" y1="-49.5" x2="-41" y2="-41" />
+                        </g>
+                    </svg>`,
+                    'caiyun': `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="width:140px;height:140px;margin:0 auto 10px;display:block;">
+                        <defs>
+                            <linearGradient id="gold-coin-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="rgba(201,169,110,0.5)"/>
+                                <stop offset="100%" stop-color="rgba(139,105,20,0.3)"/>
+                            </linearGradient>
+                        </defs>
+                        <!-- 元宝 -->
+                        <path d="M50 130 Q70 80 100 70 Q130 80 150 130 Q125 125 100 120 Q75 125 50 130Z" fill="url(#gold-coin-grad)" stroke="rgba(201,169,110,0.5)" stroke-width="1"/>
+                        <path d="M65 105 Q80 90 100 85 Q120 90 135 105" fill="none" stroke="rgba(232,213,163,0.4)" stroke-width="1.5"/>
+                        <!-- 铜钱 -->
+                        <circle cx="100" cy="55" r="28" fill="none" stroke="rgba(201,169,110,0.4)" stroke-width="2"/>
+                        <circle cx="100" cy="55" r="22" fill="none" stroke="rgba(201,169,110,0.25)" stroke-width="1"/>
+                        <rect x="92" y="47" width="16" height="16" fill="none" stroke="rgba(201,169,110,0.5)" stroke-width="2" rx="1"/>
+                        <!-- 光芒 -->
+                        <g stroke="rgba(201,169,110,0.15)" stroke-width="1" stroke-linecap="round">
+                            <line x1="100" y1="15" x2="100" y2="22"/>
+                            <line x1="128" y1="27" x2="124" y2="33"/>
+                            <line x1="138" y1="55" x2="132" y2="55"/>
+                            <line x1="72" y1="27" x2="76" y2="33"/>
+                            <line x1="62" y1="55" x2="68" y2="55"/>
+                        </g>
+                        <!-- 底部装饰线 -->
+                        <line x1="40" y1="150" x2="160" y2="150" stroke="rgba(201,169,110,0.2)" stroke-width="1"/>
+                        <circle cx="70" cy="150" r="2" fill="rgba(201,169,110,0.3)"/>
+                        <circle cx="130" cy="150" r="2" fill="rgba(201,169,110,0.3)"/>
+                    </svg>`,
+                    'qimen': `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="width:140px;height:140px;margin:0 auto 10px;display:block;">
+                        <defs>
+                            <radialGradient id="bagua-grad" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="rgba(201,169,110,0.2)"/>
+                                <stop offset="100%" stop-color="rgba(201,169,110,0.02)"/>
+                            </radialGradient>
+                        </defs>
+                        <!-- 外圈 -->
+                        <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(201,169,110,0.3)" stroke-width="2"/>
+                        <circle cx="100" cy="100" r="82" fill="none" stroke="rgba(201,169,110,0.15)" stroke-width="1"/>
+                        <!-- 八卦符号 -->
+                        <g stroke="rgba(201,169,110,0.45)" stroke-width="4" stroke-linecap="round">
+                            <!-- 乾 (上) -->
+                            <line x1="88" y1="22" x2="112" y2="22"/><line x1="88" y1="28" x2="112" y2="28"/><line x1="88" y1="34" x2="112" y2="34"/>
+                            <!-- 坎 (右上) -->
+                            <line x1="140" y1="48" x2="164" y2="48"/><line x1="143" y1="54" x2="161" y2="54" stroke="none"/><line x1="140" y1="60" x2="164" y2="60"/>
+                            <!-- 艮 (右下) -->
+                            <line x1="152" y1="140" x2="176" y2="140"/><line x1="155" y1="146" x2="173" y2="146" stroke="none"/><line x1="155" y1="152" x2="173" y2="152" stroke="none"/>
+                            <!-- 震 (左下) -->
+                            <line x1="24" y1="140" x2="48" y2="140" stroke="none"/><line x1="27" y1="146" x2="45" y2="146" stroke="none"/><line x1="24" y1="152" x2="48" y2="152"/>
+                            <!-- 巽 (左上) -->
+                            <line x1="36" y1="48" x2="60" y2="48"/><line x1="39" y1="54" x2="57" y2="54"/><line x1="39" y1="60" x2="57" y2="60" stroke="none"/>
+                        </g>
+                        <!-- 中心太极 -->
+                        <circle cx="100" cy="100" r="30" fill="url(#bagua-grad)"/>
+                        <path d="M100 70 A15 15 0 0 1 100 100 A15 15 0 0 0 100 130 A30 30 0 0 1 100 70Z" fill="rgba(201,169,110,0.3)"/>
+                        <path d="M100 70 A15 15 0 0 0 100 100 A15 15 0 0 1 100 130 A30 30 0 0 0 100 70Z" fill="rgba(10,10,15,0.5)"/>
+                        <circle cx="100" cy="85" r="4" fill="rgba(10,10,15,0.6)"/>
+                        <circle cx="100" cy="115" r="4" fill="rgba(201,169,110,0.4)"/>
+                        <!-- 连接线 -->
+                        <g stroke="rgba(201,169,110,0.1)" stroke-width="0.5">
+                            <line x1="100" y1="40" x2="100" y2="70"/>
+                            <line x1="141" y1="59" x2="122" y2="82"/>
+                            <line x1="160" y1="100" x2="130" y2="100"/>
+                            <line x1="141" y1="141" x2="122" y2="118"/>
+                            <line x1="100" y1="160" x2="100" y2="130"/>
+                            <line x1="59" y1="141" x2="78" y2="118"/>
+                            <line x1="40" y1="100" x2="70" y2="100"/>
+                            <line x1="59" y1="59" x2="78" y2="82"/>
+                        </g>
+                    </svg>`,
+                    'fengshui': `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="width:140px;height:140px;margin:0 auto 10px;display:block;">
+                        <defs>
+                            <radialGradient id="compass-grad" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="rgba(201,169,110,0.25)"/>
+                                <stop offset="100%" stop-color="rgba(201,169,110,0.03)"/>
+                            </radialGradient>
+                        </defs>
+                        <!-- 罗盘外圈 -->
+                        <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(201,169,110,0.35)" stroke-width="2"/>
+                        <circle cx="100" cy="100" r="78" fill="none" stroke="rgba(201,169,110,0.2)" stroke-width="1"/>
+                        <circle cx="100" cy="100" r="65" fill="none" stroke="rgba(201,169,110,0.15)" stroke-width="1"/>
+                        <!-- 刻度 -->
+                        <g stroke="rgba(201,169,110,0.3)" stroke-width="1">
+                            <line x1="100" y1="10" x2="100" y2="22"/><line x1="190" y1="100" x2="178" y2="100"/>
+                            <line x1="100" y1="190" x2="100" y2="178"/><line x1="10" y1="100" x2="22" y2="100"/>
+                        </g>
+                        <!-- 方位文字 -->
+                        <text x="100" y="32" text-anchor="middle" fill="rgba(201,169,110,0.5)" font-size="10" font-family="serif">北</text>
+                        <text x="170" y="104" text-anchor="middle" fill="rgba(201,169,110,0.5)" font-size="10" font-family="serif">东</text>
+                        <text x="100" y="178" text-anchor="middle" fill="rgba(201,169,110,0.5)" font-size="10" font-family="serif">南</text>
+                        <text x="30" y="104" text-anchor="middle" fill="rgba(201,169,110,0.5)" font-size="10" font-family="serif">西</text>
+                        <!-- 山水 -->
+                        <path d="M55 140 L75 105 L85 118 L100 95 L115 118 L125 105 L145 140Z" fill="rgba(201,169,110,0.12)" stroke="rgba(201,169,110,0.3)" stroke-width="1"/>
+                        <path d="M40 155 Q70 145 100 148 Q130 145 160 155" fill="none" stroke="rgba(201,169,110,0.2)" stroke-width="1.5"/>
+                        <!-- 中心指针 -->
+                        <circle cx="100" cy="100" r="20" fill="url(#compass-grad)" stroke="rgba(201,169,110,0.3)" stroke-width="1"/>
+                        <polygon points="100,78 105,100 100,105 95,100" fill="rgba(201,169,110,0.4)"/>
+                        <polygon points="100,122 105,100 100,95 95,100" fill="rgba(10,10,15,0.4)"/>
+                        <circle cx="100" cy="100" r="3" fill="rgba(201,169,110,0.6)"/>
+                    </svg>`
+                };
+                return decorations[service] || '';
+            }
+
+            // 报告分隔装饰符
+            function getSectionDivider() {
+                return `<div class="report-divider">─── ☯ ───</div>`;
+            }
+
             // 构建报告头部
             let metaInfo = '';
             if (formData.service === 'qimen') {
@@ -2081,17 +2264,23 @@ ${isCaiyun ? `（从命局财星入手，分析正财偏财的旺衰、财库有
                 metaInfo = `姓名：${formData.name} | 性别：${formData.gender === 'male' ? '男' : '女'}<br>出生：${formData.birthdate}（${formData.calendarType || '阳历'}）${formData.birthtime}<br>报告日期：${dateStr}`;
             }
             let html = `<div class="report-header">
+                <div class="report-decoration">${getServiceDecoration(formData.service)}</div>
                 <div class="report-seal">${icons[formData.service] || '☯'}</div>
                 <h4>${serviceMap[formData.service]}专业报告</h4>
                 <div class="report-meta">${metaInfo}</div>
+                <div class="report-header-divider">━ ✦ ━</div>
             </div>`;
 
             // 解析 ## 章节标题
             const sections = text.split(/^## /m).filter(s => s.trim());
             sections.forEach((section, idx) => {
-                const lines = section.split('\n');
+                const lines = section.split('\\n');
                 const title = lines[0].trim();
-                const content = lines.slice(1).join('\n').trim();
+                const content = lines.slice(1).join('\\n').trim();
+
+                if (idx > 0) {
+                    html += getSectionDivider();
+                }
 
                 if (title === '结语' || title.includes('结语')) {
                     html += `<div class="report-summary">「 ${title} 」<br><br>${formatParagraphs(content)}</div>`;
@@ -2643,7 +2832,7 @@ ${isCaiyun ? `（从命局财星入手，分析正财偏财的旺衰、财库有
         </div>
     </div>
     <!-- ========== FLOATING BACK TO TOP ========== -->
-    <button class="float-retest-btn" id="float-retest-btn" onclick="resetForm()" title="重新测算">↻</button>
+    <button class="float-retest-btn" id="float-retest-btn" onclick="resetForm()" title="重新测算"<span>↻</span> 重新测算</button>
     <button class="float-top-btn" id="float-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="返回顶部">↑</button>
 
 </body>
