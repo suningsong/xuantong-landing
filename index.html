@@ -1837,7 +1837,7 @@
         <div id="form-section" class="form-section">
             <button class="back-btn" onclick="goBack()">← 返回</button>
             <h3 id="form-title">✨ 开启你的命理密码</h3>
-            <form id="divination-form" onsubmit="submitForm(event)">
+            <form id="divination-form" onsubmit="submitForm(event)" novalidate>
                 <div class="form-group">
                     <label>姓名</label>
                     <input type="text" id="name" required placeholder="请输入您的姓名">
@@ -2110,6 +2110,7 @@
                 // 移除出生信息的required
                 document.getElementById('birthdate').removeAttribute('required');
                 document.getElementById('birthtime').removeAttribute('required');
+                document.getElementById('qimen-time').setAttribute('required', '');
                 // 确保基础姓名/性别字段可见
                 document.getElementById('name').parentElement.style.display = '';
                 document.getElementById('name').setAttribute('required', '');
@@ -2190,16 +2191,48 @@
         async function submitForm(e) {
             e.preventDefault();
             
+            // 手动表单验证
+            const alerts = [];
+            if (currentService === 'yinyuan') {
+                if (!document.getElementById('male-name').value.trim()) alerts.push('请输入男方姓名');
+                if (!document.getElementById('male-birthdate').value) alerts.push('请选择男方出生日期');
+                if (!document.getElementById('male-birthtime').value) alerts.push('请选择男方出生时辰');
+                if (!document.getElementById('female-name').value.trim()) alerts.push('请输入女方姓名');
+                if (!document.getElementById('female-birthdate').value) alerts.push('请选择女方出生日期');
+                if (!document.getElementById('female-birthtime').value) alerts.push('请选择女方出生时辰');
+            } else if (currentService === 'qimen') {
+                if (!document.getElementById('name').value.trim()) alerts.push('请输入您的姓名');
+                if (!document.getElementById('gender').value) alerts.push('请选择性别');
+                if (!document.getElementById('qimen-time').value) alerts.push('请选择起卦时间');
+            } else if (currentService === 'fengshui') {
+                if (!document.getElementById('name').value.trim()) alerts.push('请输入您的姓名');
+                if (!document.getElementById('gender').value) alerts.push('请选择性别');
+            } else {
+                // bazi / caiyun
+                if (!document.getElementById('name').value.trim()) alerts.push('请输入您的姓名');
+                if (!document.getElementById('gender').value) alerts.push('请选择性别');
+                if (!document.getElementById('birthdate').value) alerts.push('请选择出生日期');
+                if (!document.getElementById('birthtime').value) alerts.push('请选择出生时辰');
+            }
+            if (alerts.length > 0) {
+                alert('请完善以下信息：\n' + alerts.join('\n'));
+                return;
+            }
+            
             const btn = document.getElementById('submit-btn');
             btn.disabled = true;
             btn.textContent = '正在测算...';
             
-            const calendarType = document.querySelector('input[name="calendarType"]:checked').value;
+            // 安全获取 calendarType（姻缘/奇门/风水可能没有此 radio 可见）
+            let calendarType = '阳历';
+            const calRadio = document.querySelector('input[name="calendarType"]:checked');
+            if (calRadio) calendarType = calRadio.value;
+            
             const formData = {
                 service: currentService,
-                name: document.getElementById('name').value,
-                gender: document.getElementById('gender').value,
-                question: document.getElementById('question').value,
+                name: document.getElementById('name').value || '',
+                gender: document.getElementById('gender').value || '',
+                question: document.getElementById('question').value || '',
                 fengshuiDesc: document.getElementById('fengshui-desc') ? document.getElementById('fengshui-desc').value : '',
             };
             // 姻缘测算：收集双方信息
