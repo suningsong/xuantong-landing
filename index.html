@@ -2192,7 +2192,7 @@
                 formData.femaleBirthdate = document.getElementById('female-birthdate').value;
                 formData.femaleBirthtime = document.getElementById('female-birthtime').value;
                 formData.femaleCalendarType = document.querySelector('input[name="femaleCalendarType"]:checked').value;
-                formData.name = formData.maleName + ' & ' + formData.femaleName;
+                                formData.name = formData.maleName;
             }
             // 奇门遁甲用起卦时间和地点，其他用出生信息
             if (currentService === 'qimen') {
@@ -2848,7 +2848,7 @@ ${isCaiyun ? `（从命局财星入手，分析正财偏财的旺衰、财库有
             // 构建报告头部
             let metaInfo = '';
             if (formData.service === 'yinyuan') {
-                metaInfo = `男方：${formData.maleName} | 出生：${formData.maleBirthdate}（${formData.maleCalendarType}）${formData.maleBirthtime}<br>女方：${formData.femaleName} | 出生：${formData.femaleBirthdate}（${formData.femaleCalendarType}）${formData.femaleBirthtime}<br>报告日期：${dateStr}`;
+                metaInfo = `姓名：${formData.maleName} | 性别：男<br>出生：${formData.maleBirthdate}（${formData.maleCalendarType}）${formData.maleBirthtime}<br>报告日期：${dateStr}`;
             } else if (formData.service === 'qimen') {
                 metaInfo = `姓名：${formData.name} | 性别：${formData.gender === 'male' ? '男' : '女'}<br>起卦时间：${formData.qimenTime || '当前时辰'}<br>报告日期：${dateStr}`;
             } else if (formData.service === 'fengshui') {
