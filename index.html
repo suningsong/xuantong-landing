@@ -979,6 +979,26 @@
             margin-bottom: 20px;
         }
 
+        .report-cta-qr {
+            width: 160px;
+            height: 160px;
+            border: 2px solid var(--gold);
+            border-radius: 8px;
+            background: white;
+            padding: 6px;
+            margin: 0 auto 12px;
+            display: block;
+            box-shadow: 0 4px 15px rgba(201,169,110,0.2);
+        }
+
+        .report-cta-hint {
+            font-family: var(--serif);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            margin-bottom: 0;
+        }
+
         .report-cta-btn {
             display: inline-block;
             padding: 12px 32px;
@@ -2660,7 +2680,8 @@ ${isCaiyun ? `（从命局财星入手，分析正财偏财的旺衰、财库有
                         <div class="report-cta-icon">🔮</div>
                         <div class="report-cta-title">${title.replace(/[🔮]/g, '').trim()}</div>
                         <div class="report-cta-content">${formatParagraphs(content)}</div>
-                        <a href="#contact" class="report-cta-btn" style="text-decoration:none;">💬 添加微信 · 一对一解读</a>
+                        <img src="wechat-qr.jpg" alt="微信二维码" class="report-cta-qr" loading="lazy">
+                        <div class="report-cta-hint">长按识别二维码 · 添加老师微信</div>
                     </div>`;
                 } else if (title.includes('警示') || title.includes('紧急诊断')) {
                     html += `<div class="report-warning">
