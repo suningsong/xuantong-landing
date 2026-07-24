@@ -914,116 +914,6 @@
             margin: 20px -24px -28px;
         }
 
-        .report-warning {
-            margin: 30px 0;
-            padding: 24px;
-            background: linear-gradient(135deg, rgba(201,169,110,0.12) 0%, rgba(201,169,110,0.04) 100%);
-            border: 1px solid rgba(201,169,110,0.4);
-            border-left: 4px solid var(--gold);
-            border-radius: 0 8px 8px 0;
-            box-shadow: 0 4px 20px rgba(201,169,110,0.1);
-        }
-
-        .report-warning-title {
-            font-family: var(--serif);
-            font-size: 1.15rem;
-            color: var(--gold);
-            letter-spacing: 0.1em;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(201,169,110,0.2);
-            font-weight: bold;
-        }
-
-        .report-cta {
-            margin: 40px 0 20px;
-            padding: 30px 24px;
-            background: linear-gradient(135deg, rgba(201,169,110,0.15) 0%, rgba(139,105,20,0.08) 100%);
-            border: 2px solid var(--gold);
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 8px 30px rgba(201,169,110,0.15);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .report-cta::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 50% 0%, rgba(201,169,110,0.1) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .report-cta-icon {
-            font-size: 2rem;
-            margin-bottom: 12px;
-        }
-
-        .report-cta-title {
-            font-family: var(--serif);
-            font-size: 1.2rem;
-            color: var(--gold);
-            letter-spacing: 0.15em;
-            margin-bottom: 16px;
-        }
-
-        .report-cta-content {
-            font-family: var(--serif);
-            color: var(--gold-light);
-            font-size: 0.95rem;
-            line-height: 2;
-            margin-bottom: 20px;
-        }
-
-        .report-cta-qr {
-            width: 160px;
-            height: 160px;
-            border: 2px solid var(--gold);
-            border-radius: 8px;
-            background: white;
-            padding: 6px;
-            margin: 0 auto 12px;
-            display: block;
-            box-shadow: 0 4px 15px rgba(201,169,110,0.2);
-        }
-
-        .report-cta-hint {
-            font-family: var(--serif);
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            letter-spacing: 0.05em;
-            margin-bottom: 0;
-        }
-
-        .report-cta-btn {
-            display: inline-block;
-            padding: 12px 32px;
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            color: #0A0A0F;
-            font-family: var(--serif);
-            font-size: 1rem;
-            font-weight: bold;
-            letter-spacing: 0.1em;
-            border-radius: 30px;
-            box-shadow: 0 4px 15px rgba(201,169,110,0.3);
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .report-cta-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(201,169,110,0.45);
-        }
-
-        .yinyuan-card {
-            grid-column: span 2;
-            max-width: 50%;
-            justify-self: center;
-        }
-
         /* 移动端适配 */
         @media (max-width: 768px) {
             .result-content {
@@ -1801,7 +1691,7 @@
                 <span class="ornament-symbol">☰</span>
                 <span class="ornament-line"></span>
             </div>
-            <h2 class="section-title">🔱 五大古法·为你破局</h2>
+            <h2 class="section-title">🔱 四大古法·为你破局</h2>
             <p class="section-subtitle">Ancient Wisdom · Modern Answers</p>
         </div>
 
@@ -1825,11 +1715,6 @@
                 <div class="service-icon">宅</div>
                 <h3 class="service-title">风水堪舆</h3>
                 <p class="service-desc">🏠 五大风水致命布局揭秘</p>
-            </div>
-            <div class="service-card yinyuan-card" onclick="selectService('yinyuan', event)">
-                <div class="service-icon">缘</div>
-                <h3 class="service-title">姻缘测算</h3>
-                <p class="service-desc">💕 八字合婚，正缘速查</p>
             </div>
         </div>
 
@@ -1910,70 +1795,6 @@
                     <div class="form-group">
                         <label>📝 描述您的户型情况</label>
                         <textarea id="fengshui-desc" rows="3" placeholder="请描述：大门朝向、各房间方位、窗户位置、目前遇到的问题等" style="width:100%; padding:12px; background:rgba(255,255,255,0.05); border:1px solid rgba(201,169,110,0.3); border-radius:8px; color:var(--text-primary); font-size:0.9rem; resize:vertical; font-family:inherit;"></textarea>
-                    </div>
-                </div>
-                <div id="yinyuan-fields" style="display:none;">
-                    <div style="text-align:center;margin-bottom:16px;font-family:var(--serif);color:var(--gold);font-size:1rem;letter-spacing:0.1em;">— 男方信息 —</div>
-                    <div class="form-group">
-                        <label>姓名</label>
-                        <input type="text" id="male-name" required placeholder="请输入男方姓名">
-                    </div>
-                    <div class="form-group">
-                        <label>出生日期</label>
-                        <div class="calendar-switch">
-                            <label><input type="radio" name="maleCalendarType" value="阳历" checked><span>阳历（公历）</span></label>
-                            <label><input type="radio" name="maleCalendarType" value="阴历"><span>阴历（农历）</span></label>
-                        </div>
-                        <input type="date" id="male-birthdate" required>
-                    </div>
-                    <div class="form-group">
-                        <label>出生时辰</label>
-                        <select id="male-birthtime" required>
-                            <option value="">请选择</option>
-                            <option value="子时 (23:00-01:00)">子时 (23:00-01:00)</option>
-                            <option value="丑时 (01:00-03:00)">丑时 (01:00-03:00)</option>
-                            <option value="寅时 (03:00-05:00)">寅时 (03:00-05:00)</option>
-                            <option value="卯时 (05:00-07:00)">卯时 (05:00-07:00)</option>
-                            <option value="辰时 (07:00-09:00)">辰时 (07:00-09:00)</option>
-                            <option value="巳时 (09:00-11:00)">巳时 (09:00-11:00)</option>
-                            <option value="午时 (11:00-13:00)">午时 (11:00-13:00)</option>
-                            <option value="未时 (13:00-15:00)">未时 (13:00-15:00)</option>
-                            <option value="申时 (15:00-17:00)">申时 (15:00-17:00)</option>
-                            <option value="酉时 (17:00-19:00)">酉时 (17:00-19:00)</option>
-                            <option value="戌时 (19:00-21:00)">戌时 (19:00-21:00)</option>
-                            <option value="亥时 (21:00-23:00)">亥时 (21:00-23:00)</option>
-                        </select>
-                    </div>
-                    <div style="text-align:center;margin:20px 0 16px;font-family:var(--serif);color:var(--gold);font-size:1rem;letter-spacing:0.1em;">— 女方信息 —</div>
-                    <div class="form-group">
-                        <label>姓名</label>
-                        <input type="text" id="female-name" required placeholder="请输入女方姓名">
-                    </div>
-                    <div class="form-group">
-                        <label>出生日期</label>
-                        <div class="calendar-switch">
-                            <label><input type="radio" name="femaleCalendarType" value="阳历" checked><span>阳历（公历）</span></label>
-                            <label><input type="radio" name="femaleCalendarType" value="阴历"><span>阴历（农历）</span></label>
-                        </div>
-                        <input type="date" id="female-birthdate" required>
-                    </div>
-                    <div class="form-group">
-                        <label>出生时辰</label>
-                        <select id="female-birthtime" required>
-                            <option value="">请选择</option>
-                            <option value="子时 (23:00-01:00)">子时 (23:00-01:00)</option>
-                            <option value="丑时 (01:00-03:00)">丑时 (01:00-03:00)</option>
-                            <option value="寅时 (03:00-05:00)">寅时 (03:00-05:00)</option>
-                            <option value="卯时 (05:00-07:00)">卯时 (05:00-07:00)</option>
-                            <option value="辰时 (07:00-09:00)">辰时 (07:00-09:00)</option>
-                            <option value="巳时 (09:00-11:00)">巳时 (09:00-11:00)</option>
-                            <option value="午时 (11:00-13:00)">午时 (11:00-13:00)</option>
-                            <option value="未时 (13:00-15:00)">未时 (13:00-15:00)</option>
-                            <option value="申时 (15:00-17:00)">申时 (15:00-17:00)</option>
-                            <option value="酉时 (17:00-19:00)">酉时 (17:00-19:00)</option>
-                            <option value="戌时 (19:00-21:00)">戌时 (19:00-21:00)</option>
-                            <option value="亥时 (21:00-23:00)">亥时 (21:00-23:00)</option>
-                        </select>
                     </div>
                 </div>
                 <div class="form-group" id="question-group">
@@ -2094,8 +1915,7 @@
                 'bazi': '八字命理',
                 'caiyun': '财运分析',
                 'qimen': '奇门遁甲',
-                'fengshui': '风水堪舆',
-                'yinyuan': '姻缘测算'
+                'fengshui': '风水堪舆'
             };
             document.getElementById('form-title').textContent = titles[type];
             
@@ -2110,11 +1930,6 @@
                 // 移除出生信息的required
                 document.getElementById('birthdate').removeAttribute('required');
                 document.getElementById('birthtime').removeAttribute('required');
-                // 确保基础姓名/性别字段可见
-                document.getElementById('name').parentElement.style.display = '';
-                document.getElementById('name').setAttribute('required', '');
-                document.getElementById('gender').parentElement.style.display = '';
-                document.getElementById('gender').setAttribute('required', '');
                 // 设置起卦时间默认值（当前时间）
                 const now = new Date();
                 now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
@@ -2123,44 +1938,16 @@
                 birthFields.style.display = 'none';
                 qimenFields.style.display = 'none';
                 if (fengshuiFields) fengshuiFields.style.display = 'block';
-                const yinyuanFields = document.getElementById('yinyuan-fields');
-                if (yinyuanFields) yinyuanFields.style.display = 'none';
                 document.getElementById('birthdate').removeAttribute('required');
                 document.getElementById('birthtime').removeAttribute('required');
                 document.getElementById('qimen-time').removeAttribute('required');
-                // 确保基础姓名/性别字段可见
-                document.getElementById('name').parentElement.style.display = '';
-                document.getElementById('name').setAttribute('required', '');
-                document.getElementById('gender').parentElement.style.display = '';
-                document.getElementById('gender').setAttribute('required', '');
-            } else if (type === 'yinyuan') {
-                birthFields.style.display = 'none';
-                qimenFields.style.display = 'none';
-                if (fengshuiFields) fengshuiFields.style.display = 'none';
-                const yinyuanFields = document.getElementById('yinyuan-fields');
-                if (yinyuanFields) yinyuanFields.style.display = 'block';
-                document.getElementById('birthdate').removeAttribute('required');
-                document.getElementById('birthtime').removeAttribute('required');
-                document.getElementById('qimen-time').removeAttribute('required');
-                // 姻缘测算不需要基础姓名/性别字段，用双方信息替代
-                document.getElementById('name').parentElement.style.display = 'none';
-                document.getElementById('name').removeAttribute('required');
-                document.getElementById('gender').parentElement.style.display = 'none';
-                document.getElementById('gender').removeAttribute('required');
             } else {
                 birthFields.style.display = 'block';
                 qimenFields.style.display = 'none';
                 if (fengshuiFields) fengshuiFields.style.display = 'none';
-                const yinyuanFields = document.getElementById('yinyuan-fields');
-                if (yinyuanFields) yinyuanFields.style.display = 'none';
                 document.getElementById('birthdate').setAttribute('required', '');
                 document.getElementById('birthtime').setAttribute('required', '');
                 document.getElementById('qimen-time').removeAttribute('required');
-                // 恢复基础姓名/性别字段
-                document.getElementById('name').parentElement.style.display = '';
-                document.getElementById('name').setAttribute('required', '');
-                document.getElementById('gender').parentElement.style.display = '';
-                document.getElementById('gender').setAttribute('required', '');
             }
             
             // 隐藏其他内容
@@ -2202,18 +1989,6 @@
                 question: document.getElementById('question').value,
                 fengshuiDesc: document.getElementById('fengshui-desc') ? document.getElementById('fengshui-desc').value : '',
             };
-            // 姻缘测算：收集双方信息
-            if (currentService === 'yinyuan') {
-                formData.maleName = document.getElementById('male-name').value;
-                formData.maleBirthdate = document.getElementById('male-birthdate').value;
-                formData.maleBirthtime = document.getElementById('male-birthtime').value;
-                formData.maleCalendarType = document.querySelector('input[name="maleCalendarType"]:checked').value;
-                formData.femaleName = document.getElementById('female-name').value;
-                formData.femaleBirthdate = document.getElementById('female-birthdate').value;
-                formData.femaleBirthtime = document.getElementById('female-birthtime').value;
-                formData.femaleCalendarType = document.querySelector('input[name="femaleCalendarType"]:checked').value;
-                                formData.name = formData.maleName;
-            }
             // 奇门遁甲用起卦时间和地点，其他用出生信息
             if (currentService === 'qimen') {
                 formData.qimenTime = document.getElementById('qimen-time').value;
@@ -2318,8 +2093,7 @@
                     'bazi': '八字命理',
                     'caiyun': '财运分析',
                     'qimen': '奇门遁甲',
-                    'fengshui': '风水堪舆',
-                    'yinyuan': '姻缘测算'
+                    'fengshui': '风水堪舆'
                 };
 
                 let prompt = '';
@@ -2380,27 +2154,15 @@
 - 具体的行为建议和注意事项
 - 如事态不利，给出具体的化解和转圜方案）
 
-## 命局关键警示
-（这是最重要的章节。必须直言不讳地指出求测者当前面临的1-2个最严重的隐患和问题：
-- 先给结论：什么地方出了问题、什么即将出问题
-- 分析原因：从盘局中找到具体依据，说明为什么这是最紧迫的
-- 不调整的后果：如果不及时调理，可能导致什么具体影响
-- 给出紧急程度评级和建议优先处理顺序
-语气要让用户感受到问题的紧迫性，产生"必须尽快处理"的意识。）
-
 ## 结语
-（一段温暖而有力量的寄语，引用《烟波钓叟歌》或《奇门遁甲》经典名句收尾，先安抚情绪，再给予信心。）
-
-## 🔮 一对一专属咨询
-「命局精微，盘局千变万化。若您希望获得更具针对性的调整方案，欢迎添加老师微信，由玄同先生亲自为您一对一详细解析、量身布局。名额有限，仅服务有缘之人。」
+（一段富含哲理的寄语，引用《烟波钓叟歌》或《奇门遁甲》经典名句收尾，给求测者以指引和信心。）
 
 写作要求：
 1. 排盘务必准确严谨，格局分析要有理有据
 2. 每个判断都要引用奇门经典佐证
 3. 运筹建议要具体到方位、时间、行为，不能笼统
 4. 语言风格：庄重专业，有宗师风范，同时通俗易懂
-5. 内容不回避问题，放大痛点让用户重视，同时给出切实可行的化解之道
-6. 痛点分析要先于建议，先让用户认识到问题的严重性`;
+5. 内容积极向上，但不回避凶险，给出化解之道`;
                 } else if (currentService === 'fengshui') {
                     // 风水堪舆：以户型图描述为核心
                     const descInfo = formData.fengshuiDesc || '用户未提供详细描述';
@@ -2458,111 +2220,15 @@
 - **时间选择**：调理行动宜选择什么时间进行
 每条建议都要说明风水学依据。）
 
-## 户型风水紧急诊断
-（这是最重要的章节。必须直言不讳地指出此户型中最严重的1-2个风水问题：
-- 先给结论：哪个方位/区域存在严重问题，问题是什么
-- 分析原因：从形势派和理气派角度说明为什么这里有问题
-- 不处理的后果：如果不及时调整，会对健康/财运/事业/感情造成什么具体影响
-- 给出紧急程度评级，说明哪些需要立即处理、哪些可以缓一步
-语气要让用户意识到问题的严重性，产生"必须尽快调理"的紧迫感。）
-
 ## 结语
-（一段温暖而有力量的寄语，引用《青囊序》《葬书》或《阳宅十书》经典名句收尾，先安抚情绪，再给予信心。）
-
-## 🔮 一对一专属咨询
-「阳宅风水千变万化，每个户型都需要量身调理。若您希望获得更具针对性的调整方案，欢迎添加老师微信，由玄同先生亲自为您一对一详细解析、量身布局。名额有限，仅服务有缘之人。」
+（一段富含哲理的寄语，引用《青囊序》《葬书》或《阳宅十书》经典名句收尾，给求测者以指引和信心。）
 
 写作要求：
 1. 分析要有理有据，形势派与理气派相结合
 2. 引用风水经典（《阳宅三要》《青囊经》《葬书》《八宅明镜》等）佐证
 3. 调理方案要具体到方位、物品、颜色、时间，切实可行
 4. 语言风格：庄重专业，宗师风范，同时通俗易懂
-5. 内容不回避问题，放大痛点让用户重视风水隐患，同时给出切实可行的化解之道
-6. 痛点分析要先于建议，先让用户认识到问题的严重性`;
-                } else if (currentService === 'yinyuan') {
-                    // 姻缘测算：以双方八字为核心
-                    const maleCalInfo = formData.maleCalendarType === '阴历' ? '（农历日期）' : '（公历日期）';
-                    const femaleCalInfo = formData.femaleCalendarType === '阴历' ? '（农历日期）' : '（公历日期）';
-                    prompt = `你是"玄同先生"，精通八字合婚、姻缘配对的国学泰斗，四十余年为无数有情人指点姻缘迷津，以断语精准、直指要害著称。请根据以下双方八字信息进行深度姻缘分析：
-
-【男方信息】
-姓名：${formData.maleName}
-出生日期：${formData.maleBirthdate} ${maleCalInfo}
-出生时辰：${formData.maleBirthtime}
-
-【女方信息】
-姓名：${formData.femaleName}
-出生日期：${formData.femaleBirthdate} ${femaleCalInfo}
-出生时辰：${formData.femaleBirthtime}
-
-${formData.question ? '【咨询问题】\n' + formData.question : ''}
-
-请按以下框架输出专业合婚报告，总字数不少于2000字：
-
-## 命盘总论
-（分别排出双方八字四柱，点出各自日主强弱、命局格局。用精炼的语言概括双方的命理特质，为后续配对分析做铺垫。）
-
-## 姻缘契合度总评
-（给出总体匹配度评分，用★表示（1-5星），并一句话总结这段姻缘的核心特征。先给结论，再简要说明评分依据。）
-
-## 日柱配对分析
-（分析双方日干日支的生克合化关系：
-- 日干相合还是相克
-- 日支有无刑冲合害
-- 夫妻宫是否互相干扰
-- 综合判断感情基础的牢固程度
-引用《三命通会》或《滴天髓》相关论述。）
-
-## 五行互补分析
-（分析双方五行的互补程度：
-- 双方五行是否互为喜用
-- 有无明显的五行冲突
-- 纳音五行是否相配
-- 指出最需要调和的五行问题）
-
-## 十神关系解读
-（从十神角度分析双方在性格、价值观、生活方式上的匹配：
-- 双方性格是否互补
-- 价值观是否一致
-- 相处模式是否和谐
-- 容易出现什么矛盾）
-
-## 大运同步分析
-（分析双方未来大运走势：
-- 当前及未来10年大运是否同步
-- 关键年份的感情运势节点
-- 需要注意的年份和月份
-- 有无"背运"或"旺运"的时段差异）
-
-## 姻缘关键警示
-（这是最重要的章节。必须直言不讳地指出这段姻缘中最需要注意的问题和风险：
-- 先给结论：哪些地方存在明显不合或隐患
-- 具体说明：从八字中找到依据
-- 如果不注意的后果：可能导致什么具体问题
-- 给出紧急程度和建议处理方式
-语气要让用户意识到问题的严重性，但不恐吓，出于真诚关心。）
-
-## 趋吉避凶·合婚建议
-（给出至少5条具体可操作的建议：
-- 增进感情的方位和时间选择
-- 化解五行不合的方法
-- 家居布局的调和建议
-- 适合双方的吉祥物和颜色
-- 结婚/领证的最佳时间选择
-每条建议都要说明命理依据。）
-
-## 结语
-（一段温暖而有力量的寄语，引用一句关于姻缘的经典名句收尾。）
-
-## 🔮 一对一专属咨询
-「姻缘天定，事在人为。每段感情都需要用心经营。若您希望获得更具针对性的调整方案，欢迎添加老师微信，由玄同先生亲自为您一对一详细解析、量身布局。名额有限，仅服务有缘之人。」
-
-写作要求：
-1. 排盘务必准确严谨，合婚分析要有理有据
-2. 每个判断都要引用命理经典佐证
-3. 痛点要前置，先指出不合之处和风险，再给化解建议
-4. 语言风格：专业严谨，有宗师风范，同时通俗易懂
-5. 不回避问题，让用户重视隐患，同时给出切实可行的化解之道`;
+5. 内容积极向上，但对风水问题直言不讳，给出化解之道`;
                 } else {
                     // 八字/财运：以出生信息为核心
                     const calendarInfo = formData.calendarType === '阴历' ? '（农历日期）' : '（公历日期）';
@@ -2600,27 +2266,15 @@ ${isCaiyun ? `（从命局财星入手，分析正财偏财的旺衰、财库有
 - 家居/办公环境的布局建议
 每条建议都要说明命理依据，不能空泛。）
 
-## 命局关键警示
-（这是最重要的章节。必须直言不讳地指出命局中最严重的1-2个隐患：
-- 先给结论：命主在哪些方面存在明显问题或隐患（如财运破口、婚姻宫受冲、健康薄弱等）
-- 分析原因：从八字、大运、流年中找到具体依据
-- 不调整的后果：如果不及时注意和调理，可能导致什么具体影响
-- 给出当前最紧迫需要关注的事项
-语气要让用户感受到问题的紧迫性，产生"必须重视"的意识，但不恐吓，出于真诚关心。）
-
 ## 结语
-（一段温暖而有力量的寄语，引用一句契合命主的古诗词或经典名句收尾，先安抚情绪，再给予信心。）
-
-## 🔮 一对一专属咨询
-「命理精微，千人千面。若您希望获得更具针对性的调整方案，欢迎添加老师微信，由玄同先生亲自为您一对一详细解析、量身布局。名额有限，仅服务有缘之人。」
+（一段温暖而有力量的寄语，引用一句契合命主的古诗词或经典名句收尾。）
 
 写作要求：
 1. 开篇就要有"一语道破天机"的震撼感，切忌泛泛而谈
 2. 每个判断都要有命理依据，引用经典原文并解释
 3. 分析要有层次：先宏观格局→中观运势→微观建议
 4. 语言风格：专业严谨但不晦涩，庄重温暖但不鸡汤
-5. 内容不回避问题，放大痛点让用户重视命局隐患，同时给出切实可行的化解之道
-6. 痛点分析要先于建议，先让用户认识到问题的严重性`;
+5. 内容积极向上，但不回避问题，给出切实可行的化解之道`;
                 }
 
                 const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
@@ -2632,7 +2286,7 @@ ${isCaiyun ? `（从命局财星入手，分析正财偏财的旺衰、财库有
                     body: JSON.stringify({
                         model: 'deepseek-chat',
                         messages: [
-                            { role: 'system', content: '你是"玄同先生"，一位享誉海内外的国学泰斗，幼承庭训，遍览《周易》《滴天髓》《青囊经》《奇门遁甲》等千古经典，师从多位隐世高人，精通八字命理、风水堪舆、奇门遁甲、紫微斗数、梅花易数等术数体系。你从术四十余载，曾为无数政商名流、影视明星指点迷津，以断事如神、言之有物著称。\n\n你的分析风格：\n- 开篇直击要害，一针见血点出命局/格局的核心特征，让人拍案叫绝\n- 善于用具体案例和典故佐证，引经据典但不掉书袋\n- 分析层层递进，既有宏观格局判断，又有微观细节解读\n- 给出的建议必须具体可操作，精确到方位、颜色、数字、时间等\n- 语言庄重而不古板，专业而不晦涩，让人读后既受用又温暖\n- 严禁空泛套话，每一句话都要有信息量和判断依据\n\n【核心写作要求——痛点前置】\n- 每个章节必须先给结论（哪里不好、哪里有隐患、什么需要注意），再展开分析推导过程，最后给建议\n- 要放大用户命局/格局中的痛点和隐患：直言不讳地指出哪些方面存在问题和不足，如果不调整会有什么后果\n- 如果用户有具体问题，先针对问题直击痛点；如果没有具体问题，主动分析命局中最需要注意的1-2个关键风险点\n- 语气要让用户意识到问题的严重性和紧迫感，但出于关心和专业的提醒，不恐吓\n\n【引流钩子——结语后必须加】\n- 每份报告的最后，在结语段落之后，必须加一段引流文字，格式如下：\n\n## 🔮 一对一专属咨询\n「若您希望获得更具针对性的调整方案，欢迎添加老师微信，由玄同先生亲自为您一对一详细解析、量身布局。名额有限，仅服务有缘之人。」\n- 这段话必须独立成章，用## 标题格式' },
+                            { role: 'system', content: '你是"玄同先生"，一位享誉海内外的国学泰斗，幼承庭训，遍览《周易》《滴天髓》《青囊经》《奇门遁甲》等千古经典，师从多位隐世高人，精通八字命理、风水堪舆、奇门遁甲、紫微斗数、梅花易数等术数体系。你从术四十余载，曾为无数政商名流、影视明星指点迷津，以断事如神、言之有物著称。\n\n你的分析风格：\n- 开篇直击要害，一针见血点出命局/格局的核心特征，让人拍案叫绝\n- 善于用具体案例和典故佐证，引经据典但不掉书袋\n- 分析层层递进，既有宏观格局判断，又有微观细节解读\n- 给出的建议必须具体可操作，精确到方位、颜色、数字、时间等\n- 语言庄重而不古板，专业而不晦涩，让人读后既受用又温暖\n- 严禁空泛套话，每一句话都要有信息量和判断依据' },
                             { role: 'user', content: prompt }
                         ],
                         temperature: 0.85,
@@ -2701,8 +2355,8 @@ ${isCaiyun ? `（从命局财星入手，分析正财偏财的旺衰、财库有
 
         // ===== 专业报告格式化 =====
         function formatReport(text, formData) {
-            const serviceMap = {'bazi':'八字命理','caiyun':'财运分析','qimen':'奇门遁甲','fengshui':'风水堪舆','yinyuan':'姻缘测算'};
-            const icons = {'bazi':'命','caiyun':'财','qimen':'遁','fengshui':'宅','yinyuan':'缘'};
+            const serviceMap = {'bazi':'八字命理','caiyun':'财运分析','qimen':'奇门遁甲','fengshui':'风水堪舆'};
+            const icons = {'bazi':'命','caiyun':'财','qimen':'遁','fengshui':'宅'};
             const now = new Date();
             const dateStr = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日`;
 
@@ -2835,28 +2489,6 @@ ${isCaiyun ? `（从命局财星入手，分析正财偏财的旺衰、财库有
                         <circle cx="100" cy="100" r="3" fill="rgba(201,169,110,0.6)"/>
                     </svg>`
                 };
-                // 姻缘装饰 - 红线/鸳鸯
-                decorations['yinyuan'] = `<svg viewBox="0 0 200 200" width="120" height="120" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <radialGradient id="yinyuan-grad" cx="50%" cy="50%" r="50%">
-                            <stop offset="0%" stop-color="rgba(201,169,110,0.15)"/>
-                            <stop offset="100%" stop-color="rgba(201,169,110,0)"/>
-                        </radialGradient>
-                    </defs>
-                    <circle cx="100" cy="100" r="90" fill="url(#yinyuan-grad)" stroke="rgba(201,169,110,0.2)" stroke-width="1"/>
-                    <!-- 同心结 -->
-                    <path d="M70 100 Q70 70 100 70 Q130 70 130 100 Q130 130 100 130 Q70 130 70 100Z" fill="none" stroke="rgba(201,169,110,0.4)" stroke-width="2"/>
-                    <path d="M60 100 Q60 60 100 60 Q140 60 140 100 Q140 140 100 140 Q60 140 60 100Z" fill="none" stroke="rgba(201,169,110,0.25)" stroke-width="1.5"/>
-                    <!-- 红线 -->
-                    <path d="M40 80 Q60 100 80 90 Q100 80 100 100 Q100 120 120 110 Q140 100 160 120" fill="none" stroke="rgba(201,169,110,0.5)" stroke-width="2" stroke-linecap="round"/>
-                    <!-- 鸳鸯 -->
-                    <ellipse cx="80" cy="95" rx="12" ry="8" fill="rgba(201,169,110,0.2)" stroke="rgba(201,169,110,0.4)" stroke-width="1"/>
-                    <circle cx="72" cy="90" r="5" fill="rgba(201,169,110,0.15)" stroke="rgba(201,169,110,0.35)" stroke-width="1"/>
-                    <ellipse cx="120" cy="95" rx="12" ry="8" fill="rgba(201,169,110,0.2)" stroke="rgba(201,169,110,0.4)" stroke-width="1"/>
-                    <circle cx="128" cy="90" r="5" fill="rgba(201,169,110,0.15)" stroke="rgba(201,169,110,0.35)" stroke-width="1"/>
-                    <!-- 中心双喜 -->
-                    <text x="100" y="108" text-anchor="middle" fill="rgba(201,169,110,0.5)" font-size="18" font-family="serif">囍</text>
-                </svg>`;
                 return decorations[service] || '';
             }
 
@@ -2867,9 +2499,7 @@ ${isCaiyun ? `（从命局财星入手，分析正财偏财的旺衰、财库有
 
             // 构建报告头部
             let metaInfo = '';
-            if (formData.service === 'yinyuan') {
-                metaInfo = `姓名：${formData.maleName} | 性别：男<br>出生：${formData.maleBirthdate}（${formData.maleCalendarType}）${formData.maleBirthtime}<br>报告日期：${dateStr}`;
-            } else if (formData.service === 'qimen') {
+            if (formData.service === 'qimen') {
                 metaInfo = `姓名：${formData.name} | 性别：${formData.gender === 'male' ? '男' : '女'}<br>起卦时间：${formData.qimenTime || '当前时辰'}<br>报告日期：${dateStr}`;
             } else if (formData.service === 'fengshui') {
                 metaInfo = `姓名：${formData.name} | 性别：${formData.gender === 'male' ? '男' : '女'}<br>堪舆类型：阳宅风水<br>报告日期：${dateStr}`;
@@ -2905,19 +2535,6 @@ ${isCaiyun ? `（从命局财星入手，分析正财偏财的旺衰、财库有
 
                 if (title === '结语' || title.includes('结语')) {
                     html += `<div class="report-summary">「 ${title} 」<br><br>${formatParagraphs(content)}</div>`;
-                } else if (title.includes('一对一') || title.includes('专属咨询')) {
-                    html += `<div class="report-cta">
-                        <div class="report-cta-icon">🔮</div>
-                        <div class="report-cta-title">${title.replace(/[🔮]/g, '').trim()}</div>
-                        <div class="report-cta-content">${formatParagraphs(content)}</div>
-                        <img src="wechat-qr.jpg" alt="微信二维码" class="report-cta-qr" loading="lazy">
-                        <div class="report-cta-hint">长按识别二维码 · 添加老师微信</div>
-                    </div>`;
-                } else if (title.includes('警示') || title.includes('紧急诊断')) {
-                    html += `<div class="report-warning">
-                        <div class="report-warning-title">⚠️ ${title}</div>
-                        ${formatParagraphs(content, true)}
-                    </div>`;
                 } else {
                     sectionCounter++;
                     const cnNum = cnNums[sectionCounter - 1] || sectionCounter;
@@ -3067,7 +2684,7 @@ ${isCaiyun ? `（从命局财星入手，分析正财偏财的旺衰、财库有
                 time: new Date().toLocaleString('zh-CN')
             };
 
-            const serviceMap = {'bazi':'八字命理','caiyun':'财运分析','qimen':'奇门遁甲','fengshui':'风水堪舆','yinyuan':'姻缘测算'};
+            const serviceMap = {'bazi':'八字命理','caiyun':'财运分析','qimen':'奇门遁甲','fengshui':'风水堪舆'};
 
             try {
                 const res = await fetch('https://api.web3forms.com/submit', {
