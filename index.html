@@ -990,6 +990,12 @@
             letter-spacing: 0.1em;
             border-radius: 30px;
             box-shadow: 0 4px 15px rgba(201,169,110,0.3);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .report-cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(201,169,110,0.45);
         }
 
         /* 移动端适配 */
@@ -2654,7 +2660,7 @@ ${isCaiyun ? `（从命局财星入手，分析正财偏财的旺衰、财库有
                         <div class="report-cta-icon">🔮</div>
                         <div class="report-cta-title">${title.replace(/[🔮]/g, '').trim()}</div>
                         <div class="report-cta-content">${formatParagraphs(content)}</div>
-                        <div class="report-cta-btn">💬 添加微信 · 一对一解读</div>
+                        <a href="#contact" class="report-cta-btn" style="text-decoration:none;">💬 添加微信 · 一对一解读</a>
                     </div>`;
                 } else if (title.includes('警示') || title.includes('紧急诊断')) {
                     html += `<div class="report-warning">
