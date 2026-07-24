@@ -1126,9 +1126,176 @@
             color: var(--text-muted);
             font-size: 0.8rem;
         }
+
+        /* ===== 导航栏 ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10001;
+            padding: 0 24px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(10, 10, 15, 0);
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            border-bottom: 1px solid transparent;
+            transition: background 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+        .navbar.scrolled {
+            background: rgba(10, 10, 15, 0.88);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom-color: rgba(201, 169, 110, 0.15);
+            box-shadow: 0 2px 24px rgba(0, 0, 0, 0.4);
+        }
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--gold);
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            white-space: nowrap;
+            transition: opacity 0.2s;
+        }
+        .navbar-logo:hover { opacity: 0.8; }
+        .navbar-logo-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            color: #0A0A0F;
+            flex-shrink: 0;
+        }
+        .navbar-links {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar-links li a {
+            display: block;
+            padding: 6px 14px;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.88rem;
+            letter-spacing: 1px;
+            border-radius: 6px;
+            transition: color 0.25s, background 0.25s;
+            white-space: nowrap;
+        }
+        .navbar-links li a:hover {
+            color: var(--gold-light);
+            background: rgba(201, 169, 110, 0.08);
+        }
+        .navbar-links li a.active {
+            color: var(--gold);
+            background: rgba(201, 169, 110, 0.12);
+        }
+        .navbar-hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            border: 1px solid rgba(201, 169, 110, 0.3);
+            border-radius: 8px;
+            background: transparent;
+            gap: 5px;
+            padding: 0;
+            transition: border-color 0.3s;
+        }
+        .navbar-hamburger:hover {
+            border-color: var(--gold);
+        }
+        .navbar-hamburger span {
+            display: block;
+            width: 18px;
+            height: 2px;
+            background: var(--gold);
+            border-radius: 2px;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+        .navbar-hamburger.open span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+        .navbar-hamburger.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .navbar-hamburger.open span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+        @media (max-width: 768px) {
+            .navbar { padding: 0 16px; height: 50px; }
+            .navbar-hamburger { display: flex; }
+            .navbar-links {
+                position: fixed;
+                top: 50px;
+                left: 0;
+                width: 100%;
+                flex-direction: column;
+                background: rgba(10, 10, 15, 0.96);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                padding: 12px 0;
+                gap: 0;
+                border-bottom: 1px solid rgba(201, 169, 110, 0.15);
+                transform: translateY(-120%);
+                opacity: 0;
+                transition: transform 0.35s ease, opacity 0.35s ease;
+                pointer-events: none;
+            }
+            .navbar-links.open {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: auto;
+            }
+            .navbar-links li a {
+                padding: 12px 24px;
+                font-size: 0.95rem;
+                border-radius: 0;
+            }
+            .navbar-logo { font-size: 1.05rem; letter-spacing: 1.5px; }
+            .navbar-logo-icon { width: 26px; height: 26px; font-size: 0.85rem; }
+        }
     </style>
 </head>
 <body>
+
+    <!-- ========== 导航栏 ========== -->
+    <nav class="navbar" id="navbar">
+        <a href="#hero" class="navbar-logo">
+            <div class="navbar-logo-icon">☯</div>
+            玄同先生
+        </a>
+        <button class="navbar-hamburger" id="navbar-hamburger" aria-label="菜单">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <ul class="navbar-links" id="navbar-links">
+            <li><a href="#hero" data-section="hero">首页</a></li>
+            <li><a href="#almanac" data-section="almanac">老黄历</a></li>
+            <li><a href="#services" data-section="services">命理测算</a></li>
+            <li><a href="#articles" data-section="articles">天机可悟</a></li>
+            <li><a href="#news" data-section="news">每日资讯</a></li>
+            <li><a href="#contact" data-section="contact">联系我们</a></li>
+        </ul>
+    </nav>
     <!-- ========== HERO ========== -->
     <section class="hero" id="hero">
         <!-- 太极八卦图标 -->
@@ -2302,6 +2469,60 @@
             renderAlmanac();
             // 每分钟更新一次时间
             setInterval(renderAlmanac, 60000);
+        })();
+
+
+        // ===== 导航栏 =====
+        (function() {
+            const navbar = document.getElementById('navbar');
+            const hamburger = document.getElementById('navbar-hamburger');
+            const links = document.getElementById('navbar-links');
+            const navLinks = links.querySelectorAll('a[data-section]');
+            const sections = ['hero','almanac','services','articles','news','contact'];
+            
+            // 汉堡菜单切换
+            hamburger.addEventListener('click', function() {
+                this.classList.toggle('open');
+                links.classList.toggle('open');
+            });
+            
+            // 点击导航链接后关闭菜单
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    hamburger.classList.remove('open');
+                    links.classList.remove('open');
+                });
+            });
+            
+            // 滚动监听：导航栏背景 + 高亮当前板块
+            function onScroll() {
+                const scrollY = window.scrollY;
+                if (scrollY > 60) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+                let currentSection = 'hero';
+                for (let i = sections.length - 1; i >= 0; i--) {
+                    const sec = document.getElementById(sections[i]);
+                    if (sec) {
+                        const rect = sec.getBoundingClientRect();
+                        if (rect.top <= 120) {
+                            currentSection = sections[i];
+                            break;
+                        }
+                    }
+                }
+                navLinks.forEach(link => {
+                    if (link.getAttribute('data-section') === currentSection) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
         })();
 
     </script>
