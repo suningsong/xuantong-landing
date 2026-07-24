@@ -1618,12 +1618,14 @@
                 if (fengshuiFields) fengshuiFields.style.display = 'block';
                 document.getElementById('birthdate').removeAttribute('required');
                 document.getElementById('birthtime').removeAttribute('required');
+                document.getElementById('qimen-time').removeAttribute('required');
             } else {
                 birthFields.style.display = 'block';
                 qimenFields.style.display = 'none';
                 if (fengshuiFields) fengshuiFields.style.display = 'none';
                 document.getElementById('birthdate').setAttribute('required', '');
                 document.getElementById('birthtime').setAttribute('required', '');
+                document.getElementById('qimen-time').setAttribute('required', '');
             }
             
             // 隐藏其他内容
