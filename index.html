@@ -2061,6 +2061,98 @@
     <script src="https://cdn.jsdelivr.net/npm/lunar-javascript@1.6.12/lunar.js"></script>
     <script>
 
+
+        // ========= 城市经度数据库（用于真太阳时校正）=========
+        const CITY_LONGITUDE = {
+            // 东北
+            '哈尔滨':126.6,'长春':125.3,'沈阳':123.4,'大连':121.6,
+            // 华北
+            '北京':116.4,'天津':117.2,'石家庄':114.5,'太原':112.5,'呼和浩特':111.7,
+            // 华东
+            '上海':121.5,'南京':118.8,'杭州':120.2,'苏州':120.6,'无锡':120.3,
+            '合肥':117.3,'济南':117.0,'青岛':120.4,'福州':119.3,'厦门':118.1,
+            '南昌':115.9,'宁波':121.5,'温州':120.7,'常州':119.9,'南通':120.9,
+            // 华中
+            '武汉':114.3,'长沙':113.0,'郑州':113.6,
+            // 华南
+            '广州':113.3,'深圳':114.1,'南宁':108.3,'海口':110.3,'东莞':113.7,
+            '佛山':113.1,'珠海':113.5,'惠州':114.4,
+            // 西南
+            '成都':104.1,'重庆':106.5,'昆明':102.7,'贵阳':106.7,'拉萨':91.1,
+            '绵阳':104.7,'德阳':104.4,'宜宾':104.6,'大理':100.2,
+            // 西北
+            '西安':108.9,'兰州':103.8,'西宁':101.8,'银川':106.3,'乌鲁木齐':87.6,
+            '克拉玛依':84.9,'喀什':76.0,'哈密':93.5,'吐鲁番':89.2,
+            // 其他
+            '香港':114.2,'澳门':113.5,'台北':121.5,'高雄':120.3
+        };
+        
+        // 省份默认经度（城市未知时使用省份近似值）
+        const PROVINCE_LONGITUDE = {
+            '北京':116.4,'天津':117.2,'河北':114.5,'山西':112.5,'内蒙古':111.7,
+            '辽宁':123.4,'吉林':125.3,'黑龙江':126.6,'上海':121.5,'江苏':118.8,
+            '浙江':120.2,'安徽':117.3,'福建':119.3,'江西':115.9,'山东':117.0,
+            '河南':113.6,'湖北':114.3,'湖南':113.0,'广东':113.3,'广西':108.3,
+            '海南':110.3,'重庆':106.5,'四川':104.1,'贵州':106.7,'云南':102.7,
+            '西藏':91.1,'陕西':108.9,'甘肃':103.8,'青海':101.8,'宁夏':106.3,
+            '新疆':87.6,'香港':114.2,'澳门':113.5,'台湾':121.0
+        };
+        
+        // 根据城市名查找经度
+        function getLongitude(cityName) {
+            if (!cityName) return 120.0; // 默认东八区标准经度
+            // 精确匹配城市
+            for (const [city, lng] of Object.entries(CITY_LONGITUDE)) {
+                if (cityName.includes(city) || city.includes(cityName)) return lng;
+            }
+            // 尝试匹配省份
+            for (const [prov, lng] of Object.entries(PROVINCE_LONGITUDE)) {
+                if (cityName.includes(prov) || prov.includes(cityName)) return lng;
+            }
+            return 120.0; // 未匹配到，使用标准经度
+        }
+        
+        // 真太阳时校正：根据经度差计算时间偏移
+        function getTrueSolarTime(timeStr, longitude) {
+            // timeStr格式: "子时 (23:00-01:00)" 或类似
+            const timeMatch = timeStr.match(/(\d{1,2}):(\d{2})/);
+            if (!timeMatch) return { correctedTimeStr: timeStr, correctedBranch: null };
+            
+            let hours = parseInt(timeMatch[1]);
+            let minutes = parseInt(timeMatch[2]);
+            
+            // 真太阳时校正：每度4分钟，东经120°为基准
+            const correctionMinutes = Math.round((longitude - 120.0) * 4);
+            let totalMinutes = hours * 60 + minutes + correctionMinutes;
+            
+            // 处理跨天
+            if (totalMinutes < 0) totalMinutes += 1440;
+            if (totalMinutes >= 1440) totalMinutes -= 1440;
+            
+            const correctedHours = Math.floor(totalMinutes / 60);
+            const correctedMins = totalMinutes % 60;
+            
+            // 确定校正后的时辰地支
+            const branches = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+            let branchIndex;
+            if (correctedHours === 23 || correctedHours === 0) {
+                branchIndex = 0; // 子时 23:00-01:00
+            } else {
+                branchIndex = Math.floor((correctedHours + 1) / 2);
+            }
+            
+            const correctedBranch = branches[branchIndex];
+            const correctedTimeStr = `${String(correctedHours).padStart(2,'0')}:${String(correctedMins).padStart(2,'0')}`;
+            
+            return {
+                correctedTimeStr,
+                correctedBranch,
+                correctionMinutes,
+                originalBranch: timeStr.charAt(0)
+            };
+        }
+        // ========= 真太阳时系统结束 =========
+
         // ========= 八字精确排盘引擎 (基于 lunar-javascript) =========
         function calculateBazi(year, month, day, timeBranchChar) {
             try {
@@ -2131,6 +2223,191 @@
             return '子';
         }
         // ========= 排盘引擎结束 =========
+
+        // ========= 八字排盘可视化图表 =========
+        const NAYIN_TABLE = ['海中金','炉中火','大林木','路旁土','剑锋金','山头火','涧下水','城头土','白蜡金','杨柳木','泉中水','屋上土','霹雳火','松柏木','长流水','砂中金','山下火','平地木','壁上土','金箔金','覆灯火','天河水','大驿土','钗钏金','桑柘木','大溪水','砂中土','天上火','石榴木','大海水'];
+        const WUXING_MAP = {'甲':'木','乙':'木','丙':'火','丁':'火','戊':'土','己':'土','庚':'金','辛':'金','壬':'水','癸':'水','子':'水','丑':'土','寅':'木','卯':'木','辰':'土','巳':'火','午':'火','未':'土','申':'金','酉':'金','戌':'土','亥':'水'};
+        const WUXING_COLOR = {'金':'#FFD700','木':'#4CAF50','水':'#42A5F5','火':'#EF5350','土':'#A1887F'};
+        const WUXING_BG = {'金':'rgba(255,215,0,0.15)','木':'rgba(76,175,80,0.15)','水':'rgba(66,165,245,0.15)','火':'rgba(239,83,80,0.15)','土':'rgba(161,136,127,0.15)'};
+        const SHISHEN_MAP = {'bazi': function(dayGan, ganZhi) {
+            const dg = '甲乙丙丁戊己庚辛壬癸'.indexOf(dayGan);
+            const g = '甲乙丙丁戊己庚辛壬癸'.indexOf(ganZhi);
+            if (dg < 0 || g < 0) return '';
+            const diff = (g - dg + 10) % 10;
+            const shishen = ['比肩','劫财','食神','伤官','偏财','正财','七杀','正官','偏印','正印'];
+            return shishen[diff];
+        }};
+        
+        function getNayin(gan, zhi) {
+            const gIdx = '甲乙丙丁戊己庚辛壬癸'.indexOf(gan);
+            const zIdx = '子丑寅卯辰巳午未申酉戌亥'.indexOf(zhi);
+            if (gIdx < 0 || zIdx < 0) return '';
+            const idx = (gIdx * 6 + zIdx) % 60;
+            // 使用标准60甲子纳音查表
+            const ganzhiIdx = getGanzhiIndex(gan, zhi);
+            if (ganzhiIdx < 0) return '';
+            return NAYIN_TABLE[Math.floor(ganzhiIdx / 2)];
+        }
+        
+        function getGanzhiIndex(gan, zhi) {
+            const gIdx = '甲乙丙丁戊己庚辛壬癸'.indexOf(gan);
+            const zIdx = '子丑寅卯辰巳午未申酉戌亥'.indexOf(zhi);
+            if (gIdx < 0 || zIdx < 0) return -1;
+            // 60甲子序号：天干地支序号必须同奇偶
+            for (let i = 0; i < 60; i++) {
+                if (i % 10 === gIdx && i % 12 === zIdx) return i;
+            }
+            return -1;
+        }
+        
+        function generateBaziChart(baziResult, formData) {
+            if (!baziResult || !baziResult.success) return '';
+            
+            const dayGan = baziResult.dayMaster;
+            const pillars = [
+                { label: '年柱', gan: baziResult.year[0], zhi: baziResult.year[1], extra: baziResult.year },
+                { label: '月柱', gan: baziResult.month[0], zhi: baziResult.month[1], extra: baziResult.month },
+                { label: '日柱', gan: baziResult.day[0], zhi: baziResult.day[1], extra: baziResult.day },
+                { label: '时柱', gan: baziResult.time[0], zhi: baziResult.time[1], extra: baziResult.time }
+            ];
+            
+            // 五行统计
+            const wuxingCount = {'金':0,'木':0,'水':0,'火':0,'土':0};
+            pillars.forEach(p => {
+                wuxingCount[WUXING_MAP[p.gan] || '土']++;
+                wuxingCount[WUXING_MAP[p.zhi] || '土']++;
+            });
+            
+            let chartHtml = `
+            <div style="background: linear-gradient(135deg, rgba(10,10,15,0.95), rgba(20,18,30,0.95)); border: 1px solid rgba(201,169,110,0.3); border-radius: 16px; padding: 24px 16px; margin-bottom: 24px; position: relative; overflow: hidden;">
+                <!-- 顶部装饰 -->
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #C9A96E, transparent);"></div>
+                
+                <!-- 标题 -->
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="font-family: var(--serif); font-size: 1.2rem; color: #C9A96E; letter-spacing: 0.3em; margin-bottom: 4px;">八 字 命 盘</div>
+                    <div style="font-size: 0.75rem; color: rgba(201,169,110,0.5); letter-spacing: 0.2em;">FOUR PILLARS OF DESTINY</div>
+                </div>
+                
+                <!-- 基本信息 -->
+                <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; padding: 12px; background: rgba(201,169,110,0.04); border-radius: 10px; border: 1px solid rgba(201,169,110,0.1);">
+                    <span style="color: #F5F0E8; font-size: 0.85rem;">📅 ${formData.birthdate || ''}</span>
+                    <span style="color: rgba(201,169,110,0.6);">|</span>
+                    <span style="color: #F5F0E8; font-size: 0.85rem;">⏰ ${formData.birthtime || ''}</span>
+                    ${formData.birthplace ? `<span style="color: rgba(201,169,110,0.6);">|</span><span style="color: #F5F0E8; font-size: 0.85rem;">📍 ${formData.birthplace}</span>` : ''}
+                    <span style="color: rgba(201,169,110,0.6);">|</span>
+                    <span style="color: #F5F0E8; font-size: 0.85rem;">👤 ${formData.name || ''}（${formData.gender === 'male' ? '男' : '女'}）</span>
+                </div>
+                
+                <!-- 四柱排盘表格 -->
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; max-width: 380px; margin: 0 auto 16px;">`;
+            
+            // 传统排列：年柱在右，时柱在左 → 显示时从左到右：时、日、月、年
+            const displayOrder = [3, 2, 1, 0]; // 时日月年
+            
+            displayOrder.forEach(i => {
+                const p = pillars[i];
+                const ganWx = WUXING_MAP[p.gan] || '土';
+                const zhiWx = WUXING_MAP[p.zhi] || '土';
+                const shishen = SHISHEN_MAP.bazi(dayGan, p.gan);
+                const nayin = getNayin(p.gan, p.zhi);
+                const isDayPillar = (i === 2);
+                
+                chartHtml += `
+                    <div style="text-align: center; position: relative;">
+                        <!-- 十神 -->
+                        <div style="font-size: 0.7rem; color: ${isDayPillar ? '#E8D5A3' : 'rgba(201,169,110,0.7)'}; margin-bottom: 4px; height: 16px;">
+                            ${i === 2 ? '<span style="color: #C9A96E; font-weight: bold;">日主</span>' : shishen}
+                        </div>
+                        <!-- 天干 -->
+                        <div style="font-size: 1.6rem; font-weight: bold; color: ${WUXING_COLOR[ganWx]}; text-shadow: 0 0 10px ${WUXING_BG[ganWx]}; padding: 8px 0; background: ${WUXING_BG[ganWx]}; border-radius: 8px 8px 0 0; border: 1px solid ${isDayPillar ? 'rgba(201,169,110,0.4)' : 'rgba(201,169,110,0.2)'}; border-bottom: none; font-family: var(--serif);">
+                            ${p.gan}
+                            <div style="font-size: 0.6rem; color: ${WUXING_COLOR[ganWx]}; opacity: 0.8;">${ganWx}</div>
+                        </div>
+                        <!-- 地支 -->
+                        <div style="font-size: 1.6rem; font-weight: bold; color: ${WUXING_COLOR[zhiWx]}; text-shadow: 0 0 10px ${WUXING_BG[zhiWx]}; padding: 8px 0; background: ${WUXING_BG[zhiWx]}; border-radius: 0 0 8px 8px; border: 1px solid ${isDayPillar ? 'rgba(201,169,110,0.4)' : 'rgba(201,169,110,0.2)'}; border-top: 1px dashed rgba(201,169,110,0.3); font-family: var(--serif);">
+                            ${p.zhi}
+                            <div style="font-size: 0.6rem; color: ${WUXING_COLOR[zhiWx]}; opacity: 0.8;">${zhiWx}</div>
+                        </div>
+                        <!-- 纳音 -->
+                        <div style="font-size: 0.65rem; color: rgba(201,169,110,0.6); margin-top: 4px;">${nayin}</div>
+                        <!-- 柱名 -->
+                        <div style="font-size: 0.7rem; color: rgba(201,169,110,0.5); margin-top: 2px;">${p.label}</div>
+                    </div>`;
+            });
+            
+            chartHtml += `</div>
+                
+                <!-- 五行力量条 -->
+                <div style="max-width: 380px; margin: 0 auto;">
+                    <div style="display: flex; justify-content: space-between; gap: 4px; margin-bottom: 4px;">`;
+            
+            ['金','木','水','火','土'].forEach(wx => {
+                chartHtml += `<div style="flex:1; text-align:center;">
+                    <div style="height: 4px; background: rgba(201,169,110,0.1); border-radius: 2px; margin-bottom: 4px; overflow: hidden;">
+                        <div style="height: 100%; width: ${(wuxingCount[wx]/8)*100}%; background: ${WUXING_COLOR[wx]}; border-radius: 2px; transition: width 0.5s;"></div>
+                    </div>
+                    <div style="font-size: 0.65rem; color: ${WUXING_COLOR[wx]};">${wx} ${wuxingCount[wx]}</div>
+                </div>`;
+            });
+            
+            chartHtml += `</div>
+                    <div style="text-align: center; font-size: 0.7rem; color: rgba(201,169,110,0.4); margin-top: 8px;">
+                        日主 <span style="color: ${WUXING_COLOR[WUXING_MAP[dayGan]]}; font-weight: bold;">${dayGan}</span>（${WUXING_MAP[dayGan]}）· ${baziResult.lunar || ''}
+                    </div>
+                </div>
+                
+                <!-- 底部装饰 -->
+                <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,169,110,0.3), transparent);"></div>
+            </div>`;
+            
+            return chartHtml;
+        }
+        
+        // 姻缘双盘
+        function generateYinyuanChart(mBazi, fBazi, formData) {
+            if (!mBazi || !mBazi.success || !fBazi || !fBazi.success) return '';
+            
+            function singlePillarChart(bazi, name, gender) {
+                const dayGan = bazi.dayMaster;
+                const pillars = [
+                    { label: '年', gan: bazi.year[0], zhi: bazi.year[1] },
+                    { label: '月', gan: bazi.month[0], zhi: bazi.month[1] },
+                    { label: '日', gan: bazi.day[0], zhi: bazi.day[1] },
+                    { label: '时', gan: bazi.time[0], zhi: bazi.time[1] }
+                ];
+                const displayOrder = [3, 2, 1, 0];
+                
+                let html = `<div style="background: rgba(10,10,15,0.9); border: 1px solid rgba(201,169,110,0.25); border-radius: 12px; padding: 16px 12px; flex: 1; min-width: 160px;">
+                    <div style="text-align: center; margin-bottom: 12px;">
+                        <div style="font-size: 0.9rem; color: #C9A96E; font-family: var(--serif);">${name}（${gender === 'male' ? '男' : '女'}）</div>
+                        <div style="font-size: 0.7rem; color: rgba(201,169,110,0.5);">日主：${dayGan}（${WUXING_MAP[dayGan]}）</div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;">`;
+                
+                displayOrder.forEach(i => {
+                    const p = pillars[i];
+                    const ganWx = WUXING_MAP[p.gan];
+                    const zhiWx = WUXING_MAP[p.zhi];
+                    html += `<div style="text-align: center;">
+                        <div style="font-size: 1.1rem; color: ${WUXING_COLOR[ganWx]}; padding: 4px 0; background: ${WUXING_BG[ganWx]}; border-radius: 4px; font-family: var(--serif);">${p.gan}</div>
+                        <div style="font-size: 1.1rem; color: ${WUXING_COLOR[zhiWx]}; padding: 4px 0; background: ${WUXING_BG[zhiWx]}; border-radius: 4px; font-family: var(--serif);">${p.zhi}</div>
+                        <div style="font-size: 0.55rem; color: rgba(201,169,110,0.4); margin-top: 2px;">${p.label}</div>
+                    </div>`;
+                });
+                
+                html += `</div></div>`;
+                return html;
+            }
+            
+            return `<div style="display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap;">
+                ${singlePillarChart(mBazi, formData.maleName || '男方', 'male')}
+                <div style="display: flex; align-items: center; color: #C9A96E; font-size: 1.5rem; padding: 0 8px;">缘</div>
+                ${singlePillarChart(fBazi, formData.femaleName || '女方', 'female')}
+            </div>`;
+        }
+        // ========= 排盘图表结束 =========
+
 
         let currentService = '';
 
@@ -2328,6 +2605,7 @@
                 formData.birthdate = document.getElementById('birthdate').value;
                 formData.calendarType = calendarType;
                 formData.birthtime = document.getElementById('birthtime').value;
+                formData.birthplace = document.getElementById('birthplace') ? document.getElementById('birthplace').value : '';
             }
 
             // 显示加载状态
@@ -2816,7 +3094,14 @@ ${isCaiyun ? `（从命局财星入手，分析正财偏财的旺衰、财库有
                             <button class="back-btn" onclick="resetForm()" style="margin: 0 auto;">重新测算</button>
                         </div>
                     `;
-                    document.getElementById('result-content').innerHTML = reportHtml + phoneFormHtml;
+                    // 生成八字排盘图表（八字/财运/姻缘）
+                    let baziChartHtml = '';
+                    if (['bazi', 'caiyun'].includes(currentService) && typeof baziResult !== 'undefined' && baziResult && baziResult.success) {
+                        baziChartHtml = generateBaziChart(baziResult, formData);
+                    } else if (currentService === 'yinyuan' && typeof mBazi !== 'undefined' && mBazi && mBazi.success && fBazi && fBazi.success) {
+                        baziChartHtml = generateYinyuanChart(mBazi, fBazi, formData);
+                    }
+                    document.getElementById('result-content').innerHTML = baziChartHtml + reportHtml + phoneFormHtml;
                 } else {
                     throw new Error('测算失败');
                 }
