@@ -2058,7 +2058,80 @@
         <p class="footer-text">© 2024 玄同先生 · 国学命理 | 传承千年智慧</p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/lunar-javascript@1.6.12/lunar.js"></script>
     <script>
+
+        // ========= 八字精确排盘引擎 (基于 lunar-javascript) =========
+        function calculateBazi(year, month, day, timeBranchChar) {
+            try {
+                const solar = Solar.fromYmd(year, month, day);
+                const lunar = solar.getLunar();
+                const eightChar = lunar.getEightChar();
+                
+                const result = {
+                    yearGan: eightChar.getYearGan(),
+                    yearZhi: eightChar.getYearZhi(),
+                    monthGan: eightChar.getMonthGan(),
+                    monthZhi: eightChar.getMonthZhi(),
+                    dayGan: eightChar.getDayGan(),
+                    dayZhi: eightChar.getDayZhi(),
+                    timeGan: '',
+                    timeZhi: timeBranchChar || '子'
+                };
+                
+                // 计算时柱天干：五鼠遁时起时法
+                // 甲己日起甲子时，乙庚日起丙子时，丙辛日起戊子时，丁壬日起庚子时，戊癸日起壬子时
+                const dayGanIndex = '甲乙丙丁戊己庚辛壬癸'.indexOf(result.dayGan);
+                const timeZhiIndex = '子丑寅卯辰巳午未申酉戌亥'.indexOf(result.timeZhi);
+                
+                let timeGanStartIndex;
+                if ([0, 5].includes(dayGanIndex % 5)) {
+                    // 甲/己日 → 子时起甲
+                    timeGanStartIndex = 0;
+                } else if ([1, 6].includes(dayGanIndex % 5)) {
+                    // 乙/庚日 → 子时起丙
+                    timeGanStartIndex = 2;
+                } else if ([2, 7].includes(dayGanIndex % 5)) {
+                    // 丙/辛日 → 子时起戊
+                    timeGanStartIndex = 4;
+                } else if ([3, 8].includes(dayGanIndex % 5)) {
+                    // 丁/壬日 → 子时起庚
+                    timeGanStartIndex = 6;
+                } else {
+                    // 戊/癸日 → 子时起壬
+                    timeGanStartIndex = 8;
+                }
+                
+                const tianGan = '甲乙丙丁戊己庚辛壬癸';
+                result.timeGan = tianGan[(timeGanStartIndex + timeZhiIndex) % 10];
+                
+                return {
+                    success: true,
+                    year: result.yearGan + result.yearZhi,
+                    month: result.monthGan + result.monthZhi,
+                    day: result.dayGan + result.dayZhi,
+                    time: result.timeGan + result.timeZhi,
+                    full: result.yearGan + result.yearZhi + ' ' + result.monthGan + result.monthZhi + ' ' + result.dayGan + result.dayZhi + ' ' + result.timeGan + result.timeZhi,
+                    dayMaster: result.dayGan,
+                    lunar: '农历' + lunar.getYearInGanZhi() + '年' + lunar.getMonthInChinese() + '月' + lunar.getDayInChinese()
+                };
+            } catch(e) {
+                console.error('八字排盘失败:', e);
+                return { success: false, error: e.message };
+            }
+        }
+        
+        // 从时辰选择字符串中提取地支
+        function extractTimeBranch(timeStr) {
+            if (!timeStr) return '子';
+            const branches = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+            for (const b of branches) {
+                if (timeStr.includes(b)) return b;
+            }
+            return '子';
+        }
+        // ========= 排盘引擎结束 =========
+
         let currentService = '';
 
 
@@ -2516,6 +2589,27 @@
                     // 姻缘测算：以双方八字为核心
                     const maleCalInfo = formData.maleCalendarType === '阴历' ? '（农历日期）' : '（公历日期）';
                     const femaleCalInfo = formData.femaleCalendarType === '阴历' ? '（农历日期）' : '（公历日期）';
+                    
+                    // 【关键修复】前端精确排盘——男方八字
+                    const mDateParts = formData.maleBirthdate.split('-');
+                    const mBazi = calculateBazi(parseInt(mDateParts[0]), parseInt(mDateParts[1]), parseInt(mDateParts[2]), extractTimeBranch(formData.maleBirthtime));
+                    // 【关键修复】前端精确排盘——女方八字
+                    const fDateParts = formData.femaleBirthdate.split('-');
+                    const fBazi = calculateBazi(parseInt(fDateParts[0]), parseInt(fDateParts[1]), parseInt(fDateParts[2]), extractTimeBranch(formData.femaleBirthtime));
+                    
+                    let yinyuanBaziStr = '';
+                    if (mBazi.success && fBazi.success) {
+                        yinyuanBaziStr = `
+【双方八字（系统精确排盘）】
+男方四柱：${mBazi.year}年 ${mBazi.month}月 ${mBazi.day}日 ${mBazi.time}时（日主：${mBazi.dayMaster}）
+女方四柱：${fBazi.year}年 ${fBazi.month}月 ${fBazi.day}日 ${fBazi.time}时（日主：${fBazi.dayMaster}）
+
+⚠️ 以上八字四柱由系统精确排盘得出，请以此为准进行解读，不要重新计算或更改八字。`;
+                    } else {
+                        yinyuanBaziStr = `
+⚠️ 排盘引擎异常，请自行根据出生日期推算双方八字四柱。`;
+                    }
+                    
                     prompt = `你是"玄同先生"，精通八字合婚、姻缘配对的国学泰斗，四十余年为无数有情人指点姻缘迷津，以断语精准、直指要害著称。请根据以下双方八字信息进行深度姻缘分析：
 
 【男方信息】
@@ -2527,13 +2621,14 @@
 姓名：${formData.femaleName}
 出生日期：${formData.femaleBirthdate} ${femaleCalInfo}
 出生时辰：${formData.femaleBirthtime}
+${yinyuanBaziStr}
 
 ${formData.question ? '【咨询问题】\n' + formData.question : ''}
 
 请按以下框架输出专业合婚报告，总字数不少于2000字：
 
 ## 命盘总论
-（分别排出双方八字四柱，点出各自日主强弱、命局格局。用精炼的语言概括双方的命理特质，为后续配对分析做铺垫。）
+（引用系统提供的精确八字四柱，分析双方日主强弱、命局格局。用精炼的语言概括双方的命理特质，为后续配对分析做铺垫。注意：八字以系统排盘为准。）
 
 ## 姻缘契合度总评
 （给出总体匹配度评分，用★表示（1-5星），并一句话总结这段姻缘的核心特征。先给结论，再简要说明评分依据。）
@@ -2600,6 +2695,29 @@ ${formData.question ? '【咨询问题】\n' + formData.question : ''}
                     // 八字/财运：以出生信息为核心
                     const calendarInfo = formData.calendarType === '阴历' ? '（农历日期）' : '（公历日期）';
                     const isCaiyun = currentService === 'caiyun';
+                    
+                    // 【关键修复】前端精确排盘，不依赖LLM计算八字
+                    const baziDateParts = formData.birthdate.split('-');
+                    const baziYear = parseInt(baziDateParts[0]);
+                    const baziMonth = parseInt(baziDateParts[1]);
+                    const baziDay = parseInt(baziDateParts[2]);
+                    const baziTimeBranch = extractTimeBranch(formData.birthtime);
+                    const baziResult = calculateBazi(baziYear, baziMonth, baziDay, baziTimeBranch);
+                    
+                    let baziInfoStr = '';
+                    if (baziResult.success) {
+                        baziInfoStr = `
+【八字排盘（系统精确计算）】
+四柱：${baziResult.year}年 ${baziResult.month}月 ${baziResult.day}日 ${baziResult.time}时
+日主：${baziResult.dayMaster}
+${baziResult.lunar}
+
+⚠️ 以上八字四柱由系统精确排盘得出，请以此为准进行解读，不要重新计算或更改八字。`;
+                    } else {
+                        baziInfoStr = `
+⚠️ 排盘引擎异常，请自行根据出生日期推算八字四柱。`;
+                    }
+                    
                     prompt = `你是"玄同先生"，国学泰斗，精研${serviceNames[currentService]}四十余载。请根据以下信息进行${isCaiyun ? '深度财运分析' : '全面命理推演'}。
 
 【求测信息】
@@ -2608,11 +2726,12 @@ ${formData.question ? '【咨询问题】\n' + formData.question : ''}
 出生日期：${formData.birthdate} ${calendarInfo}
 出生时辰：${formData.birthtime}
 咨询问题：${formData.question || (isCaiyun ? '请深度分析财运格局' : '请全面分析运势')}
+${baziInfoStr}
 
 请按以下框架输出专业报告，总字数不少于2000字，每个章节都要有实质内容和独到见解：
 
 ## 命盘总论
-（排出八字四柱，点明日主强弱，概括命局格局——如正官格、偏财格、伤官配印等。用一两句话直击命主最核心的命运特征，让人一读就有"原来如此"的顿悟感。引用《滴天髓》或《穷通宝鉴》相关论述佐证。）
+（引用系统提供的精确八字四柱，分析日主强弱，概括命局格局——如正官格、偏财格、伤官配印等。用一两句话直击命主最核心的命运特征，让人一读就有"原来如此"的顿悟感。引用《滴天髓》或《穷通宝鉴》相关论述佐证。注意：八字以系统排盘为准，不要自行推算。）
 
 ## 五行力量分析
 （详细分析金木水火土在命局中的旺衰强弱、生克制化关系。指出五行偏枯还是中和，喜用神和忌神分别是什么，为什么。结合纳音五行做补充分析。）
