@@ -1879,6 +1879,11 @@
                             <option value="亥时 (21:00-23:00)">亥时 (21:00-23:00)</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label>出生地点</label>
+                        <input type="text" id="birthplace" placeholder="如：北京市、上海市（用于真太阳时校正）">
+                        <div class="calendar-hint">填写出生城市可获得更精准的八字排盘</div>
+                    </div>
                 </div>
                 <!-- 奇门遁甲 专用：起卦时间和地点 -->
                 <div id="qimen-fields" style="display:none;">
@@ -1944,6 +1949,10 @@
                             <option value="亥时 (21:00-23:00)">亥时 (21:00-23:00)</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label>出生地点</label>
+                        <input type="text" id="male-birthplace" placeholder="如：北京市（用于真太阳时校正）">
+                    </div>
                     <div style="text-align:center;margin:20px 0 16px;font-family:var(--serif);color:var(--gold);font-size:1rem;letter-spacing:0.1em;">— 女方信息 —</div>
                     <div class="form-group">
                         <label>姓名</label>
@@ -1974,6 +1983,10 @@
                             <option value="戌时 (19:00-21:00)">戌时 (19:00-21:00)</option>
                             <option value="亥时 (21:00-23:00)">亥时 (21:00-23:00)</option>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label>出生地点</label>
+                        <input type="text" id="female-birthplace" placeholder="如：上海市（用于真太阳时校正）">
                     </div>
                 </div>
                 <div class="form-group" id="question-group">
@@ -2540,6 +2553,10 @@
 
         async function submitForm(e) {
             e.preventDefault();
+            // 声明排盘结果变量（在各分支中赋值，供后续图表生成使用）
+            let baziResult = null;
+            let mBazi = null;
+            let fBazi = null;
             
             // 手动表单验证
             const alerts = [];
@@ -2595,7 +2612,9 @@
                 formData.femaleBirthdate = document.getElementById('female-birthdate').value;
                 formData.femaleBirthtime = document.getElementById('female-birthtime').value;
                 formData.femaleCalendarType = document.querySelector('input[name="femaleCalendarType"]:checked').value;
-                                formData.name = formData.maleName;
+                formData.maleBirthplace = document.getElementById('male-birthplace') ? document.getElementById('male-birthplace').value : '';
+                formData.femaleBirthplace = document.getElementById('female-birthplace') ? document.getElementById('female-birthplace').value : '';
+                formData.name = formData.maleName;
             }
             // 奇门遁甲用起卦时间和地点，其他用出生信息
             if (currentService === 'qimen') {
@@ -2870,17 +2889,43 @@
                     
                     // 【关键修复】前端精确排盘——男方八字
                     const mDateParts = formData.maleBirthdate.split('-');
-                    const mBazi = calculateBazi(parseInt(mDateParts[0]), parseInt(mDateParts[1]), parseInt(mDateParts[2]), extractTimeBranch(formData.maleBirthtime));
-                    // 【关键修复】前端精确排盘——女方八字
+                    // 男方真太阳时校正
+                    let maleTimeBranch = extractTimeBranch(formData.maleBirthtime);
+                    let maleSolarCorrection = '';
+                    if (formData.maleBirthplace) {
+                        const mLng = getLongitude(formData.maleBirthplace);
+                        if (mLng !== 120.0) {
+                            const mCorr = getTrueSolarTime(formData.maleBirthtime, mLng);
+                            if (mCorr.correctedBranch && mCorr.correctedBranch !== mCorr.originalBranch) {
+                                maleTimeBranch = mCorr.correctedBranch;
+                                maleSolarCorrection = `（北京时间${mCorr.originalBranch}时→真太阳时${mCorr.correctedBranch}时）`;
+                            }
+                        }
+                    }
+                    mBazi = calculateBazi(parseInt(mDateParts[0]), parseInt(mDateParts[1]), parseInt(mDateParts[2]), maleTimeBranch);
+                    
+                    // 女方真太阳时校正
                     const fDateParts = formData.femaleBirthdate.split('-');
-                    const fBazi = calculateBazi(parseInt(fDateParts[0]), parseInt(fDateParts[1]), parseInt(fDateParts[2]), extractTimeBranch(formData.femaleBirthtime));
+                    let femaleTimeBranch = extractTimeBranch(formData.femaleBirthtime);
+                    let femaleSolarCorrection = '';
+                    if (formData.femaleBirthplace) {
+                        const fLng = getLongitude(formData.femaleBirthplace);
+                        if (fLng !== 120.0) {
+                            const fCorr = getTrueSolarTime(formData.femaleBirthtime, fLng);
+                            if (fCorr.correctedBranch && fCorr.correctedBranch !== fCorr.originalBranch) {
+                                femaleTimeBranch = fCorr.correctedBranch;
+                                femaleSolarCorrection = `（北京时间${fCorr.originalBranch}时→真太阳时${fCorr.correctedBranch}时）`;
+                            }
+                        }
+                    }
+                    fBazi = calculateBazi(parseInt(fDateParts[0]), parseInt(fDateParts[1]), parseInt(fDateParts[2]), femaleTimeBranch);
                     
                     let yinyuanBaziStr = '';
                     if (mBazi.success && fBazi.success) {
                         yinyuanBaziStr = `
 【双方八字（系统精确排盘）】
-男方四柱：${mBazi.year}年 ${mBazi.month}月 ${mBazi.day}日 ${mBazi.time}时（日主：${mBazi.dayMaster}）
-女方四柱：${fBazi.year}年 ${fBazi.month}月 ${fBazi.day}日 ${fBazi.time}时（日主：${fBazi.dayMaster}）
+男方四柱：${mBazi.year}年 ${mBazi.month}月 ${mBazi.day}日 ${mBazi.time}时（日主：${mBazi.dayMaster}）${maleSolarCorrection ? ' ' + maleSolarCorrection : ''}
+女方四柱：${fBazi.year}年 ${fBazi.month}月 ${fBazi.day}日 ${fBazi.time}时（日主：${fBazi.dayMaster}）${femaleSolarCorrection ? ' ' + femaleSolarCorrection : ''}
 
 ⚠️ 以上八字四柱由系统精确排盘得出，请以此为准进行解读，不要重新计算或更改八字。`;
                     } else {
@@ -2979,8 +3024,22 @@ ${formData.question ? '【咨询问题】\n' + formData.question : ''}
                     const baziYear = parseInt(baziDateParts[0]);
                     const baziMonth = parseInt(baziDateParts[1]);
                     const baziDay = parseInt(baziDateParts[2]);
-                    const baziTimeBranch = extractTimeBranch(formData.birthtime);
-                    const baziResult = calculateBazi(baziYear, baziMonth, baziDay, baziTimeBranch);
+                    
+                    // 真太阳时校正
+                    let baziTimeBranch = extractTimeBranch(formData.birthtime);
+                    let solarCorrectionInfo = '';
+                    if (formData.birthplace) {
+                        const longitude = getLongitude(formData.birthplace);
+                        if (longitude !== 120.0) {
+                            const correction = getTrueSolarTime(formData.birthtime, longitude);
+                            if (correction.correctedBranch && correction.correctedBranch !== correction.originalBranch) {
+                                baziTimeBranch = correction.correctedBranch;
+                                solarCorrectionInfo = `（北京时间${correction.originalBranch}时→真太阳时${correction.correctedBranch}时，校正${correction.correctionMinutes > 0 ? '+' : ''}${correction.correctionMinutes}分钟）`;
+                            }
+                        }
+                    }
+                    
+                    baziResult = calculateBazi(baziYear, baziMonth, baziDay, baziTimeBranch);
                     
                     let baziInfoStr = '';
                     if (baziResult.success) {
@@ -2988,7 +3047,7 @@ ${formData.question ? '【咨询问题】\n' + formData.question : ''}
 【八字排盘（系统精确计算）】
 四柱：${baziResult.year}年 ${baziResult.month}月 ${baziResult.day}日 ${baziResult.time}时
 日主：${baziResult.dayMaster}
-${baziResult.lunar}
+${baziResult.lunar}${solarCorrectionInfo ? '\n真太阳时校正：' + solarCorrectionInfo : ''}
 
 ⚠️ 以上八字四柱由系统精确排盘得出，请以此为准进行解读，不要重新计算或更改八字。`;
                     } else {
