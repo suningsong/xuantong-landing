@@ -2079,6 +2079,9 @@
         const CITY_LONGITUDE = {
             // 东北
             '哈尔滨':126.6,'长春':125.3,'沈阳':123.4,'大连':121.6,
+            // 内蒙古东部
+            '通辽':122.28,'开鲁':121.32,'库伦旗':121.75,'奈曼旗':120.65,'扎鲁特旗':120.87,
+            '赤峰':118.87,'宁城':119.32,'敖汉旗':119.87,'大沁他拉':120.65,
             // 华北
             '北京':116.4,'天津':117.2,'石家庄':114.5,'太原':112.5,'呼和浩特':111.7,
             // 华东
@@ -2111,17 +2114,22 @@
             '新疆':87.6,'香港':114.2,'澳门':113.5,'台湾':121.0
         };
         
-        // 根据城市名查找经度
+        // 根据城市名查找经度（支持多级地址：省市区县）
         function getLongitude(cityName) {
             if (!cityName) return 120.0; // 默认东八区标准经度
-            // 精确匹配城市
-            for (const [city, lng] of Object.entries(CITY_LONGITUDE)) {
-                if (cityName.includes(city) || city.includes(cityName)) return lng;
+            
+            // 优先匹配更具体的地名（按名称长度降序，优先匹配长地名）
+            const sortedCities = Object.entries(CITY_LONGITUDE).sort((a, b) => b[0].length - a[0].length);
+            for (const [city, lng] of sortedCities) {
+                if (cityName.includes(city)) return lng;
             }
-            // 尝试匹配省份
-            for (const [prov, lng] of Object.entries(PROVINCE_LONGITUDE)) {
-                if (cityName.includes(prov) || prov.includes(cityName)) return lng;
+            
+            // 尝试匹配省份（仅当城市名包含省份且未匹配到城市时）
+            const sortedProvinces = Object.entries(PROVINCE_LONGITUDE).sort((a, b) => b[0].length - a[0].length);
+            for (const [prov, lng] of sortedProvinces) {
+                if (cityName.includes(prov)) return lng;
             }
+            
             return 120.0; // 未匹配到，使用标准经度
         }
         
