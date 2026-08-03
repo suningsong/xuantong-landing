@@ -577,7 +577,7 @@
             color: var(--text-secondary);
             line-height: 1.8;
             display: -webkit-box;
-            -webkit-line-clamp: 3;
+            -webkit-line-clamp: 4;
             -webkit-box-orient: vertical;
             overflow: hidden;
             word-break: break-all;
@@ -1193,7 +1193,7 @@
             color: var(--text-secondary);
             line-height: 1.8;
             display: -webkit-box;
-            -webkit-line-clamp: 3;
+            -webkit-line-clamp: 4;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
@@ -1475,6 +1475,7 @@
             .hero-cta { padding: 14px 36px; font-size: 1rem; }
             .section-title { font-size: 1.5rem; }
             .services-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: 100%; }
+            .yinyuan-card { grid-column: auto; max-width: 100%; justify-self: auto; }
             .service-card { padding: 20px 10px; }
             .service-icon { width: 42px; height: 42px; font-size: 1.5rem; margin-bottom: 10px; }
             .service-title { font-size: 0.92rem; }
@@ -1506,7 +1507,6 @@
             .hero-subtitle { font-size: 1rem; letter-spacing: 0.3em; }
             .hero-desc { font-size: 0.9rem; line-height: 2; }
             .form-section { padding: 30px 16px; }
-            .service-card { padding: 20px 14px; }
             .form-group input[type="date"],
             .form-group input[type="datetime-local"] {
                 font-size: 16px; /* Prevent zoom on iOS */
@@ -3789,7 +3789,7 @@ ${isCaiyun ? `（从命局财星入手，分析正财偏财的旺衰、财库有
                 <div class="article-card" data-article-index="${idx}" style="cursor:pointer;">
                     <div class="article-category">${item.cat}</div>
                     <h3 class="article-title">${item.title}</h3>
-                    <p class="article-excerpt">${(item.summary || item.excerpt || '').substring(0, 80).replace(/\n/g, ' ')}...</p>
+                    <p class="article-excerpt">${(item.summary || item.excerpt || '').substring(0, 200).replace(/\n/g, ' ')}...</p>
                     <p style="color:var(--gold); font-size:0.8rem; margin-top:8px; opacity:0.7;">点击阅读全文 →</p>
                 </div>
             `).join('');
@@ -3833,7 +3833,7 @@ ${isCaiyun ? `（从命局财星入手，分析正财偏财的旺衰、财库有
                         <div class="news-body">
                             <span class="news-tag">${item.tag || '玄学资讯'}</span>
                             <h3 class="news-title">${item.title}</h3>
-                            <p class="news-excerpt">${(item.excerpt || '').substring(0, 80).replace(/\n/g, ' ')}${(item.excerpt || '').length > 80 ? '...' : ''}</p>
+                            <p class="news-excerpt">${(item.excerpt || '').substring(0, 200).replace(/\n/g, ' ')}${(item.excerpt || '').length > 200 ? '...' : ''}</p>
                             <p style="color:var(--gold); font-size:0.8rem; margin-top:8px; opacity:0.7;">点击查看详细内容 →</p>
                         </div>
                     </div>`;
