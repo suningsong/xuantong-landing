@@ -1018,10 +1018,13 @@
             box-shadow: 0 6px 20px rgba(201,169,110,0.45);
         }
 
-        .yinyuan-card {
-            grid-column: span 2;
-            max-width: 50%;
-            justify-self: center;
+        /* 姻缘卡片桌面端横跨2列居中 */
+        @media (min-width: 769px) {
+            .yinyuan-card {
+                grid-column: span 2;
+                max-width: 50%;
+                justify-self: center;
+            }
         }
 
         /* 移动端适配 */
@@ -1475,7 +1478,7 @@
             .hero-cta { padding: 14px 36px; font-size: 1rem; }
             .section-title { font-size: 1.5rem; }
             .services-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: 100%; }
-            .yinyuan-card { grid-column: auto !important; max-width: 100% !important; justify-self: auto !important; }
+            .yinyuan-card { /* 移动端正常网格项，无特殊样式 */ }
             .service-card { padding: 20px 10px; }
             .service-icon { width: 42px; height: 42px; font-size: 1.5rem; margin-bottom: 10px; }
             .service-title { font-size: 0.92rem; }
